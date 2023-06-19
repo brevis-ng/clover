@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone')->nullable();
-            $table->bigInteger('telegram_id')->unique()->nullable();
-            $table->string('telegram_username')->nullable();
+            $table->string('code', 5)->nullable();
+            $table->decimal('price')->default(0);
+            $table->string('image')->nullable();
+            $table->string('description')->nullable();
+            $table->string('status', 30)->default('instock');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('products');
     }
 };
