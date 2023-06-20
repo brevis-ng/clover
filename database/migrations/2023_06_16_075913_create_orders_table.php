@@ -21,6 +21,7 @@ return new class extends Migration
             $table->double('shipping_fee')->default(0);
             $table->string('payment_method', 30)->default('cod');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

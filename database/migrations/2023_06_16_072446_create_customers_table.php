@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('telegram_id')->unique()->nullable();
             $table->string('telegram_username')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
