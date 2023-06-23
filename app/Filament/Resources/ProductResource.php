@@ -38,14 +38,22 @@ class ProductResource extends Resource
                     ->label('Giá')
                     ->suffix('PHP')
                     ->minValue(0),
+                Forms\Components\Select::make('unit')
+                    ->label('Đơn vị tính')
+                    ->required()
+                    ->options([
+                        'a' => __('admin.units.a'),
+                        'kg' => __('admin.units.kg'),
+                        'box' => __('admin.units.box'),
+                        'pair' => __('admin.units.pair'),
+                    ]),
+                Forms\Components\Radio::make('status')
+                        ->label('Trạng thái')
+                        ->options(ProductStatus::all())
+                        ->default(ProductStatus::INSTOCK->value),
                 Forms\Components\FileUpload::make('image')
                     ->label('Hình ảnh')
                     ->image(),
-                Forms\Components\Radio::make('status')
-                    ->label('Trạng thái')
-                    ->inline()
-                    ->options(ProductStatus::all())
-                    ->default(ProductStatus::INSTOCK->value),
                 Forms\Components\RichEditor::make('description')
                     ->label('Mô tả')
                     ->columnSpan(2),
@@ -66,6 +74,8 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->label('Giá SP (PHP)')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('unit')
+                    ->label('Đơn vị'),
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Trạng thái')
                     ->enum(ProductStatus::all()),

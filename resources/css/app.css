@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input:invalid, textarea:invalid, select:invalid {
+    box-shadow: none;
+}
