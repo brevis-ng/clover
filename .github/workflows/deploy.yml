@@ -28,6 +28,5 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          chown -R www /www/wwwroot/bepviet.org/clover
-          cd /www/wwwroot/bepviet.org/clover
-          npm run build
+          cd /www/wwwroot/bepviet.org
+          find ./clover ! -name '.user.ini' -exec chown www:www '{}' \;
