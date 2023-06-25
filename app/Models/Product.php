@@ -15,7 +15,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'code', 'price', 'unit', 'image', 'description', 'status'];
+    protected $fillable = ['name', 'code', 'category_id', 'price', 'unit', 'image', 'description', 'status'];
 
     /**
      * The attributes that should be cast.
@@ -25,4 +25,9 @@ class Product extends Model
     protected $casts = [
         'status' => ProductStatus::class,
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

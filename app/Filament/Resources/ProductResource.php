@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\ProductStatus;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -47,6 +48,10 @@ class ProductResource extends Resource
                         'box' => __('admin.units.box'),
                         'pair' => __('admin.units.pair'),
                     ]),
+                Forms\Components\Select::make('category_id')
+                    ->label('Danh mục')
+                    ->options(Category::all()->pluck('name', 'id'))
+                    ->searchable(),
                 Forms\Components\Radio::make('status')
                         ->label('Trạng thái')
                         ->options(ProductStatus::all())
@@ -71,6 +76,9 @@ class ProductResource extends Resource
                     ->label('Mã SP')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Danh mục')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Giá SP (PHP)')
                     ->sortable(),

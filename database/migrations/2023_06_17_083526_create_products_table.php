@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code', 5)->nullable();
+            $table->foreignId('category_id')->nullable()->noActionOnDelete();
             $table->decimal('price')->default(0);
+            $table->string('unit')->nullable();
             $table->string('image')->nullable();
             $table->string('description')->nullable();
             $table->string('status', 30)->default('instock');
