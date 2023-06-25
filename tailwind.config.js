@@ -7,7 +7,12 @@ export default {
     extend: {
         fontFamily: {
             sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+            oswald: ["Oswald", "sans-serif"],
         }
+    },
+    container: {
+        center: true,
+        padding: '.5rem',
     },
   },
   plugins: [],

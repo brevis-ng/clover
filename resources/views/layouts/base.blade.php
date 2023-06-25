@@ -15,6 +15,9 @@
         <!-- Favicon -->
         <link rel="shortcut icon" href="{{ url(asset('favicon.ico')) }}">
 
+        <!-- Telegram widget -->
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
 
