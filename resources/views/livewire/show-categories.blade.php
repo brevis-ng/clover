@@ -1,12 +1,28 @@
-<div class="flex flex-row flex-nowrap justify-start gap-x-2">
-    @foreach ($categories as $category)
-    <div class="p-1 flex justify-start items-center">
-        @if(file_exists(public_path('storage/' .$category->image )) && $category->image != null)
-            <img class="aspect-square object-contain w-14" src="{{ '/storage/' . $category->image }}" alt="{{ $category->name }}">
-        @else
-            <img class="aspect-square object-contain w-14" src="/storage/default.jpg" alt="">
-        @endif
-        <div class="ml-2 tg-text-color text-xs whitespace-nowrap">{{ $category->name }}</div>
-    </div>
-    @endforeach
+<div class="mb-4">
+    <ul class="flex -mb-px text-center flex-nowrap scroll-smooth scrollbar-hidden overflow-x-scroll">
+        <li class="flex-auto text-center mx-2">
+            <button wire:click="$emit('categoryClicked')"
+                @class([
+                    'w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap',
+                    'border-transparent' => $categoryId != null,
+                    'border-blue-600 tg-link-color' => $categoryId == null
+                ])
+            >
+                All
+            </button>
+        </li>
+        @foreach ($categories as $category)
+        <li class="flex-auto text-center mx-2">
+            <button wire:click="$emit('categoryClicked', {{ $category->id }})"
+                @class([
+                    'w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap',
+                    'border-transparent' => $categoryId == null,
+                    'border-blue-600 tg-link-color' => $categoryId == $category->id
+                ])
+            >
+                {{ $category->name }}
+            </button>
+        </li>
+        @endforeach
+    </ul>
 </div>

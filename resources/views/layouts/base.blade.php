@@ -2,7 +2,12 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="MobileOptimized" content="176" />
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="robots" content="noindex,nofollow" />
         @hasSection('title')
             <title>@yield('title') - {{ config('app.name') }}</title>
         @else
@@ -29,7 +34,7 @@
         @endif
     </head>
 
-    <body>
+    <body class="min-h-screen container tg-bg-color tg-text-color">
         @yield('content')
 
         @livewireScripts

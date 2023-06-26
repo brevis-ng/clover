@@ -7,6 +7,14 @@ use Livewire\Component;
 
 class ShowCategories extends Component
 {
+    public $categoryId;
+    protected $listeners = ['categoryActivated' => 'categoryActivatedHandle'];
+
+    public function categoryActivatedHandle($id)
+    {
+        $this->categoryId = $id;
+    }
+
     public function render()
     {
         $categories = Category::has('products')->get();
