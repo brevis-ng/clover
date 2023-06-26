@@ -30,5 +30,3 @@ jobs:
         script: |
           cd /www/wwwroot/bepviet.org
           find ./clover ! -name '.user.ini' -exec chown www:www '{}' \;
-          rm -rf node_modules/
-          npm install && npm run build
