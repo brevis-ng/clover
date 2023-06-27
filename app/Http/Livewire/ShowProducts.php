@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Enums\ProductStatus;
+use App\Helpers\CartManager;
 use App\Models\Category;
 use App\Models\Product;
 use Livewire\Component;
@@ -26,6 +26,23 @@ class ShowProducts extends Component
         } else {
             $this->products = Product::orderBy('updated_at')->get();
         }
+    }
+
+    public function increment(Product $product)
+    {
+        CartManager::add($product);
+    }
+
+    public function decrement(Product $product)
+    {
+        CartManager::update($product->id, -1);
+    }
+
+    public function getQuantity(Product $product)
+    {
+        $item = CartManager::item($product);
+
+        return $item === null ? 0 : $item->quantity;
     }
 
     public function render()

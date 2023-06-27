@@ -10,3 +10,9 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script type="application/javascript">
+    console.log("Hello world!");
+</script>
+@endpush
