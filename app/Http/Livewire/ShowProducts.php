@@ -31,7 +31,10 @@ class ShowProducts extends Component
     public function increment(Product $product)
     {
         CartManager::add($product);
-        $this->emit('showMainMenu', __('view_carts'));
+
+        if (CartManager::count() > 0) {
+            $this->emit('show-carts', __('admin.view_carts'));
+        }
     }
 
     public function decrement(Product $product)
@@ -39,7 +42,7 @@ class ShowProducts extends Component
         CartManager::update($product->id, -1);
 
         if (CartManager::count() == 0) {
-            $this->emit('hideMainMenu');
+            $this->emit('hide-main-button');
         }
     }
 

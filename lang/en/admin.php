@@ -11,4 +11,6 @@ return [
         'pair' => 'pair',
     ],
     'view_carts' => 'View Carts',
+    'your_order' => 'Your Oder',
+    'edit' => 'Edit',
 ];

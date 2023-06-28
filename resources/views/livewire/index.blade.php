@@ -13,14 +13,23 @@
 
 @push('scripts')
 <script type="application/javascript">
-    Livewire.on('showMainMenu', (msg) => {
-        console.log('LiveWire:Updated' + msg);
-
+    Livewire.on('show-carts', (msg) => {
         Telegram.WebApp.MainButton.setParams({
             text: msg,
             is_active: true,
             is_visible: true,
+        }).onClick(() => {
+            window.location.href = "{{ route('frontend.carts') }}";
         });
+        window.location.href = "{{ route('frontend.carts') }}";
+
+        // Show Back Button
+        Telegram.WebApp.BackButton.show().onClick(() => {
+            window.location.href = "{{ route('frontend.index') }}";
+        });
+    });
+    Livewire.on('hide-main-button', () => {
+        Telegram.WebApp.MainButton.hide();
     });
 </script>
 @endpush

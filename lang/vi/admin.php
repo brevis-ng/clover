@@ -11,4 +11,6 @@ return [
         'pair' => 'cặp',
     ],
     'view_carts' => 'Xem giỏ hàng',
+    'your_order' => 'Giỏ Hàng Của Bạn',
+    'edit' => 'Sửa',
 ];

@@ -96,11 +96,6 @@ class CartManager
 
     public static function subtotal()
     {
-        return static::items()->sum("subtotal");
-    }
-
-    public static function total()
-    {
-        return static::subtotal();
+        return static::items()->sum("amount");
     }
 }

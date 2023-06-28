@@ -11,4 +11,6 @@ return [
         'pair' => '双',
     ],
     'view_carts' => '查看购物车',
+    'your_order' => '你的订单',
+    'edit' => '编辑',
 ];

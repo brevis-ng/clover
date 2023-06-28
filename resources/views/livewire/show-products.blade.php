@@ -12,7 +12,7 @@
         <div class="text-center justify-center my-1">
             <h3 class="text-lg font-bold tracking-wide tg-text-color">{{ $product->name }}</h3>
             <p class="text-xs line-clamp-2 tg-hint-color">{{ $product->description }}</p>
-            <p class="font-bold tracking-wide text-lg text-orange-600 font-oswald">₱{{ $product->price }}/{{ $product->unit }}</p>
+            <p class="font-bold tracking-wide text-lg text-orange-600 font-oswald">{{ config('clover.currency') . $product->price }}/{{ $product->unit }}</p>
         </div>
         @if ($this->getQuantity($product) == 0)
         <button wire:click="increment({{ $product }})"
