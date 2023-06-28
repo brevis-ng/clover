@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\FrontendController;
+use App\Http\Livewire\Index;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+Route::get('/', Index::class)->name('frontend.index');

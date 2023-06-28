@@ -10,4 +10,5 @@ return [
         'box' => 'box',
         'pair' => 'pair',
     ],
+    'view_carts' => 'View Carts',
 ];

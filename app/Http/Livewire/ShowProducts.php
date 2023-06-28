@@ -31,11 +31,16 @@ class ShowProducts extends Component
     public function increment(Product $product)
     {
         CartManager::add($product);
+        $this->emit('showMainMenu', __('view_carts'));
     }
 
     public function decrement(Product $product)
     {
         CartManager::update($product->id, -1);
+
+        if (CartManager::count() == 0) {
+            $this->emit('hideMainMenu');
+        }
     }
 
     public function getQuantity(Product $product)

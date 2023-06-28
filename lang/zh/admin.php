@@ -10,4 +10,5 @@ return [
         'box' => '盒',
         'pair' => '双',
     ],
+    'view_carts' => '查看购物车',
 ];

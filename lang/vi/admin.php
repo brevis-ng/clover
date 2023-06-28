@@ -10,4 +10,5 @@ return [
         'box' => 'hộp',
         'pair' => 'cặp',
     ],
+    'view_carts' => 'Xem giỏ hàng',
 ];
