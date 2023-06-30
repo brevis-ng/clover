@@ -13,4 +13,7 @@ return [
     'view_carts' => 'View Carts',
     'your_order' => 'Your Oder',
     'edit' => 'Edit',
+    'msg' => 'Add comment',
+    'msg_placeholder' => 'Add your comment...',
+    'order' => 'Order',
 ];

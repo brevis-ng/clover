@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container tg-bg-color tg-text-color">
+<div class="tg-bg-color tg-text-color">
     <div class="mt-1 mb-2">
         <livewire:show-categories />
     </div>
@@ -20,12 +20,6 @@
             is_visible: true,
         }).onClick(() => {
             window.location.href = "{{ route('frontend.carts') }}";
-        });
-        window.location.href = "{{ route('frontend.carts') }}";
-
-        // Show Back Button
-        Telegram.WebApp.BackButton.show().onClick(() => {
-            window.location.href = "{{ route('frontend.index') }}";
         });
     });
     Livewire.on('hide-main-button', () => {

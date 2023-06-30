@@ -2,12 +2,12 @@
 
 @section('content')
 
-<div class="container tg-secondary-bg-color tg-text-color mt-2">
-    <div class="flex justify-between items-center px-2 tg-bg-color">
+<div class="tg-secondary-bg-color tg-text-color mt-2">
+    <div class="flex justify-between items-center px-2">
         <h3 class="text-lg font-bold uppercase">{{ __('admin.your_order') }}</h3>
         <a href="{{ route('frontend.index') }}" class="tg-link-color">{{ __('admin.edit') }}</a>
     </div>
-    <div class="my-3 tg-bg-color">
+    <div class="my-3">
         @foreach ($carts as $item)
         <div class="flex justify-between my-2">
             <img src="{{ '/storage/' . $item->product->image }}" class="aspect-video object-contain w-1/5 flex-none" />
@@ -25,6 +25,22 @@
 
 @push('scripts')
 <script type="application/javascript">
-
+    // Show BackButton
+    const backBtn = Telegram.WebApp.BackButton;
+    backBtn.isVisible = true;
+    backBtn.onClick(() => {
+        window.location.href = "{{ route('frontend.index') }}";
+    });
+    // Show MainButton
+    const mainButton = Telegram.WebApp.MainButton;
+    if (mainButton.isVisible) {
+        mainButton.hide();
+    } else {
+        mainButton.setParams({
+            text: "{{ Str::upper(__('admin.order')) }}",
+            is_active: true,
+            is_visible: true,
+        });
+    }
 </script>
 @endpush
