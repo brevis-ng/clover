@@ -16,4 +16,5 @@ return [
     'msg' => 'Ghi chú',
     'msg_placeholder' => 'Thêm ghi chú...',
     'order' => 'Đặt hàng',
+    'order_placed' => 'Xác nhận đặt hàng',
 ];

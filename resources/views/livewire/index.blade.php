@@ -74,30 +74,30 @@
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
         if (parseInt("{{ $this->getItemCount() }}") > 0) {
-            Telegram.WebApp.MainButton.setParams({
-                text: "{{ __('admin.view_carts') }}",
-                is_active: true,
-                is_visible: true,
-            }).onClick(() => {
-                window.location.href = "{{ route('frontend.carts') }}";
-            });
+            showMainButton();
         }
 
         Livewire.on("cart-updated", (count) => {
             if (count > 0) {
-                if (!Telegram.WebApp.MainButton.isVisible) {
-                    Telegram.WebApp.MainButton.setParams({
-                        text: "{{ __('admin.view_carts') }}",
-                        is_active: true,
-                        is_visible: true,
-                    }).onClick(() => {
-                        window.location.href = "{{ route('frontend.carts') }}";
-                    });
-                }
+                showMainButton();
             } else {
                 Telegram.WebApp.MainButton.hide();
             }
         });
+
+        function showMainButton() {
+            const mainButton = Telegram.WebApp.MainButton;
+            if (!mainButton.isVisible) {
+                mainButton.setParams({
+                    text: "{{ Str::upper(__('admin.view_carts')) }}",
+                    color: "#525FE1",
+                    is_active: true,
+                    is_visible: true,
+                }).onClick(() => {
+                    window.location.href = "{{ route('frontend.carts') }}";
+                });
+            }
+        };
     });
 </script>
 @endpush

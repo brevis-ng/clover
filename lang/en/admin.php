@@ -16,4 +16,5 @@ return [
     'msg' => 'Add comment',
     'msg_placeholder' => 'Add your comment...',
     'order' => 'Order',
+    'order_placed' => 'Confirm Order',
 ];

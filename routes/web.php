@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\Index;
+use App\Http\Livewire\OrderPlaced;
 use App\Http\Livewire\ShowCarts;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Index::class)->name('frontend.index');
 Route::get('/carts', ShowCarts::class)->name('frontend.carts');
+Route::get('/order-placed', OrderPlaced::class)->name('frontend.orderplaced');

@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use App\Helpers\CartManager;
 use Livewire\Component;
 
-class ShowCarts extends Component
+class OrderPlaced extends Component
 {
     public $cart;
 
@@ -21,6 +21,6 @@ class ShowCarts extends Component
 
     public function render()
     {
-        return view('livewire.show-carts');
+        return view('livewire.order-placed');
     }
 }

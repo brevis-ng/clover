@@ -16,4 +16,5 @@ return [
     'msg' => '备注',
     'msg_placeholder' => '输入你的备注...',
     'order' => '订购',
+    'order_placed' =>  '确认购买',
 ];
