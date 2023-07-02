@@ -25,17 +25,10 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
-
-        <!-- Fonts -->
-        @if (filled($fontsUrl = config('clover.google_fonts')))
-            <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-            <link href="{{ $fontsUrl }}" rel="stylesheet" />
-        @endif
     </head>
 
     <body class="min-h-screen container tg-bg-color tg-text-color">
-        @yield('content')
+        {{ $slot }}
 
         @livewireScripts
         @stack('scripts')

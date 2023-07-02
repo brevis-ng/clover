@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="tg-secondary-bg-color tg-text-color mt-2">
+<div class="tg-bg-color tg-text-color mt-2">
     <div class="flex justify-between items-center px-2">
         <h3 class="text-lg font-bold uppercase">{{ __('admin.your_order') }}</h3>
         <a href="{{ route('frontend.index') }}" class="tg-link-color">{{ __('admin.edit') }}</a>

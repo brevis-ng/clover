@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
         fontFamily: {
-            sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+            sans: ["Open Sans", "sans-serif", ...defaultTheme.fontFamily.sans],
             oswald: ["Oswald", "sans-serif"],
         }
     },
