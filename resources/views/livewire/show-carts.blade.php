@@ -1,6 +1,6 @@
 <div class="tg-bg-color tg-text-color mt-2">
     <div class="flex justify-between items-center px-2">
-        <h3 class="text-lg font-bold uppercase">{{ __('admin.your_order') }}</h3>
+        <h3 class="text-base font-bold uppercase">{{ __('admin.your_order') }}</h3>
         <a href="{{ route('frontend.index') }}" class="tg-link-color">{{ __('admin.edit') }}</a>
     </div>
     <div class="my-3">
@@ -20,29 +20,27 @@
 @push('scripts')
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
-        function init() {
-            const backButton = Telegram.WebApp.BackButton;
-            const mainButton = Telegram.WebApp.MainButton;
-
-            if (!backButton.isVisible) {
-                backButton.isVisible = true;
-                backBtn.onClick(() => {
-                    window.location.href = "{{ route('frontend.index') }}";
-                });
-            }
-
-            if (!mainButton.isVisible) {
-                mainButton.setParams({
-                    text: "{{ Str::upper(__('admin.order_placed')) . ' ' . $this->getSubtotal() }}",
-                    color: "#525FE1",
-                    is_active: true,
-                    is_visible: true,
-                }).onClick(() => {
-                    window.location.href = "{{ route('frontend.order_placed') }}";
-                });
-            }
+        // Show backbutton
+        const backButton = Telegram.WebApp.BackButton;
+        if (backButton.isVisible) {
+            backButton.isVisible = true;
+            Telegram.WebApp.onEvent('backButtonClicked', () => {
+                window.location.href = "{{ route('frontend.index') }}";
+            });
         }
-        init();
+
+        // Show mainbutton
+        const mainButton = Telegram.WebApp.MainButton;
+        if (!mainButton.isVisible) {
+            mainButton.setParams({
+                text: "{{ Str::upper(__('admin.order')) . ' ' . config('clover.currency') . $this->getSubtotal() }}",
+                color: "#525FE1",
+                is_active: true,
+                is_visible: true,
+            }).onClick(() => {
+                window.location.href = "{{ route('frontend.orderplaced') }}";
+            });
+        }
     });
 </script>
 @endpush

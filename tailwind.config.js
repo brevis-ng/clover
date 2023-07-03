@@ -15,6 +15,8 @@ export default {
         padding: '.5rem',
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }
 
