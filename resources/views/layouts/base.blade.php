@@ -27,7 +27,7 @@
         @livewireStyles
     </head>
 
-    <body class="min-h-screen container tg-bg-color tg-text-color">
+    <body class="min-h-screen container tg-secondary-bg-color tg-text-color">
         {{ $slot }}
 
         @livewireScripts

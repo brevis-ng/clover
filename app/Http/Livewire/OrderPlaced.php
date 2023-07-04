@@ -7,20 +7,29 @@ use Livewire\Component;
 
 class OrderPlaced extends Component
 {
-    public $cart;
+    public $name;
+    public $phone;
+    public $address;
+    public $payment = "cod";
 
-    public function mount()
-    {
-        $this->cart = CartManager::items();
-    }
+    protected $rules = [
+        'name' => 'required|min:6',
+        'phone' => 'required|numeric|min_digits:10',
+        'address' => 'required|max:255',
+        'payment' => 'required',
+    ];
 
-    public function getSubtotal()
+    public function submit()
     {
-        return CartManager::subtotal();
+        $this->validate();
+
     }
 
     public function render()
     {
-        return view('livewire.order-placed');
+        return view('livewire.order-placed', [
+            'cart' => CartManager::items(),
+            'subtotal' => CartManager::subtotal(),
+        ]);
     }
 }

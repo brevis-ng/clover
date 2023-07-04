@@ -1,29 +1,27 @@
-<div class="tg-bg-color tg-text-color">
-    <div class="mt-1 mb-2">
-        <div class="mb-4">
-            <ul class="flex -mb-px text-center flex-nowrap scroll-smooth scrollbar-hidden overflow-x-scroll">
-                <li class="flex-auto text-center mx-2">
-                    <div>
-                        <button wire:click="filter_products"
-                            class="w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap border-transparent focus:border-blue-600 focus:tg-link-color"
-                        >
-                            All
-                        </button>
-                    </div>
-                </li>
-                @foreach ($categories as $category)
-                <li class="flex-auto text-center mx-2">
-                    <div>
-                        <button wire:click="filter_products({{ $category->id }})"
-                            class="w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap border-transparent focus:border-blue-600 focus:tg-link-color"
-                        >
-                            {{ $category->name }}
-                        </button>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-        </div>
+<div>
+    <div class="mb-3">
+        <ul class="flex -mb-px text-center flex-nowrap scroll-smooth scrollbar-hidden overflow-x-scroll">
+            <li class="flex-auto text-center mx-2">
+                <div>
+                    <button wire:click="filter_products"
+                        class="w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap border-transparent focus:border-blue-600 focus:tg-link-color"
+                    >
+                        All
+                    </button>
+                </div>
+            </li>
+            @foreach ($categories as $category)
+            <li class="flex-auto text-center mx-2">
+                <div>
+                    <button wire:click="filter_products({{ $category->id }})"
+                        class="w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap border-transparent focus:border-blue-600 focus:tg-link-color"
+                    >
+                        {{ $category->name }}
+                    </button>
+                </div>
+            </li>
+            @endforeach
+        </ul>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
         @foreach ($products as $product)
@@ -73,7 +71,7 @@
 @push('scripts')
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
-        if (parseInt("{{ $this->getItemCount() }}") > 0) {
+        if (parseInt("{{ App\Helpers\CartManager::count() }}") > 0) {
             showMainButton();
         }
 
@@ -86,17 +84,15 @@
         });
 
         function showMainButton() {
-            const mainButton = Telegram.WebApp.MainButton;
-            if (!mainButton.isVisible) {
-                mainButton.setParams({
-                    text: "{{ Str::upper(__('admin.view_carts')) }}",
-                    color: "#525FE1",
-                    is_active: true,
-                    is_visible: true,
-                }).onClick(() => {
-                    window.location.href = "{{ route('frontend.carts') }}";
-                });
-            }
+            Telegram.WebApp.MainButton.setParams({
+                text: "{{ Str::upper(__('admin.view_carts')) }}",
+                color: "#525FE1",
+                is_active: true,
+                is_visible: true,
+            }).onClick(() => {
+                Livewire.emit('tg:initData', Telegram.WebApp.initData);
+                window.location.href = "{{ route('frontend.carts') }}";
+            });
         };
     });
 </script>

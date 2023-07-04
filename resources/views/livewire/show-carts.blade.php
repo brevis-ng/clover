@@ -21,26 +21,20 @@
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
         // Show backbutton
-        const backButton = Telegram.WebApp.BackButton;
-        if (backButton.isVisible) {
-            backButton.isVisible = true;
-            Telegram.WebApp.onEvent('backButtonClicked', () => {
-                window.location.href = "{{ route('frontend.index') }}";
-            });
-        }
+        Telegram.WebApp.BackButton.isVisible = true;
+        Telegram.WebApp.onEvent('backButtonClicked', () => {
+            window.location.href = "{{ route('frontend.index') }}";
+        });
 
         // Show mainbutton
-        const mainButton = Telegram.WebApp.MainButton;
-        if (!mainButton.isVisible) {
-            mainButton.setParams({
-                text: "{{ Str::upper(__('admin.order')) . ' ' . config('clover.currency') . $this->getSubtotal() }}",
-                color: "#525FE1",
-                is_active: true,
-                is_visible: true,
-            }).onClick(() => {
-                window.location.href = "{{ route('frontend.orderplaced') }}";
-            });
-        }
+        Telegram.WebApp.MainButton.setParams({
+            text: "{{ Str::upper(__('admin.order')) . ' ' . config('clover.currency') . $this->getSubtotal() }}",
+            color: "#525FE1",
+            is_active: true,
+            is_visible: true,
+        }).onClick(() => {
+            window.location.href = "{{ route('frontend.orderplaced') }}";
+        });
     });
 </script>
 @endpush
