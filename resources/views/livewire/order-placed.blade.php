@@ -52,7 +52,7 @@
                     </div>
                     @error('payment') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
-                <button class="p-3 bg-blue-500 text-white" type="submit" id="submitBtn">Submit</button>
+                <input type="submit" class="sr-only" id="submitBtn">
             </div>
         </form>
     </div>
@@ -109,6 +109,7 @@
         // Listen for events
         Livewire.on('tg:orderPlaced', msg => {
             Telegram.WebApp.showAlert(msg, () => {
+                Telegram.WebApp.HapticFeedback.notificationOccurred('success');
                 setTimeout(function() {
                     Telegram.WebApp.close();
                 }, 50);

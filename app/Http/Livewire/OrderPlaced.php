@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Helpers\CartManager;
+use App\Models\Customer;
 use Livewire\Component;
 
 class OrderPlaced extends Component
@@ -25,6 +26,11 @@ class OrderPlaced extends Component
 
         $customer = CartManager::customer();
         if (!$customer) {
+            $customer = new Customer();
+            $customer->name = $this->name;
+            $customer->phone = $this->phone;
+            $customer->save();
+        } else {
             $customer->name = $this->name;
             $customer->phone = $this->phone;
             $customer->save();
