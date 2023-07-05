@@ -71,6 +71,8 @@
 @push('scripts')
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
+        Telegram.WebApp.enableClosingConfirmation();
+
         if (parseInt("{{ App\Helpers\CartManager::count() }}") > 0) {
             showMainButton();
         }

@@ -24,6 +24,8 @@
 @push('scripts')
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
+        Telegram.WebApp.enableClosingConfirmation();
+
         // Show backbutton
         Telegram.WebApp.BackButton.isVisible = true;
         Telegram.WebApp.onEvent('backButtonClicked', () => {
