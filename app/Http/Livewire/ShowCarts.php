@@ -9,14 +9,7 @@ use Livewire\Component;
 
 class ShowCarts extends Component
 {
-    public $cart;
-
     protected $listeners = ['tg:initData' => 'telegramInitDataHandler'];
-
-    public function mount()
-    {
-        $this->cart = CartManager::items();
-    }
 
     public function telegramInitDataHandler($raw_data)
     {
@@ -27,6 +20,8 @@ class ShowCarts extends Component
 
             CartManager::storeCustomer($user_data);
         }
+
+        // return redirect()->route('frontend.orderplaced');
     }
 
     protected function validateTelegramData($data)
@@ -59,6 +54,8 @@ class ShowCarts extends Component
 
     public function render()
     {
-        return view('livewire.show-carts');
+        return view('livewire.show-carts', [
+            'cart' => CartManager::items(),
+        ]);
     }
 }

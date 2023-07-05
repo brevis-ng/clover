@@ -28,7 +28,6 @@ class CartManager
             $customer->name = $data['first_name'] . ' ' . $data['last_name'];
             $customer->telegram_id = $data['id'];
             $customer->telegram_username = $data['username'];
-            $customer->save();
 
             session()->put(static::$customer_sskey, $customer);
         }
