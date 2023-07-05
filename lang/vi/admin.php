@@ -17,4 +17,5 @@ return [
     'msg_placeholder' => 'Thêm ghi chú...',
     'order' => 'Đặt hàng',
     'order_placed' => 'Xác nhận đặt hàng',
+    'order_placed_successfully' => 'Cảm ơn bạn, đơn hàng :id đang được hệ thống xử lý ạ!',
 ];

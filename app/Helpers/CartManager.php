@@ -2,6 +2,9 @@
 
 namespace App\Helpers;
 
+use App\Enums\OrderStatus;
+use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Cart;
 use App\Models\Product;
@@ -9,6 +12,46 @@ use App\Models\Product;
 class CartManager
 {
     protected static $session_key = 'clover_carts';
+    protected static $customer_sskey= 'clover_customer_session';
+
+    public static function customer()
+    {
+        return session()->get(static::$customer_sskey);
+    }
+
+    public static function storeCustomer($data)
+    {
+        $customer = static::customer();
+
+        if (!$customer) {
+            $customer = new Customer();
+            $customer->name = $data['first_name'] . ' ' . $data['last_name'];
+            $customer->telegram_id = $data['id'];
+            $customer->telegram_username = $data['username'];
+
+            session()->put(static::$customer_sskey, $customer);
+        }
+
+        return $customer;
+    }
+
+    public static function clearCustomer()
+    {
+        session()->remove(static::$customer_sskey);
+
+        return true;
+    }
+
+    public static function order($customer_id)
+    {
+        $order = new Order();
+        $order->customer_id = $customer_id;
+        $order->status = OrderStatus::PENDING;
+        $order->subtotal = static::subtotal();
+        $order->items = static::items();
+
+        return $order;
+    }
 
     public static function items()
     {

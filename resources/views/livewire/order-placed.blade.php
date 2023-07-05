@@ -1,6 +1,6 @@
 <div>
     <!-- Shipping information -->
-    <div class="tg-bg-color px-2 mb-3">
+    <div class="tg-bg-color p-2 mb-3">
         <h3 class="text-base font-bold uppercase">{{ __('admin.shipping_info') }}</h3>
         <form wire:submit.prevent="submit">
             <div class="grid grid-cols-1 gap-3 my-2">
@@ -11,7 +11,7 @@
                         </svg>
                         {{ __('admin.name') }}
                     </span>
-                    <input type="text" wire:model="name" class="pt-0 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-gray-400 focus:ring-0 focus:border-[tg-link-color]" placeholder="">
+                    <input type="text" wire:model="name" autofocus class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
                     @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
                 <label class="block">
@@ -21,7 +21,7 @@
                         </svg>
                         {{ __('admin.phone') }}
                     </span>
-                    <input type="tel" wire:model="phone" class="pt-0 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-gray-400 focus:ring-0 focus:border-[tg-link-color]" placeholder="">
+                    <input type="tel" wire:model="phone" class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
                     @error('phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
                 <label class="block">
@@ -32,7 +32,7 @@
                         </svg>
                         {{ __('admin.address') }}
                     </span>
-                    <input type="text" wire:model="address" class="pt-0 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-gray-400 focus:ring-0 focus:border-[tg-link-color]" placeholder="">
+                    <input type="text" wire:model="address" class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
                     @error('address') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
                 <label class="block">
@@ -57,12 +57,16 @@
         </form>
     </div>
     <!-- Bill -->
-    <div class="tg-bg-color px-2">
+    <div class="tg-bg-color p-2">
         <h3 class="text-base font-bold uppercase">{{ __('admin.bill') }}</h3>
         <div class="my-3 divide-y divide-dashed divide-[--tg-theme-hint-color]">
             @foreach ($cart as $item)
             <div class="flex justify-between items-center py-1 text-sm">
-                <img src="{{ '/storage/' . $item->product->image }}" class="aspect-video object-cover w-1/6 flex-none" />
+                @if(file_exists(public_path('storage/' .$item->product->image )) && $item->product->image != null)
+                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/' . $item->product->image }}" alt="{{ $item->product->name }}">
+                @else
+                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product->name }}">
+                @endif
                 <h3 class="ml-2 grow">{{ $item->product->name }} <span class="text-orange-500 ml-2">x{{
                         $item->quantity }}</span></h3>
                 <div class="font-oswald">{{ config('clover.currency') . $item->amount }}</div>
@@ -71,11 +75,11 @@
         </div>
         <div class="flex justify-between items-center">
             <h3>{{ __('admin.ship_fee') }}</h3>
-            <p>{{ 0 }}</p>
+            <p class="font-oswald">{{ 0 }}</p>
         </div>
         <div class="flex justify-between items-center">
             <h3>{{ __('admin.total') }}</h3>
-            <p>{{ config('clover.currency') . round($subtotal) }}</p>
+            <p class="font-oswald">{{ config('clover.currency') . round($subtotal) }}</p>
         </div>
     </div>
 </div>
@@ -101,6 +105,15 @@
             mainButton.showProgress(false);
             document.getElementById("submitBtn").click();
         });
+
+        // Listen for events
+        Livewire.on('tg:orderPlaced', msg => {
+            Telegram.WebApp.showAlert(msg, () => {
+                setTimeout(function() {
+                    Telegram.WebApp.close();
+                }, 50);
+            });
+        })
     });
 </script>
 @endpush

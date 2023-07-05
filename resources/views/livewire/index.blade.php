@@ -23,21 +23,21 @@
             @endforeach
         </ul>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 tg-bg-color p-2">
         @foreach ($products as $product)
         <div class="tg-secondary-bg-color">
             <div class="relative">
                 <div class="bg-red-500 text-white absolute px-2 py-1 uppercase">{{ $product->code }}</div>
                 @if(file_exists(public_path('storage/' .$product->image )) && $product->image != null)
-                    <img class="aspect-square object-contain" src="{{ '/storage/' . $product->image }}" alt="{{ $product->name }}">
+                    <img class="aspect-[4/3] object-cover" src="{{ '/storage/' . $product->image }}" alt="{{ $product->name }}">
                 @else
-                    <img class="aspect-square object-contain" src="{{ '/storage/default.jpg' }}" alt="{{ $product->name }}">
+                    <img class="aspect-[4/3] object-cover" src="{{ '/storage/default.jpg' }}" alt="{{ $product->name }}">
                 @endif
             </div>
             <div class="text-center justify-center my-1">
-                <h3 class="text-lg font-bold tracking-wide tg-text-color">{{ $product->name }}</h3>
+                <h3 class="font-bold tracking-wide tg-text-color">{{ $product->name }}</h3>
                 <p class="text-xs line-clamp-2 tg-hint-color">{{ $product->description }}</p>
-                <p class="font-bold tracking-wide text-lg text-orange-600 font-oswald">{{ config('clover.currency') . $product->price }}/{{ $product->unit }}</p>
+                <p class="font-semibold tracking-wide text-base text-orange-600 font-oswald">{{ config('clover.currency') . $product->price }}/{{ $product->unit }}</p>
             </div>
             @if ($this->getQuantity($product) == 0)
             <button wire:click="increment({{ $product }})"
@@ -90,7 +90,6 @@
                 is_active: true,
                 is_visible: true,
             }).onClick(() => {
-                Livewire.emit('tg:initData', Telegram.WebApp.initData);
                 window.location.href = "{{ route('frontend.carts') }}";
             });
         };

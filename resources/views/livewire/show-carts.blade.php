@@ -1,12 +1,16 @@
-<div class="tg-bg-color tg-text-color mt-2">
-    <div class="flex justify-between items-center px-2">
+<div class="p-2 tg-bg-color">
+    <div class="flex justify-between items-center">
         <h3 class="text-base font-bold uppercase">{{ __('admin.your_order') }}</h3>
         <a href="{{ route('frontend.index') }}" class="tg-link-color">{{ __('admin.edit') }}</a>
     </div>
     <div class="my-3">
         @foreach ($cart as $item)
         <div class="flex justify-between my-2">
-            <img src="{{ '/storage/' . $item->product->image }}" class="aspect-video object-contain w-1/5 flex-none" />
+            @if(file_exists(public_path('storage/' .$item->product->image )) && $item->product->image != null)
+                <img class="aspect-[4/3] object-cover w-1/5 flex-none" src="{{ '/storage/' . $item->product->image }}" alt="{{ $item->product->name }}">
+            @else
+                <img class="aspect-[4/3] object-cover w-1/5 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product->name }}">
+            @endif
             <div class="flex flex-col pl-1 grow">
                 <h3 class="font-bold">{{ $item->product->name }} <span class="text-orange-500 ml-2">x{{ $item->quantity }}</span></h3>
                 <p class="tg-hint-color text-xs line-clamp-1 overflow-hidden text-ellipsis">{{ $item->product->description }}</p>
@@ -33,6 +37,7 @@
             is_active: true,
             is_visible: true,
         }).onClick(() => {
+            Livewire.emit('tg:initData', Telegram.WebApp.initData);
             window.location.href = "{{ route('frontend.orderplaced') }}";
         });
     });

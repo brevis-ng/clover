@@ -17,4 +17,5 @@ return [
     'msg_placeholder' => '输入你的备注...',
     'order' => '订购',
     'order_placed' =>  '确认购买',
+    'order_placed_successfully' => '您好，你的订单在系统处理中 订单号是 :id',
 ];

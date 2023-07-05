@@ -9,10 +9,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    protected $listeners = [
-        'cart-updated' => '$refresh',
-        'tg:initData' => 'telegramInitDataHandler',
-    ];
+    protected $listeners = ['cart-updated' => '$refresh'];
     public $products;
 
     public function mount()
@@ -47,30 +44,6 @@ class Index extends Component
         if (CartManager::count() == 0) {
             $this->emit('cart-updated', CartManager::count());
         }
-    }
-
-    public function telegramInitDataHandler($raw_data)
-    {
-        parse_str($raw_data, $data);
-        asort($data);
-        $dataCheckString = [];
-        foreach ($data as $key => $value) {
-            if ($key === 'hash') {
-                continue;
-            }
-
-            if (is_array($value)) {
-                $dataCheckString[] = $key . '=' . json_encode($value);
-            } else {
-                $dataCheckString[] = $key . '=' . $value;
-            }
-        }
-
-        $dataCheckString = implode("\n", $dataCheckString);
-        $secretKey = hash_hmac('sha256', 'YOUR-TOKEN-CODE-123', 'WebAppData', true);
-        $sig = hash_hmac('sha256', $dataCheckString, $secretKey);
-
-        return $sig === $data['hash'];
     }
 
     public function getQuantity(Product $product)

@@ -23,6 +23,20 @@ class OrderPlaced extends Component
     {
         $this->validate();
 
+        $customer = CartManager::customer();
+        if (!$customer) {
+            $customer->name = $this->name;
+            $customer->phone = $this->phone;
+            $customer->save();
+        }
+
+        $order = CartManager::order($customer->id);
+        $order->address = $this->address;
+        $order->payment_method = $this->payment;
+        $order->save();
+
+        $message = __('order_placed_successfully', ['id' => $order->id]);
+        $this->emit('tg:orderPlaced', $message);
     }
 
     public function render()
