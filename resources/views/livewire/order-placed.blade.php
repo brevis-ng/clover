@@ -90,6 +90,7 @@
         // Show backbutton
         Telegram.WebApp.BackButton.isVisible = true;
         Telegram.WebApp.onEvent('backButtonClicked', () => {
+            Telegram.WebApp.HapticFeedback.impactOccurred('medium');
             window.location.href = "{{ route('frontend.carts') }}";
         });
 

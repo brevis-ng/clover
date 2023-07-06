@@ -39,6 +39,14 @@
             Telegram.WebApp.onEvent("mainButtonClicked", () => {
                 Telegram.WebApp.HapticFeedback.impactOccurred('soft');
             });
+            // Check if Web App is expanded to the maximum available height
+            if (!Telegram.WebApp.isExpanded) {
+                Telegram.WebApp.showConfirm("{{ __('admin.expand_confirm') }}", (result) => {
+                    if (result) {
+                        Telegram.WebApp.expand();
+                    }
+                });
+            }
         </script>
     </body>
 </html>

@@ -25,7 +25,7 @@
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 tg-bg-color p-2">
         @foreach ($products as $product)
-        <div class="tg-secondary-bg-color">
+        <div class="tg-secondary-bg-color" x-data>
             <div class="relative">
                 <div class="bg-red-500 text-white absolute px-2 py-1 uppercase">{{ $product->code }}</div>
                 @if(file_exists(public_path('storage/' .$product->image )) && $product->image != null)
@@ -40,7 +40,7 @@
                 <p class="font-semibold tracking-wide text-base text-orange-600 font-oswald">{{ config('clover.currency') . $product->price }}/{{ $product->unit }}</p>
             </div>
             @if ($this->getQuantity($product) == 0)
-            <button wire:click="increment({{ $product }})"
+            <button @click="Telegram.WebApp.HapticFeedback.impactOccurred('soft'); $wire.increment({{ $product }})"
                 class="subpixel-antialiased tracking-tighter uppercase w-full tg-btn-color tg-btn-text-color py-2 flex justify-center"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
@@ -50,13 +50,13 @@
             </button>
             @else
             <div class="flex justify-between items-center">
-                <button class="py-2 px-5 bg-rose-400 text-white" wire:click="decrement({{ $product }})">
+                <button class="py-2 px-5 bg-rose-400 text-white" @click="Telegram.WebApp.HapticFeedback.impactOccurred('soft'); $wire.decrement({{ $product }})">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
                     </svg>
                 </button>
                 <p>{{ $this->getQuantity($product) }}</p>
-                <button class="py-2 px-5 tg-btn-color tg-btn-text-color" wire:click="increment({{ $product->id }})">
+                <button class="py-2 px-5 tg-btn-color tg-btn-text-color" @click="Telegram.WebApp.HapticFeedback.impactOccurred('soft'); $wire.increment({{ $product->id }})">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -71,6 +71,8 @@
 @push('scripts')
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
+        Telegram.WebApp.BackButton.isVisible = false;
+
         if (parseInt("{{ App\Helpers\CartManager::count() }}") > 0) {
             showMainButton();
         }

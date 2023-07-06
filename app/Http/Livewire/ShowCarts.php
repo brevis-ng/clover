@@ -20,8 +20,6 @@ class ShowCarts extends Component
 
             CartManager::storeCustomer($user_data);
         }
-
-        // return redirect()->route('frontend.orderplaced');
     }
 
     protected function validateTelegramData($data)
