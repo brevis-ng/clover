@@ -62,12 +62,12 @@
         <div class="my-3 divide-y divide-dashed divide-[--tg-theme-hint-color]">
             @foreach ($cart as $item)
             <div class="flex justify-between items-center py-1 text-sm">
-                @if(file_exists(public_path('storage/' .$item->product->image )) && $item->product->image != null)
-                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/' . $item->product->image }}" alt="{{ $item->product->name }}">
+                @if(file_exists(public_path('storage/' .$item->product['image'] )) && $item->product['image'] != null)
+                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/' . $item->product['image'] }}" alt="{{ $item->product['name'] }}">
                 @else
-                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product->name }}">
+                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product['name'] }}">
                 @endif
-                <h3 class="ml-2 grow">{{ $item->product->name }} <span class="text-orange-500 ml-2">x{{
+                <h3 class="ml-2 grow">{{ $item->product['name'] }} <span class="text-orange-500 ml-2">x{{
                         $item->quantity }}</span></h3>
                 <div class="font-oswald">{{ config('clover.currency') . $item->amount }}</div>
             </div>

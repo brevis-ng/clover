@@ -77,7 +77,7 @@ class CartManager
     public static function add($product, $quantity = 1)
     {
         $items = static::items();
-        $item = static::item($product->id);
+        $item = static::item($product['id']);
 
         if (!$item) {
             $item = Cart::create($product, $quantity);

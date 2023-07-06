@@ -37,9 +37,9 @@ class Index extends Component
         }
     }
 
-    public function decrement($product)
+    public function decrement($item_id)
     {
-        CartManager::update($product->id, -1);
+        CartManager::update($item_id, -1);
 
         if (CartManager::count() == 0) {
             $this->emit('cart-updated', CartManager::count());
