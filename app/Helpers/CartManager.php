@@ -65,19 +65,19 @@ class CartManager
         return $items;
     }
 
-    public static function item(Product $product)
+    public static function item($item_id)
     {
         $current_items = static::items();
 
-        $item = $current_items->where("id", $product->id)->first();
+        $item = $current_items->where("id", $item_id)->first();
 
         return $item;
     }
 
-    public static function add(Product $product, $quantity = 1)
+    public static function add($product, $quantity = 1)
     {
         $items = static::items();
-        $item = static::item($product);
+        $item = static::item($product->id);
 
         if (!$item) {
             $item = Cart::create($product, $quantity);

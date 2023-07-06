@@ -18,4 +18,6 @@ return [
     'order' => '订购',
     'order_placed' =>  '确认购买',
     'order_placed_successfully' => '您好，你的订单在系统处理中 订单号是 :id',
+    'expand_confirm' => '将Web App扩展到最大高度，体验更好',
+    'clear' => '清空',
 ];

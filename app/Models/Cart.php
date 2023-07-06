@@ -11,7 +11,7 @@ class Cart extends Model
 
     protected $attributes = ['product', 'quantity', 'amount'];
 
-    public static function create(Model $product, $quantity = 1)
+    public static function create($product, $quantity = 1)
     {
         $cart = new Cart();
         $cart->product = $product;

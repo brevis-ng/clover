@@ -18,4 +18,6 @@ return [
     'order' => 'Đặt hàng',
     'order_placed' => 'Xác nhận đặt hàng',
     'order_placed_successfully' => 'Cảm ơn bạn, đơn hàng :id đang được hệ thống xử lý ạ!',
+    'expand_confirm' => 'Mở rộng màn hình tối đa để trải nghiệm tốt hơn!',
+    'clear' => 'Xóa',
 ];

@@ -28,7 +28,7 @@ class Index extends Component
         }
     }
 
-    public function increment(Product $product)
+    public function increment($product)
     {
         CartManager::add($product);
 
@@ -37,7 +37,7 @@ class Index extends Component
         }
     }
 
-    public function decrement(Product $product)
+    public function decrement($product)
     {
         CartManager::update($product->id, -1);
 
@@ -46,9 +46,9 @@ class Index extends Component
         }
     }
 
-    public function getQuantity(Product $product)
+    public function getQuantity($id)
     {
-        $item = CartManager::item($product);
+        $item = CartManager::item($id);
 
         return $item === null ? 0 : $item->quantity;
     }
