@@ -32,5 +32,13 @@
 
         @livewireScripts
         @stack('scripts')
+        <script>
+            // Enables a confirmation dialog while the user is trying to close the Web App.
+            Telegram.WebApp.enableClosingConfirmation();
+            // HapticFeedback sorf when MainButton is clicked
+            Telegram.WebApp.onEvent("mainButtonClicked", () => {
+                Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+            });
+        </script>
     </body>
 </html>

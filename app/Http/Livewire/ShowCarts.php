@@ -47,6 +47,13 @@ class ShowCarts extends Component
         return $sig === $data['hash'];
     }
 
+    public function clear()
+    {
+        CartManager::clear();
+
+        return redirect()->route('frontend.index');
+    }
+
     public function getSubtotal()
     {
         return CartManager::subtotal();
