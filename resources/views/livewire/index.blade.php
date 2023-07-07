@@ -1,10 +1,19 @@
-<div>
+<div x-data="{
+        active: 0,
+        isActive: function (val) {
+            return val == this.active
+        },
+        setActive: function (val) {
+            this.active = val
+        },
+    }">
     <div class="mb-3">
         <ul class="flex -mb-px text-center flex-nowrap scroll-smooth scrollbar-hidden overflow-x-scroll">
             <li class="flex-auto text-center mx-2">
                 <div>
-                    <button wire:click="filter_products"
-                        class="w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap border-transparent focus:border-blue-600 focus:tg-link-color"
+                    <button @click="setActive(0)"
+                        class="w-full inline-block pb-3 pt-1 border-b-2 whitespace-nowrap"
+                        :class="isActive(0) ? 'border-indigo-500 tg-link-color' : 'border-transparent tg-text-color'"
                     >
                         All
                     </button>
@@ -13,8 +22,9 @@
             @foreach ($categories as $category)
             <li class="flex-auto text-center mx-2">
                 <div>
-                    <button wire:click="filter_products({{ $category->id }})"
-                        class="w-full inline-block pb-3 pt-1 border-b-2 rounded-t-lg whitespace-nowrap border-transparent focus:border-blue-600 focus:tg-link-color"
+                    <button @click="setActive({{ $category->id }})"
+                        class="w-full inline-block pb-3 pt-1 border-b-2 whitespace-nowrap"
+                        :class="isActive({{ $category->id }}) ? 'border-indigo-500 tg-link-color' : 'border-transparent tg-text-color'"
                     >
                         {{ $category->name }}
                     </button>
@@ -25,7 +35,7 @@
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 tg-bg-color p-2">
         @foreach ($products as $product)
-        <div class="tg-secondary-bg-color" x-data>
+        <div class="tg-secondary-bg-color" x-show="active == 0 || isActive({{ $product->category_id }})">
             <div class="relative">
                 <div class="bg-red-500 text-white absolute px-2 py-1 uppercase">{{ $product->code }}</div>
                 @if(file_exists(public_path('storage/' .$product->image )) && $product->image != null)
@@ -78,11 +88,7 @@
         }
 
         Livewire.on("cart-updated", (count) => {
-            if (count > 0) {
-                showMainButton();
-            } else {
-                Telegram.WebApp.MainButton.hide();
-            }
+            count > 0 ? showMainButton() : Telegram.WebApp.MainButton.hide();
         });
 
         function showMainButton() {

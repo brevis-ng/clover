@@ -26,8 +26,8 @@ class CartManager
         if (!$customer) {
 
             $customer = Customer::firstOrNew(
-                ['telegram_id' => $data['id']],
-                ['telegram_username' => $data['username'], 'name' => $data['name']],
+                ['telegram_id' => intval($data['id'])],
+                ['telegram_username' => $data['username']],
             );
 
             session()->put(static::$customer_sskey, $customer);

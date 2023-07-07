@@ -41,11 +41,9 @@ class OrderPlaced extends Component
         $order->payment_method = $this->payment;
         $order->save();
 
-        $message = __('admin.order_placed_successfully', ['id' => $order->id]);
-        $this->emit('tg:orderPlaced', $message);
+        $this->emit('tg:orderPlaced', __('admin.order_placed_successfully'));
 
-        CartManager::clearCustomer();
-        CartManager::clear();
+        session()->flush();
     }
 
     public function render()

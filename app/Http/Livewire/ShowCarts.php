@@ -48,6 +48,7 @@ class ShowCarts extends Component
     public function clear()
     {
         CartManager::clear();
+        CartManager::clearCustomer();
 
         return redirect()->route('frontend.index');
     }

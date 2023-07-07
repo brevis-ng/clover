@@ -33,6 +33,7 @@
         @livewireScripts
         @stack('scripts')
         <script>
+            Telegram.WebApp.ready();
             // Enables a confirmation dialog while the user is trying to close the Web App.
             Telegram.WebApp.enableClosingConfirmation();
             // HapticFeedback sorf when MainButton is clicked
@@ -41,11 +42,9 @@
             });
             // Check if Web App is expanded to the maximum available height
             if (!Telegram.WebApp.isExpanded) {
-                Telegram.WebApp.showConfirm("{{ __('admin.expand_confirm') }}", (result) => {
-                    if (result) {
-                        Telegram.WebApp.expand();
-                    }
-                });
+                setTimeout(function() {
+                    Telegram.WebApp.showConfirm("{{ __('admin.expand_confirm') }}", (result) => result && Telegram.WebApp.expand());
+                }, 1000);
             }
         </script>
     </body>

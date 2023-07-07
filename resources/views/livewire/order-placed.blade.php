@@ -1,7 +1,7 @@
 <div>
     <!-- Shipping information -->
     <div class="tg-bg-color p-2 mb-3">
-        <h3 class="text-base font-bold uppercase">{{ __('admin.shipping_info') }}</h3>
+        <h3 class="text-base font-bold uppercase">{{ __('admin.order_information') }}</h3>
         <form wire:submit.prevent="submit">
             <div class="grid grid-cols-1 gap-3 my-2">
                 <label class="block">
@@ -74,11 +74,11 @@
             @endforeach
         </div>
         <div class="flex justify-between items-center">
-            <h3>{{ __('admin.ship_fee') }}</h3>
+            <h3>{{ __('admin.shipping_fee') }}</h3>
             <p class="font-oswald">{{ 0 }}</p>
         </div>
         <div class="flex justify-between items-center">
-            <h3>{{ __('admin.total') }}</h3>
+            <h3>{{ __('admin.total_fee') }}</h3>
             <p class="font-oswald">{{ config('clover.currency') . round($subtotal) }}</p>
         </div>
     </div>
