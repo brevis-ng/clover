@@ -79,7 +79,7 @@
         </div>
         <div class="flex justify-between items-center">
             <h3>{{ __('admin.total_fee') }}</h3>
-            <p class="font-oswald">{{ config('clover.currency') . round($subtotal) }}</p>
+            <p class="font-oswald text-orange-500">{{ config('clover.currency') . round($subtotal) }}</p>
         </div>
     </div>
 </div>
