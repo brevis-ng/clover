@@ -15,7 +15,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'code', 'category_id', 'price', 'unit', 'image', 'description', 'status'];
+    protected $fillable = ["name", "code", "category_id", "price", "unit", "image", "description", "status"];
 
     /**
      * The attributes that should be cast.
@@ -23,11 +23,16 @@ class Product extends Model
      * @var array
      */
     protected $casts = [
-        'status' => ProductStatus::class,
+        "status" => ProductStatus::class,
     ];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class)->withPivot(["quantity", "amount"]);
     }
 }

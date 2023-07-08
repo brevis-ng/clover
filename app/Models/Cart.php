@@ -9,7 +9,7 @@ class Cart extends Model
 {
     public $incrementing = false;
 
-    protected $attributes = ['product', 'quantity', 'amount'];
+    protected $attributes = ["product", "quantity", "amount"];
 
     public static function create($product, $quantity = 1)
     {
@@ -17,9 +17,9 @@ class Cart extends Model
         $cart->product = $product;
         $cart->quantity = $quantity;
 
-        $cart->id = $product['id'];
+        $cart->id = $product["id"];
 
-        $cart->amount = $product['price'] * $quantity;
+        $cart->amount = $product["price"] * $quantity;
 
         return $cart;
     }
@@ -27,7 +27,7 @@ class Cart extends Model
     public function amount(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->product['price'] * $this->quantity,
+            get: fn() => $this->product["price"] * $this->quantity
         );
     }
 }

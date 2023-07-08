@@ -14,12 +14,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->noActionOnDelete();
-            $table->text('address');
-            $table->json('items');
             $table->string('status', 20)->default('pending');
-            $table->double('subtotal')->default(0);
-            $table->double('shipping_fee')->default(0);
-            $table->string('payment_method', 30)->default('cod');
+            $table->double('total_amount')->default(0);
+            $table->double('shipping_amount')->default(0);
+            $table->string('payment_method', 30)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
