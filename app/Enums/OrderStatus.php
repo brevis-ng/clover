@@ -14,4 +14,13 @@ enum OrderStatus: string
     case CANCELLED = "cancelled";
     case COMPLETED = "completed";
     case FAILED = "failed";
+
+    public static function all(): array
+    {
+        $res = [];
+        foreach (self::cases() as $case) {
+            $res[$case->value] = __('admin.'.$case->value);
+        }
+        return $res;
+    }
 }

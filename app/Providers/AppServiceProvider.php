@@ -20,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        config(['nutgram.token' => app(GeneralSettings::class)->bot_token]);
+        // config(['nutgram.token' => app(GeneralSettings::class)->bot_token]);
     }
 }

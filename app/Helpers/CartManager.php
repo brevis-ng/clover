@@ -11,8 +11,8 @@ use App\Models\Product;
 
 class CartManager
 {
-    protected static $session_key = 'clover_carts';
-    protected static $customer_sskey= 'clover_customer_session';
+    protected static $session_key = "clover_carts";
+    protected static $customer_sskey = "clover_customer_session";
 
     public static function customer()
     {
@@ -24,10 +24,12 @@ class CartManager
         $customer = static::customer();
 
         if (!$customer) {
-
             $customer = Customer::firstOrNew(
-                ['telegram_id' => intval($data['id'])],
-                ['telegram_username' => $data['username']],
+                ["telegram_id" => intval($data["id"])],
+                [
+                    "telegram_username" => $data["username"],
+                    "name" => $data["firstname"] . " " . $data["lastname"],
+                ]
             );
 
             session()->put(static::$customer_sskey, $customer);
@@ -48,8 +50,8 @@ class CartManager
         $order = new Order();
         $order->customer_id = $customer_id;
         $order->status = OrderStatus::PENDING;
-        $order->subtotal = static::subtotal();
-        $order->items = static::items();
+        $order->shipping_amount = 0;
+        $order->total_amount = static::subtotal() + $order->shipping_amount;
 
         return $order;
     }
@@ -77,7 +79,7 @@ class CartManager
     public static function add($product, $quantity = 1)
     {
         $items = static::items();
-        $item = static::item($product['id']);
+        $item = static::item($product["id"]);
 
         if (!$item) {
             $item = Cart::create($product, $quantity);

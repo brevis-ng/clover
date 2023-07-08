@@ -16,61 +16,55 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = "Shop";
+    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationIcon = "heroicon-o-tag";
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Tên danh mục')
-                    ->placeholder('Nhập vào tên danh mục')
-                    ->required(),
-                Forms\Components\FileUpload::make('image')
-                    ->label('Hình ảnh')
-                    ->image(),
-            ]);
+        return $form->schema([
+            Forms\Components\TextInput::make("name")
+                ->label("Tên danh mục")
+                ->placeholder("Nhập vào tên danh mục")
+                ->required(),
+            Forms\Components\FileUpload::make("image")
+                ->label("Hình ảnh")
+                ->image(),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Tên danh mục')
+                Tables\Columns\TextColumn::make("name")
+                    ->label("Tên danh mục")
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Hình ảnh')
-                    ->defaultImageUrl('/images/placeholder.png'),
+                Tables\Columns\ImageColumn::make("image")
+                    ->label("Hình ảnh")
+                    ->defaultImageUrl("/images/placeholder.png"),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            "index" => Pages\ListCategories::route("/"),
+            "create" => Pages\CreateCategory::route("/create"),
+            "edit" => Pages\EditCategory::route("/{record}/edit"),
         ];
     }
 }
