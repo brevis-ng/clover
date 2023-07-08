@@ -31,4 +31,13 @@ return [
     "bank" => "Chuyển khoản (Cần gửi hình ck cho cửa hàng)",
     "shipping_fee" => "Phí giao hàng",
     "total_fee" => "Tổng tiền",
+    "subtotal" => "Tiền hàng",
+    "status" => "Trạng thái",
+    "created_at" => "Ngày tạo",
+    "updated_at" => "Ngày sửa",
+    "deleted_at" => "Ngày xóa",
+    "pending" => "Đang chờ",
+    "shipped" => "Đã giao",
+    "canceled" => "Đã hủy",
+    "completed" => "Hoàn thành",
 ];
