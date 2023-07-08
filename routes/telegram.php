@@ -12,7 +12,10 @@
 
 use Nutgram\Laravel\Facades\Telegram;
 
+Telegram::onCommand("start", function () {
+    return Telegram::sendMessage("Hello, world!");
+});
 
-Telegram::onCommand('start', function () {
-    Telegram::sendMessage('Hello, world!');
-})->description('The start command!');
+Telegram::onCommand("stop", function () {
+    return Telegram::sendMessage("Bye!");
+});
