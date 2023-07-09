@@ -18,7 +18,7 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.PRIVATE_KEY }}
         source: "."
-        target: "/www/wwwroot/bepviet.org/clover"
+        target: "/www/wwwroot/bepviet.org"
 
     - name: Executing remote command
       uses: appleboy/ssh-action@master
@@ -29,4 +29,4 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
           cd /www/wwwroot/bepviet.org
-          find ./clover ! -name '.user.ini' -exec chown www:www '{}' \;
+          find ./ ! -name '.user.ini' -exec chown www:www '{}' \;
