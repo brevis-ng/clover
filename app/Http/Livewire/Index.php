@@ -7,30 +7,33 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+
     protected $listeners = ["cart-updated" => '$refresh'];
-    public $products;
+    public $categories;
+    public $category_id;
 
     public function mount()
     {
-        $this->products = Cache::rememberForever("products", function () {
-            return Product::orderBy("updated_at")->get();
+        $this->category_id = 0;
+
+        $this->categories = Cache::rememberForever("categories", function () {
+            return Category::all(["id", "name"]);
         });
     }
 
-    public function filter_products($id = null)
+    public function updated()
     {
-        $this->products =
-            $id == null
-                ? Cache::get("products")
-                : Product::where("category_id", $id)->get();
+        $this->resetPage();
     }
 
     public function increment($product)
     {
-        CartManager::add($product);
+        CartManager::add(json_decode($product, true));
 
         $this->emit("cart-updated", CartManager::count());
     }
@@ -53,11 +56,14 @@ class Index extends Component
 
     public function render()
     {
-        $categories = Category::has("products")->get();
+        if ($this->category_id != 0) {
+            $products = Product::where("category_id", $this->category_id)->orderBy("updated_at")->paginate(4);
+        } else {
+            $products = Product::orderBy("updated_at")->paginate(4);
+        }
 
         return view("livewire.index", [
-            "products" => $this->products,
-            "categories" => $categories,
+            "products" => $products,
         ]);
     }
 }

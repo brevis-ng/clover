@@ -5,10 +5,11 @@
         },
         setActive: function (val) {
             this.active = val
+            $wire.set('category_id', val)
         },
-        handleIncrement: function (data) {
+        handleIncrement: function (el) {
             Telegram.WebApp.HapticFeedback.impactOccurred('soft');
-            $wire.increment(data);
+            $wire.increment(el.currentTarget.dataset.product);
         },
         handleDecrement: function (data) {
             Telegram.WebApp.HapticFeedback.impactOccurred('soft');
@@ -43,7 +44,7 @@
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 tg-bg-color p-2">
         @foreach ($products as $product)
-        <div class="tg-secondary-bg-color flex flex-col" x-show="active == 0 || isActive({{ $product->category_id }})">
+        <div class="tg-secondary-bg-color flex flex-col">
             <div class="relative">
                 <div class="bg-red-500 text-white absolute px-2 py-1 uppercase">{{ $product->code }}</div>
                 @if(file_exists(public_path('storage/' .$product->image )) && $product->image != null)
@@ -58,7 +59,7 @@
                 <p class="font-semibold tracking-wide text-base text-orange-600 font-oswald">{{ config('clover.currency') . $product->price }}/{{ $product->unit }}</p>
             </div>
             @if ($this->getQuantity($product->id) == 0)
-            <button @click="handleIncrement({{ $product }})"
+            <button @click="handleIncrement" data-product="{{ $product }}"
                 class="subpixel-antialiased tracking-tighter uppercase w-full tg-btn-color tg-btn-text-color py-2 flex justify-center bottom-0"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
@@ -74,7 +75,7 @@
                     </svg>
                 </button>
                 <p>{{ $this->getQuantity($product->id) }}</p>
-                <button class="py-2 px-5 tg-btn-color tg-btn-text-color" @click="handleIncrement({{ $product }})">
+                <button class="py-2 px-5 tg-btn-color tg-btn-text-color" @click="handleIncrement" data-product="{{ $product }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -84,6 +85,7 @@
         </div>
         @endforeach
     </div>
+    {{ $products->links() }}
 </div>
 
 @push('scripts')
