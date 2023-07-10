@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Helpers\CartManager;
 use App\Models\Customer;
 use Livewire\Component;
+use Nutgram\Laravel\Facades\Telegram;
 
 class OrderPlaced extends Component
 {
@@ -55,6 +56,8 @@ class OrderPlaced extends Component
         }
 
         $this->emit("tg:orderPlaced", __("admin.order_placed_successfully"));
+
+        Telegram::sendMessage("Hello, Your order was successfully!");
 
         session()->flush();
     }

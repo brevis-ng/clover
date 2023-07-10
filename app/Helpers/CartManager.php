@@ -40,7 +40,7 @@ class CartManager
 
     public static function clearCustomer()
     {
-        session()->remove(static::$customer_sskey);
+        session()->forget(static::$customer_sskey);
 
         return true;
     }
@@ -130,7 +130,7 @@ class CartManager
 
     public static function clear()
     {
-        session()->remove(static::$session_key);
+        session()->forget(static::$session_key);
 
         return true;
     }
