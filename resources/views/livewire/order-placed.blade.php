@@ -103,7 +103,6 @@
             is_visible: true,
         });
         mainButton.onClick(() => {
-            mainButton.showProgress(false);
             document.getElementById("submitBtn").click();
         });
 

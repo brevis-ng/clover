@@ -14,7 +14,7 @@ class OrderPlaced extends Component
     public $payment = "cod";
 
     protected $rules = [
-        "name" => "required|min:6",
+        "name" => "required|max:255",
         "phone" => "required|numeric|min_digits:10",
         "address" => "required|max:255",
         "payment" => "required",
