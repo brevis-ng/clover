@@ -37,13 +37,14 @@
 @push('scripts')
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
+        // Collect user information
+        Livewire.emit('tg:initData', Telegram.WebApp.initData);
         // Show backbutton
         Telegram.WebApp.BackButton.isVisible = true;
         Telegram.WebApp.onEvent('backButtonClicked', () => {
             Telegram.WebApp.HapticFeedback.impactOccurred('medium');
             window.location.href = "{{ route('frontend.index') }}";
         });
-
         // Show mainbutton
         Telegram.WebApp.MainButton.setParams({
             text: "{{ Str::upper(__('admin.order')) . ' ' . config('clover.currency') . $this->getSubtotal() }}",
@@ -51,7 +52,6 @@
             is_active: true,
             is_visible: true,
         }).onClick(() => {
-            Livewire.emit('tg:initData', Telegram.WebApp.initData);
             window.location.href = "{{ route('frontend.orderplaced') }}";
         });
     });

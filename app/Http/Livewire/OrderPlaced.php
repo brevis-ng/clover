@@ -20,6 +20,11 @@ class OrderPlaced extends Component
         "payment" => "required",
     ];
 
+    public function mount()
+    {
+        $this->name = CartManager::customer()?->name;
+    }
+
     public function submit()
     {
         $this->validate();
@@ -43,7 +48,7 @@ class OrderPlaced extends Component
         $order->save();
 
         foreach (CartManager::items() as $item) {
-            $order->products()->attach($item->product->id, [
+            $order->products()->attach($item->product["id"], [
                 "quantity" => $item->quantity,
                 "amount" => $item->amount,
             ]);

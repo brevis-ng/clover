@@ -28,7 +28,7 @@ class CartManager
                 ["telegram_id" => intval($data["id"])],
                 [
                     "telegram_username" => $data["username"],
-                    "name" => $data["firstname"] . " " . $data["lastname"],
+                    "name" => $data["first_name"] . " " . $data["last_name"],
                 ]
             );
 
