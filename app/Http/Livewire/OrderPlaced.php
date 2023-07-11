@@ -4,8 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Helpers\CartManager;
 use App\Models\Customer;
+use App\Settings\GeneralSettings;
 use Livewire\Component;
 use Nutgram\Laravel\Facades\Telegram;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 class OrderPlaced extends Component
 {
@@ -13,12 +17,14 @@ class OrderPlaced extends Component
     public $phone;
     public $address;
     public $payment = "cod";
+    public $notes;
 
     protected $rules = [
         "name" => "required|max:255",
         "phone" => "required|numeric|min_digits:10",
         "address" => "required|max:255",
         "payment" => "required",
+        "notes" => "max:255",
     ];
 
     public function mount()
@@ -46,6 +52,7 @@ class OrderPlaced extends Component
 
         $order = CartManager::order($customer->id);
         $order->payment_method = $this->payment;
+        $order->notes = $this->notes;
         $order->save();
 
         foreach (CartManager::items() as $item) {
@@ -57,7 +64,38 @@ class OrderPlaced extends Component
 
         $this->emit("tg:orderPlaced", __("admin.order_placed_successfully"));
 
-        Telegram::sendMessage("Hello, Your order was successfully!");
+        $message = message("order", [
+            "customer" => $customer,
+            "items" => CartManager::items(),
+            "order" => $order,
+        ]);
+
+        if ($customer?->telegram_id) {
+            Telegram::sendMessage(
+                text: $message,
+                chat_id: $customer?->telegram_id,
+                parse_mode: ParseMode::HTML,
+                reply_markup: InlineKeyboardMarkup::make()->addRow(
+                    InlineKeyboardButton::make(
+                        text: "Chat với CSKH",
+                        url: "tg://user?id=" . app(GeneralSettings::class)->shop_telegram_id
+                    )
+                ),
+            );
+        }
+        if ($shop_id = app(GeneralSettings::class)->shop_telegram_id) {
+            Telegram::sendMessage(
+                text: $message,
+                chat_id: $shop_id,
+                parse_mode: ParseMode::HTML,
+                reply_markup: InlineKeyboardMarkup::make()->addRow(
+                    InlineKeyboardButton::make(
+                        text: "Chat với Khách",
+                        url: "tg://user?id=" . $customer?->telegram_id
+                    )
+                ),
+            );
+        }
 
         session()->flush();
     }

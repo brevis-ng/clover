@@ -30,4 +30,5 @@ return [
     "bank" => "银行转帐",
     "shipping_fee" => "运费",
     "total_fee" => "合计",
+    "notes" => "备注",
 ];

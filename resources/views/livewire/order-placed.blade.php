@@ -11,7 +11,7 @@
                         </svg>
                         {{ __('admin.name') }}
                     </span>
-                    <input type="text" wire:model="name" autofocus class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
+                    <input type="text" wire:model.debounce.1s="name" autofocus class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
                     @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
                 <label class="block">
@@ -21,7 +21,7 @@
                         </svg>
                         {{ __('admin.phone') }}
                     </span>
-                    <input type="tel" wire:model="phone" class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
+                    <input type="tel" wire:model.debounce.1s="phone" class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
                     @error('phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
                 <label class="block">
@@ -32,7 +32,7 @@
                         </svg>
                         {{ __('admin.address') }}
                     </span>
-                    <input type="text" wire:model="address" class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
+                    <input type="text" wire:model.debounce.1s="address" class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
                     @error('address') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
                 <label class="block">
@@ -51,6 +51,16 @@
                         <label for="payment_bank" class="ml-2">{{ __('admin.bank') }}</label>
                     </div>
                     @error('payment') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </label>
+                <label class="block">
+                    <span class="inline-flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                    </svg>
+                        {{ __('admin.notes') }}
+                    </span>
+                    <input type="text" wire:model.debounce.1s="notes" class="py-0.5 mt-0 block w-full px-0.5 tg-link-color bg-transparent border-0 border-b-[1px] border-[--tg-theme-link-color] focus:ring-0 focus:border-[--tg-theme-link-color]" placeholder="">
+                    @error('notes') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </label>
                 <input type="submit" class="sr-only" id="submitBtn">
             </div>
@@ -87,34 +97,33 @@
 @push('scripts')
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
-        // Show backbutton
-        Telegram.WebApp.BackButton.isVisible = true;
-        Telegram.WebApp.onEvent('backButtonClicked', () => {
-            Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-            window.location.href = "{{ route('frontend.carts') }}";
-        });
-
-        // Show mainbutton
-        const mainButton = Telegram.WebApp.MainButton;
-        mainButton.setParams({
-            text: "{{ Str::upper(__('admin.order_placed')) }}",
-            color: "#525FE1",
-            is_active: true,
-            is_visible: true,
-        });
-        mainButton.onClick(() => {
-            document.getElementById("submitBtn").click();
-        });
-
-        // Listen for events
-        Livewire.on('tg:orderPlaced', msg => {
-            Telegram.WebApp.showAlert(msg, () => {
-                Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-                setTimeout(function() {
-                    Telegram.WebApp.close();
-                }, 50);
+        if (Telegram.WebApp.initData || Telegram.WebApp.initDataUnsafe) {
+            Telegram.WebApp.BackButton.isVisible = true;
+            Telegram.WebApp.onEvent('backButtonClicked', () => {
+                Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                window.location.href = "{{ route('frontend.carts') }}";
             });
-        })
+
+            const mainButton = Telegram.WebApp.MainButton;
+            mainButton.setParams({
+                text: "{{ Str::upper(__('admin.order_placed')) }}",
+                color: "#525FE1",
+                is_active: true,
+                is_visible: true,
+            });
+            mainButton.onClick(() => {
+                document.getElementById("submitBtn").click();
+            });
+            // Listen for events
+            Livewire.on('tg:orderPlaced', msg => {
+                Telegram.WebApp.showAlert(msg, () => {
+                    Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+                    setTimeout(function() {
+                        Telegram.WebApp.close();
+                    }, 50);
+                });
+            })
+        }
     });
 </script>
 @endpush

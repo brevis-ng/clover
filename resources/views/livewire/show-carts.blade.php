@@ -38,7 +38,7 @@
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
         // Collect user information
-        Livewire.emit('tg:initData', Telegram.WebApp.initData);
+        Telegram.WebApp.initData && Livewire.emit('tg:initData', Telegram.WebApp.initData);
         // Show backbutton
         Telegram.WebApp.BackButton.isVisible = true;
         Telegram.WebApp.onEvent('backButtonClicked', () => {

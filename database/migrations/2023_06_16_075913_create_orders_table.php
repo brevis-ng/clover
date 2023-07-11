@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double('total_amount')->default(0);
             $table->double('shipping_amount')->default(0);
             $table->string('payment_method', 30)->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -40,4 +40,5 @@ return [
     "shipped" => "Đã giao",
     "canceled" => "Đã hủy",
     "completed" => "Hoàn thành",
+    "notes" => "Ghi chú",
 ];
