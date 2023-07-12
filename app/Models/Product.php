@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\ProductStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +14,19 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ["name", "code", "category_id", "price", "unit", "image", "description", "status"];
+    protected $fillable = [
+        "name",
+        "code",
+        "category_id",
+        "price",
+        "old_price",
+        "cost",
+        "unit",
+        "image",
+        "description",
+        "is_visible",
+        "remarks",
+    ];
 
     /**
      * The attributes that should be cast.
@@ -23,8 +34,18 @@ class Product extends Model
      * @var array
      */
     protected $casts = [
-        "status" => ProductStatus::class,
+        "is_visible" => "boolean",
     ];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::deleted(function (Product $product) {
+            // ...
+        });
+    }
 
     public function category()
     {
@@ -33,6 +54,9 @@ class Product extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class)->withPivot(["quantity", "amount"]);
+        return $this->belongsToMany(Order::class)->withPivot([
+            "quantity",
+            "amount",
+        ]);
     }
 }

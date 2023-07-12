@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained()->noActionOnDelete();
             $table->string('status', 20)->default('pending');
+            $table->text('address');
             $table->double('total_amount')->default(0);
             $table->double('shipping_amount')->default(0);
             $table->string('payment_method', 30)->nullable();

@@ -4,13 +4,9 @@ namespace App\Enums;
 
 enum OrderStatus: string
 {
-    case DRAFT = "draft";
     case PENDING = "pending";
     case PROCESSING = "processing";
     case SHIPPED = "shipped";
-    case PAID = "paid";
-    case UNPAID = "unpaid";
-    case PARTIALPAYMENT = "partial_payment";
     case CANCELLED = "cancelled";
     case COMPLETED = "completed";
     case FAILED = "failed";
@@ -19,7 +15,7 @@ enum OrderStatus: string
     {
         $res = [];
         foreach (self::cases() as $case) {
-            $res[$case->value] = __('admin.'.$case->value);
+            $res[$case->value] = __("admin." . $case->value);
         }
         return $res;
     }

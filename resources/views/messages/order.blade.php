@@ -1,7 +1,7 @@
 <b>Thông tin đơn hàng {{ $order->id }}</b><br>
 👤 Người nhận: <code>{{ $customer->name }}</code><br>
 📞 SĐT: <code>{{ $customer->phone }}</code><br>
-📦 Địa chỉ: <code>{{ $customer->address }}</code><br><br>
+📦 Địa chỉ: <code>{{ $order->address }}</code><br><br>
 🛒<b>Sản phẩm</b><br>
 @forelse ($items as $item)
 <?php

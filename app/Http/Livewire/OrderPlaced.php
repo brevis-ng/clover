@@ -40,17 +40,16 @@ class OrderPlaced extends Component
         if (!$customer) {
             $customer = Customer::create([
                 "name" => $this->name,
-                "phone" => $this->phone,
-                "address" => $this->address,
+                "phone" => $this->phone
             ]);
         } else {
             $customer->name = $this->name;
             $customer->phone = $this->phone;
-            $customer->address = $this->address;
             $customer->save();
         }
 
         $order = CartManager::order($customer->id);
+        $order->address = $this->address;
         $order->payment_method = $this->payment;
         $order->notes = $this->notes;
         $order->save();

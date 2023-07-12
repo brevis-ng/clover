@@ -14,6 +14,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
+use Closure;
 
 class OrderResource extends Resource
 {
@@ -36,25 +38,28 @@ class OrderResource extends Resource
                         Forms\Components\Card::make()
                             ->schema(static::getFormSchema())
                             ->columns(2),
-                        // Forms\Components\Section::make("Order items")
-                        //     ->schema(static::getFormSchema("items")),
+                        Forms\Components\Section::make("Order items")->schema(
+                            static::getFormSchema("items")
+                        ),
                     ])
-                    ->columnSpan([
-                        "lg" => fn(?Order $record) => $record === null ? 3 : 2,
-                    ]),
+                    ->columnSpan(["lg" => fn(?Order $record) => $record === null ? 3 : 2]),
 
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make("created_at")
-                            ->label("Created at")
+                            ->label(__("admin.created_at"))
                             ->content(
-                                fn (Order $record ): ?string => $record->created_at?->diffForHumans()
+                                fn(
+                                    Order $record
+                                ): ?string => $record->created_at?->diffForHumans()
                             ),
 
                         Forms\Components\Placeholder::make("updated_at")
-                            ->label("Last modified at")
+                            ->label(__("admin.updated_at"))
                             ->content(
-                                fn (Order $record): ?string => $record->updated_at?->diffForHumans()
+                                fn(
+                                    Order $record
+                                ): ?string => $record->updated_at?->diffForHumans()
                             ),
                     ])
                     ->columnSpan(["lg" => 1])
@@ -85,12 +90,17 @@ class OrderResource extends Resource
                             OrderStatus::SHIPPED->value,
                         ]),
                     ]),
-                Tables\Columns\TextColumn::make("subtotal")
-                    ->label(__("admin.subtotal"))
+                Tables\Columns\TextColumn::make("total_amount")
+                    ->label(__("admin.total_amount"))
                     ->sortable(),
-                Tables\Columns\TextColumn::make("shipping_fee")
-                    ->label(trans("admin.shipping_fee"))
+                Tables\Columns\TextColumn::make("shipping_amount")
+                    ->label(trans("admin.shipping_amount"))
                     ->sortable(),
+                Tables\Columns\TextColumn::make("payment_method")
+                    ->label(trans("admin.payment_method"))
+                    ->formatStateUsing(
+                        fn(string $state): string => Str::upper($state)
+                    ),
                 Tables\Columns\TextColumn::make("created_at")
                     ->label(trans("admin.created_at"))
                     ->date()
@@ -98,8 +108,10 @@ class OrderResource extends Resource
             ])
             ->filters([Tables\Filters\TrashedFilter::make()])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -131,76 +143,76 @@ class OrderResource extends Resource
 
     public static function getFormSchema(?string $section = null): array
     {
-        if ($section === 'items') {
+        if ($section === "items") {
             return [
-                Forms\Components\Repeater::make('items')
+                Forms\Components\Repeater::make("products")
                     ->relationship()
                     ->schema([
-                        Forms\Components\Select::make('items')
-                            ->label('Product')
-                            ->options(Product::query()->pluck('name', 'id'))
+                        Forms\Components\Select::make("product_id")
+                            ->label("Product")
+                            ->options(Product::query()->pluck("name", "id"))
                             ->required()
                             ->reactive()
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
-                            ->columnSpan([
-                                'md' => 5,
-                            ]),
+                            ->afterStateUpdated(function ($set, $get, $state) {
+                                $set(
+                                    "amount",
+                                    Product::find($state)?->price * $get("quantity")
+                                );
+                            })
+                            ->columnSpan(["md" => 5]),
 
-                        Forms\Components\TextInput::make('qty')
+                        Forms\Components\TextInput::make("quantity")
                             ->numeric()
                             ->default(1)
-                            ->columnSpan([
-                                'md' => 2,
-                            ])
-                            ->required(),
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function ($set, $get, $state) {
+                                $set(
+                                    "amount",
+                                    $state * Product::find($get("product_id"))?->price
+                                );
+                            })
+                            ->columnSpan(["md" => 2]),
 
-                        Forms\Components\TextInput::make('unit_price')
-                            ->label('Unit Price')
+                        Forms\Components\TextInput::make("amount")
+                            ->label(__("admin.subtotal"))
                             ->disabled()
                             ->numeric()
                             ->required()
-                            ->columnSpan([
-                                'md' => 3,
-                            ]),
+                            ->columnSpan(["md" => 3]),
                     ])
-                    ->orderable()
                     ->defaultItems(1)
                     ->disableLabel()
-                    ->columns([
-                        'md' => 10,
-                    ])
+                    ->columns(["md" => 10])
                     ->required(),
             ];
         }
 
         return [
-            Forms\Components\TextInput::make('id')
-                ->disabled()
-                ->required(),
-            Forms\Components\Select::make('customer_id')
-                ->relationship('customer', 'name')
+            Forms\Components\TextInput::make("id")->disabled(),
+            Forms\Components\Select::make("customer_id")
+                ->relationship("customer", "name")
                 ->searchable()
-                ->required()
-                ->createOptionForm([
-                    Forms\Components\TextInput::make('name')
-                        ->required(),
-                    Forms\Components\TextInput::make('phone')
-                        ->required(),
-                ])
-                ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                    return $action
-                        ->modalHeading('Create customer')
-                        ->modalButton('Create customer')
-                        ->modalWidth('lg');
-                }),
-
-            Forms\Components\Select::make('status')
+                ->required(),
+            Forms\Components\Select::make("status")
+                ->label(__("admin.status"))
                 ->options(OrderStatus::all())
                 ->default(OrderStatus::PENDING->value)
                 ->required(),
-
-            // Forms\Components\MarkdownEditor::make('description')
-            //     ->columnSpan('full'),
+            Forms\Components\Select::make("payment_method")
+                ->label(__("admin.payment_method"))
+                ->required()
+                ->options([
+                    "cod" => __("admin.cod"),
+                    "bank" => __("admin.bank"),
+                ]),
+            Forms\Components\TextInput::make("address")
+                ->label(__("admin.address"))
+                ->required()
+                ->columnSpan("full"),
+            Forms\Components\TextInput::make("notes")
+                ->label(__("admin.notes"))
+                ->columnSpan("full"),
         ];
     }
 }

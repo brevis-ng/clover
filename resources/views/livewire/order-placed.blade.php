@@ -84,11 +84,11 @@
             @endforeach
         </div>
         <div class="flex justify-between items-center">
-            <h3>{{ __('admin.shipping_fee') }}</h3>
+            <h3>{{ __('admin.shipping_amount') }}</h3>
             <p class="font-oswald">{{ 0 }}</p>
         </div>
         <div class="flex justify-between items-center">
-            <h3>{{ __('admin.total_fee') }}</h3>
+            <h3>{{ __('admin.total_amount') }}</h3>
             <p class="font-oswald text-orange-500">{{ config('clover.currency') . round($subtotal) }}</p>
         </div>
     </div>
