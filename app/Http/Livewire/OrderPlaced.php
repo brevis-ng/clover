@@ -30,6 +30,8 @@ class OrderPlaced extends Component
     public function mount()
     {
         $this->name = CartManager::customer()?->name;
+        $this->phone = CartManager::customer()?->phone;
+        $this->address = CartManager::customer()?->address;
     }
 
     public function submit()
