@@ -46,7 +46,8 @@
         @foreach ($products as $product)
         <div class="tg-secondary-bg-color flex flex-col">
             <div class="relative">
-                <div class="bg-red-500 text-white absolute px-2 py-1 uppercase">{{ $product->code }}</div>
+                <div class="bg-red-500 text-white absolute p-1 uppercase">{{ $product->code }}</div>
+                <div class="bg-blue-500 text-white absolute px-1 bottom-0 right-0">{{ $product?->remarks }}</div>
                 @if($product->image && Illuminate\Support\Facades\Storage::disk("products")->exists($product->image))
                     <img class="aspect-[4/3] object-cover" src="{{ Illuminate\Support\Facades\Storage::disk('products')->url($product->image) }}" alt="{{ $product->name }}">
                 @else
