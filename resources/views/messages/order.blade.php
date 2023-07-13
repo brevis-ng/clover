@@ -9,7 +9,7 @@
     $max_length = 17;
     $name = Illuminate\Support\Str::of($name)->limit($max_length)->padRight($max_length, '.');
 ?>
-<code>• {{ $name . ' x' . $item->quantity . ' ' . $item->amount . config('clover.currency') }}</code><br>
+<code>• {{ $name . ' x' . $item->quantity . ' ' . money($order->amount, convert: true) }}</code><br>
 @empty
 @endforelse
 🛵 Phí ship: {{ money($order->shipping_amount, convert: true) }}<br>
