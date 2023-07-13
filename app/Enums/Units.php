@@ -19,4 +19,9 @@ enum Units: string
         }
         return $res;
     }
+
+    public static function getTranslation(Units $units): string
+    {
+        return __("product.units.{$units->value}");
+    }
 }
