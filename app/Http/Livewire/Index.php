@@ -22,7 +22,9 @@ class Index extends Component
         $this->category_id = 0;
 
         $this->categories = Cache::rememberForever("categories", function () {
-            return Category::all(["id", "name"]);
+            return Category::visibility()
+                ->latest("updated_at")
+                ->get();
         });
     }
 
@@ -57,9 +59,14 @@ class Index extends Component
     public function render()
     {
         if ($this->category_id != 0) {
-            $products = Product::where("category_id", $this->category_id)->orderBy("updated_at")->paginate(4);
+            $products = Product::visibility()
+                ->where("category_id", $this->category_id)
+                ->latest("updated_at")
+                ->paginate(10);
         } else {
-            $products = Product::orderBy("updated_at")->paginate(4);
+            $products = Product::visibility()
+                ->latest("updated_at")
+                ->paginate(10);
         }
 
         return view("livewire.index", [

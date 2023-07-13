@@ -47,8 +47,8 @@
         <div class="tg-secondary-bg-color flex flex-col">
             <div class="relative">
                 <div class="bg-red-500 text-white absolute px-2 py-1 uppercase">{{ $product->code }}</div>
-                @if(file_exists(public_path('storage/' .$product->image )) && $product->image != null)
-                    <img class="aspect-[4/3] object-cover" src="{{ '/storage/' . $product->image }}" alt="{{ $product->name }}">
+                @if($product->image && Illuminate\Support\Facades\Storage::disk("products")->exists($product->image))
+                    <img class="aspect-[4/3] object-cover" src="{{ Illuminate\Support\Facades\Storage::disk('products')->url($product->image) }}" alt="{{ $product->name }}">
                 @else
                     <img class="aspect-[4/3] object-cover" src="{{ '/storage/default.jpg' }}" alt="{{ $product->name }}">
                 @endif
@@ -56,7 +56,7 @@
             <div class="text-center justify-center my-1 grow">
                 <h3 class="font-bold tracking-wide tg-text-color">{{ $product->name }}</h3>
                 <p class="text-xs line-clamp-2 tg-hint-color">{!! $product->description !!}</p>
-                <p class="font-semibold tracking-wide text-base text-orange-600 font-oswald">{{ config('clover.currency') . $product->price }}/{{ $product->unit }}</p>
+                <p class="font-semibold tracking-wide text-base text-orange-600 font-oswald">{{ money($product->price, convert: true) }}/{{ App\Enums\Units::getTranslation($product->unit) }}</p>
             </div>
             @if ($this->getQuantity($product->id) == 0)
             <button @click="handleIncrement" data-product="{{ $product }}"
@@ -103,7 +103,7 @@
 
         function showMainButton() {
             Telegram.WebApp.MainButton.setParams({
-                text: "{{ Str::upper(__('admin.view_carts')) }}",
+                text: "{{ Str::upper(__('frontend.cart_view')) }}",
                 color: "#525FE1",
                 is_active: true,
                 is_visible: true,

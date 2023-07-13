@@ -9,14 +9,14 @@ use Livewire\Component;
 
 class ShowCarts extends Component
 {
-    protected $listeners = ['tg:initData' => 'telegramInitDataHandler'];
+    protected $listeners = ["tg:initData" => "telegramInitDataHandler"];
 
     public function telegramInitDataHandler($raw_data)
     {
         parse_str($raw_data, $data);
 
         if ($this->validateTelegramData($data)) {
-            $user_data = json_decode($data['user'], true);
+            $user_data = json_decode($data["user"], true);
 
             CartManager::storeCustomer($user_data);
         }
@@ -27,22 +27,22 @@ class ShowCarts extends Component
         asort($data);
         $data_check_str = [];
         foreach ($data as $key => $value) {
-            if ($key === 'hash') {
+            if ($key === "hash") {
                 continue;
             }
 
             if (is_array($value)) {
-                $data_check_str[] = $key . '=' . json_encode($value);
+                $data_check_str[] = $key . "=" . json_encode($value);
             } else {
-                $data_check_str[] = $key . '=' . $value;
+                $data_check_str[] = $key . "=" . $value;
             }
         }
 
         $data_check_str = implode("\n", $data_check_str);
-        $secret_key = hash_hmac('sha256', app(GeneralSettings::class)->bot_token, 'WebAppData', true);
-        $sig = hash_hmac('sha256', $data_check_str, $secret_key);
+        $secret_key = hash_hmac("sha256", app(GeneralSettings::class)->bot_token, "WebAppData", true);
+        $sig = hash_hmac("sha256", $data_check_str, $secret_key);
 
-        return $sig === $data['hash'];
+        return $sig === $data["hash"];
     }
 
     public function clear()
@@ -50,18 +50,14 @@ class ShowCarts extends Component
         CartManager::clear();
         CartManager::clearCustomer();
 
-        return redirect()->route('frontend.index');
-    }
-
-    public function getSubtotal()
-    {
-        return CartManager::subtotal();
+        return redirect()->route("frontend.index");
     }
 
     public function render()
     {
-        return view('livewire.show-carts', [
-            'cart' => CartManager::items(),
+        return view("livewire.show-carts", [
+            "cart" => CartManager::items(),
+            "subtotal" => CartManager::subtotal(),
         ]);
     }
 }
