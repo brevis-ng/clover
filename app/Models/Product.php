@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Units;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +36,7 @@ class Product extends Model
      */
     protected $casts = [
         "is_visible" => "boolean",
+        "unit" => Units::class,
     ];
 
     /**

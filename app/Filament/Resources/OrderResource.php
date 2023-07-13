@@ -92,9 +92,11 @@ class OrderResource extends Resource
                     ]),
                 Tables\Columns\TextColumn::make("total_amount")
                     ->label(__("admin.total_amount"))
+                    ->money()
                     ->sortable(),
                 Tables\Columns\TextColumn::make("shipping_amount")
                     ->label(trans("admin.shipping_amount"))
+                    ->money()
                     ->sortable(),
                 Tables\Columns\TextColumn::make("payment_method")
                     ->label(trans("admin.payment_method"))

@@ -13,13 +13,27 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        "customer_id",
+        "status",
+        "address",
+        "total_amount",
+        "shipping_amount",
+        "payment_method",
+        "notes",
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array
      */
     protected $casts = [
-        'status' => OrderStatus::class,
-        'items' => AsCollection::class,
+        "status" => OrderStatus::class,
     ];
 
     public function customer()
@@ -29,6 +43,9 @@ class Order extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withPivot(["quantity", "amount"]);
+        return $this->belongsToMany(Product::class)->withPivot([
+            "quantity",
+            "amount",
+        ]);
     }
 }
