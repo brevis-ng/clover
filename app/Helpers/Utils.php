@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Statistic;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
@@ -102,4 +101,12 @@ function cast(string $type, mixed $value, mixed $default = null): array|bool|flo
         'array' => (array)$value,
         default => $value,
     };
+}
+/**
+ * Generates a string representation of order numbers from datetime leading by random string
+ * @return  string
+ */
+function generateOrderNumber(): string
+{
+    return Str::upper(Str::random(2) . date("ynjgh"));
 }

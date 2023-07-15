@@ -19,6 +19,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
+            "order_number" => fake()->regexify("[A-Z]{2}[0-9]{5}"),
             "customer_id" => Customer::factory(),
             "status" => fake()->randomElement(OrderStatus::class),
             "address" => fake()->address(),

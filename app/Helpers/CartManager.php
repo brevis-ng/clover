@@ -48,6 +48,7 @@ class CartManager
     public static function order($customer_id)
     {
         $order = new Order();
+        $order->order_number = generateOrderNumber();
         $order->customer_id = $customer_id;
         $order->status = OrderStatus::PENDING;
         $order->shipping_amount = 0;

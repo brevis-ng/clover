@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string("order_number")->unique()->nullable();
             $table->foreignId('customer_id')->constrained()->noActionOnDelete();
             $table->string('status', 20)->default('pending');
             $table->text('address');

@@ -1,5 +1,7 @@
 <?php
 
+use App\Settings\TelegramBotSettings;
+
 return [
 
     /*
@@ -7,7 +9,8 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-        GeneralSettings::class
+        GeneralSettings::class,
+        TelegramBotSettings::class,
     ],
 
     /*

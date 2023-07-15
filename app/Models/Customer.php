@@ -16,4 +16,9 @@ class Customer extends Model
      * @var array<int, string>
      */
     protected $fillable = ["name", "phone", "address", "telegram_id", "telegram_username"];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

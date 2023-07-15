@@ -16,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', Index::class)->name('frontend.index');
-Route::get('/carts', ShowCarts::class)->name('frontend.carts');
-Route::get('/order-placed', OrderPlaced::class)->name('frontend.orderplaced');
+Route::get("/", Index::class)->name("frontend.index");
+Route::get("/carts", ShowCarts::class)->name("frontend.carts");
+Route::get("/order-placed", OrderPlaced::class)->name("frontend.orderplaced");
