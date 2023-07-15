@@ -33,12 +33,12 @@ class ManageTelegramBot extends SettingsPage
                     TextInput::make("bot_token")
                         ->label(__("settings.bot_token"))
                         ->required(),
-                    TextInput::make("inline_btn_title")
-                        ->label(__("settings.inline_btn_title"))
+                    TextInput::make("webapp_inline_button")
+                        ->label(__("settings.webapp_inline_button"))
                         ->hint(__("settings.inline_btn_hint"))
                         ->required(),
-                    TextInput::make("menu_btn_title")
-                        ->label(__("settings.menu_btn_title"))
+                    TextInput::make("webapp_menu_button")
+                        ->label(__("settings.webapp_menu_button"))
                         ->required(),
                     TextInput::make("webapp_url")
                         ->label(__("settings.webapp_url"))
@@ -50,17 +50,17 @@ class ManageTelegramBot extends SettingsPage
                 ->columns(2),
             Section::make("Greating messages")
                 ->schema([
-                    Toggle::make("is_send_start_msg")->label(
-                        __("settings.is_send_start_msg")
+                    Toggle::make("should_send_start_msg")->label(
+                        __("settings.should_send_start_msg")
                     ),
-                    FileUpload::make("start_message_image")
-                        ->label(__("settings.start_message_image"))
+                    FileUpload::make("start_msg_photo")
+                        ->label(__("settings.start_msg_photo"))
                         ->image()
                         ->preserveFilenames()
                         ->maxSize(1024),
-                    MarkdownEditor::make("start_message_content")
-                        ->label(__("settings.start_message_content"))
-                        ->requiredIf("is_send_start_msg", "true")
+                    MarkdownEditor::make("start_msg_content")
+                        ->label(__("settings.start_msg_content"))
+                        ->requiredIf("should_send_start_msg", "true")
                         ->maxLength(1024)
                         ->disableToolbarButtons([
                             "bulletList",
@@ -73,13 +73,13 @@ class ManageTelegramBot extends SettingsPage
                 ->columns(2),
             Section::make("Notifications")
                 ->schema([
-                    TagsInput::make("admin_list")
-                        ->label(__("settings.admin_list"))
-                        ->helperText(__("settings.admin_list_hint"))
+                    TagsInput::make("administrators")
+                        ->label(__("settings.administrators"))
+                        ->helperText(__("settings.administrators_hint"))
                         ->required(),
-                    TagsInput::make("cskh_list")
-                        ->label(__("settings.cskh_list"))
-                        ->helperText(__("settings.cskh_list_hint"))
+                    TagsInput::make("customers_support")
+                        ->label(__("settings.customers_support"))
+                        ->helperText(__("settings.customers_support_hint"))
                         ->required(),
                 ])
                 ->columns(2),
@@ -90,7 +90,7 @@ class ManageTelegramBot extends SettingsPage
     {
         Telegram::setChatMenuButton(
             menu_button: new MenuButtonWebApp(
-                text: app(TelegramBotSettings::class)->menu_btn_title,
+                text: app(TelegramBotSettings::class)->webapp_menu_button,
                 web_app: new WebAppInfo(app(TelegramBotSettings::class)->webapp_url)
             )
         );

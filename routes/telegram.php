@@ -1,5 +1,7 @@
 <?php
 
+use App\Telegram\Commands\StartCommand;
+use Nutgram\Laravel\Facades\Telegram;
 /*
 |--------------------------------------------------------------------------
 | Nutgram Handlers
@@ -10,12 +12,4 @@
 |
 */
 
-use Nutgram\Laravel\Facades\Telegram;
-
-Telegram::onCommand("start", function () {
-    return Telegram::sendMessage("Hello, world!");
-});
-
-Telegram::onCommand("stop", function () {
-    return Telegram::sendMessage("Bye!");
-});
+Telegram::onCommand("start", StartCommand::class);
