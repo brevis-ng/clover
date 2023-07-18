@@ -1,4 +1,4 @@
-<b>Thông tin đơn hàng {{ $order->id }}</b><br>
+<b>Thông tin đơn hàng {{ $order->order_number }}</b><br>
 👤 Người nhận: <code>{{ $customer->name }}</code><br>
 📞 SĐT: <code>{{ $customer->phone }}</code><br>
 📦 Địa chỉ: <code>{{ $order->address }}</code><br><br>
@@ -9,7 +9,7 @@
     $max_length = 17;
     $name = Illuminate\Support\Str::of($name)->limit($max_length)->padRight($max_length, '.');
 ?>
-<code>• {{ $name . ' x' . $item->quantity . ' ' . money($order->amount, convert: true) }}</code><br>
+<code>• {{ $name . ' x' . $item->quantity . ' ' . money($item->amount, convert: true) }}</code><br>
 @empty
 @endforelse
 🛵 Phí ship: {{ money($order->shipping_amount, convert: true) }}<br>
