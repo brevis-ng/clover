@@ -101,11 +101,11 @@ class OrderResource extends Resource
                     ]),
                 TextColumn::make("total_amount")
                     ->label(__("order.total_amount"))
-                    ->money()
+                    ->money(shouldConvert: true)
                     ->sortable(),
                 TextColumn::make("shipping_amount")
                     ->label(__("order.shipping_amount"))
-                    ->money()
+                    ->money(shouldConvert: true)
                     ->sortable(),
                 TextColumn::make("payment_method")
                     ->label(__("order.payment_method"))

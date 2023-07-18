@@ -133,11 +133,11 @@ class ProductResource extends Resource
                     ->toggleable(),
                 TextColumn::make("price")
                     ->label(__("product.price"))
-                    ->money()
+                    ->money(shouldConvert: true)
                     ->sortable(),
                 TextColumn::make("old_price")
                     ->label(__("product.old_price"))
-                    ->money()
+                    ->money(shouldConvert: true)
                     ->sortable()
                     ->toggleable(),
                 SelectColumn::make("unit")
