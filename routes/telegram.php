@@ -1,7 +1,9 @@
 <?php
 
 use App\Telegram\Commands\StartCommand;
+use App\Telegram\Conversations\OrderConversation;
 use Nutgram\Laravel\Facades\Telegram;
+
 /*
 |--------------------------------------------------------------------------
 | Nutgram Handlers
@@ -13,3 +15,4 @@ use Nutgram\Laravel\Facades\Telegram;
 */
 
 Telegram::onCommand("start", StartCommand::class);
+Telegram::onCommand("order", OrderConversation::class);
