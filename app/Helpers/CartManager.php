@@ -14,7 +14,7 @@ class CartManager
     protected static $session_key = "clover_carts";
     protected static $customer_sskey = "clover_customer_session";
 
-    public static function customer()
+    public static function customer(): Customer|null
     {
         return session()->get(static::$customer_sskey);
     }

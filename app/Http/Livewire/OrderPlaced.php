@@ -4,12 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Helpers\CartManager;
 use App\Models\Customer;
-use App\Settings\GeneralSettings;
+use App\Settings\TelegramBotSettings;
+use App\Telegram\Conversations\OrderConversation;
 use Livewire\Component;
-use Nutgram\Laravel\Facades\Telegram;
-use SergiX44\Nutgram\Telegram\Properties\ParseMode;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Nutgram;
 
 class OrderPlaced extends Component
 {
@@ -41,7 +39,7 @@ class OrderPlaced extends Component
         if (!$customer) {
             $customer = Customer::create([
                 "name" => $this->name,
-                "phone" => $this->phone
+                "phone" => $this->phone,
             ]);
         } else {
             $customer->name = $this->name;
@@ -64,40 +62,12 @@ class OrderPlaced extends Component
 
         $this->emit("tg:orderPlaced", __("admin.order_placed_successfully"));
 
-        $message = message("order", [
-            "customer" => $customer,
-            "items" => CartManager::items(),
-            "order" => $order,
-        ]);
+        $bot = new Nutgram(app(TelegramBotSettings::class)->bot_token);
+        $bot->setUserData("order_number", $order->order_number, $customer?->telegram_id);
 
-        if ($customer?->telegram_id) {
-            Telegram::sendMessage(
-                text: $message,
-                chat_id: $customer?->telegram_id,
-                parse_mode: ParseMode::HTML,
-                reply_markup: InlineKeyboardMarkup::make()->addRow(
-                    InlineKeyboardButton::make(
-                        text: "Chat với CSKH",
-                        url: "tg://user?id=" . app(GeneralSettings::class)->shop_telegram_id
-                    )
-                ),
-            );
-        }
-        if ($shop_id = app(GeneralSettings::class)->shop_telegram_id) {
-            Telegram::sendMessage(
-                text: $message,
-                chat_id: $shop_id,
-                parse_mode: ParseMode::HTML,
-                reply_markup: InlineKeyboardMarkup::make()->addRow(
-                    InlineKeyboardButton::make(
-                        text: "Chat với Khách",
-                        url: "tg://user?id=" . $customer?->telegram_id
-                    )
-                ),
-            );
-        }
+        OrderConversation::begin($bot);
 
-        session()->flush();
+        CartManager::clear();
     }
 
     public function render()

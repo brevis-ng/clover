@@ -18,8 +18,10 @@ return [
     "start_message_description" => "Tin nhắn được gửi khi người dùng bắt đầu chat với Bot",
     "start_msg_content" => "Nội dung tin nhắn",
     "start_msg_photo" => "Hình ảnh đính kèm",
-    "administrators" => "Danh sách Admin",
-    "administrators_hint" => "Những người này sẽ nhận được thông báo về đơn hàng,...",
+    "administrator" => "Danh sách Admin",
+    "administrator_hint" => "Những người này sẽ nhận được thông báo về đơn hàng,...",
     "customers_support" => "Danh sách CSKH",
     "customers_support_hint" => "Những người này sẽ hiển thị phía dưới đơn hàng để người dùng có thể chat trực tiếp",
+    "sp_name" => "Tên hiển thị",
+    "sp_telegramid" => "Telegram ID",
 ];

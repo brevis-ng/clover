@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Settings\TelegramBotSettings;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TagsInput;
@@ -73,13 +74,15 @@ class ManageTelegramBot extends SettingsPage
                 ->columns(2),
             Section::make("Notifications")
                 ->schema([
-                    TagsInput::make("administrators")
-                        ->label(__("settings.administrators"))
-                        ->helperText(__("settings.administrators_hint"))
+                    TextInput::make("administrator")
+                        ->label(__("settings.administrator"))
+                        ->helperText(__("settings.administrator_hint"))
                         ->required(),
-                    TagsInput::make("customers_support")
+                    KeyValue::make("customers_support")
                         ->label(__("settings.customers_support"))
                         ->helperText(__("settings.customers_support_hint"))
+                        ->keyLabel(__("settings.sp_name"))
+                        ->valueLabel(__("settings.sp_telegramid"))
                         ->required(),
                 ])
                 ->columns(2),
