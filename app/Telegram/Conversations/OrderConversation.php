@@ -7,6 +7,7 @@ use App\Helpers\CartManager;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Settings\TelegramBotSettings;
+use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -18,6 +19,18 @@ class OrderConversation extends InlineMenu
     protected ?Order $order;
     protected ?Customer $customer;
     protected bool $reopen = false;
+    protected ?int $userId;
+
+    protected function next(string $step): void
+    {
+        $this->step = $step;
+
+        $this->bot->stepConversation(
+            $this,
+            $this->bot->userId() ?? $this->userId,
+            $this->bot->chatId() ?? $this->chatId
+        );
+    }
 
     public function start(Nutgram $bot)
     {
