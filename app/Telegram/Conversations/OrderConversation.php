@@ -44,36 +44,51 @@ class OrderConversation extends InlineMenu
             return null;
         }
 
-        $order_number = $bot->getUserData("order_number", $this->customer->telegram_id);
-        $this->order = Order::where("order_number", $order_number)->first();
+        $order_number = $bot->getUserData(
+            "order_number",
+            $this->customer->telegram_id
+        );
+        $this->order = Order::where([
+            ["order_number", "=", $order_number],
+            ["status", "<>", OrderStatus::CANCELLED],
+        ])->first();
 
-        if (!$this->order || $this->order->status == OrderStatus::CANCELLED) {
+        if (!$this->order) {
             $bot->sendMessage("You haven't order!");
             $this->closeMenu();
             return null;
         }
 
-        $this->chatId = $this->customer->telegram_id;
-        $text = message("order", ["order" => $this->order, "customer" => $this->customer]);
+        $this->chatId = $this->userId = $this->customer->telegram_id;
+        $text = message("order", [
+            "order" => $this->order,
+            "customer" => $this->customer,
+        ]);
 
-        $this->clearButtons()->menuText($text, ["parse_mode" => ParseMode::HTML]);
+        $this->clearButtons()->menuText($text, [
+            "parse_mode" => ParseMode::HTML,
+            "chat_id" => $this->chatId,
+        ]);
         $this->addButtonRow(
             InlineKeyboardButton::make(__("order.update_phone"), callback_data: "order@updatePhone"),
             InlineKeyboardButton::make(__("order.update_address"), callback_data: "order@updateAddress")
+        )->addButtonRow(
+            InlineKeyboardButton::make(__("order.cancel"), callback_data: "order@cancelOrder")
         );
-        $this->addButtonRow(InlineKeyboardButton::make(__("order.cancel"), callback_data: "order@cancelOrder"));
 
         collect(app(TelegramBotSettings::class)->customers_support)
-            ->map(fn ($item, $key) => InlineKeyboardButton::make("Support $key", "tg://user?id=$item"))
+            ->map(fn($item, $key) => InlineKeyboardButton::make("Support $key", "tg://user?id=$item"))
             ->chunk(3)
-            ->each(fn ($row) => $this->addButtonRow(...$row->values()));
+            ->each(fn($row) => $this->addButtonRow(...$row->values()));
 
         $this->showMenu($this->reopen);
     }
 
     protected function updatePhone(Nutgram $bot)
     {
-        $this->clearButtons()->menuText(__("order.update_phone_send"))->orNext("setNewPhone");
+        $this->clearButtons()
+            ->menuText(__("order.update_phone_send"))
+            ->orNext("setNewPhone");
         $this->showMenu(true);
     }
 
@@ -93,7 +108,9 @@ class OrderConversation extends InlineMenu
 
     protected function updateAddress(Nutgram $bot)
     {
-        $this->clearButtons()->menuText(__("order.update_address_send"))->orNext("setNewAddress");
+        $this->clearButtons()
+            ->menuText(__("order.update_address_send"))
+            ->orNext("setNewAddress");
         $this->showMenu(true);
     }
 
