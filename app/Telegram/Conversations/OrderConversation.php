@@ -3,85 +3,100 @@
 namespace App\Telegram\Conversations;
 
 use App\Enums\OrderStatus;
-use App\Helpers\CartManager;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Settings\TelegramBotSettings;
-use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 class OrderConversation extends InlineMenu
 {
-    protected ?Order $order;
-    protected ?Customer $customer;
+    protected Order $order;
+    protected Customer $customer;
     protected bool $reopen = false;
-    protected ?int $userId;
-
-    protected function next(string $step): void
-    {
-        $this->step = $step;
-
-        $this->bot->stepConversation(
-            $this,
-            $this->bot->userId() ?? $this->userId,
-            $this->bot->chatId() ?? $this->chatId
-        );
-    }
 
     public function start(Nutgram $bot)
     {
-        $this->customer = $bot->chatId()
-            ? Customer::where("telegram_id", $bot->chatId())->first()
-            : CartManager::customer();
+        $this->customer = Customer::whereTelegramId($bot->chatId())->first();
 
-        if (!$this->customer) {
-            $bot->sendMessage("You haven't order!");
-            $this->closeMenu();
-            return null;
-        }
+        $orders = $this->customer
+            ->orders()
+            ->whereIn("status", [OrderStatus::PENDING, OrderStatus::PROCESSING])
+            ->get();
 
-        $order_number = $bot->getUserData(
-            "order_number",
-            $this->customer->telegram_id
-        );
-        $this->order = Order::where([
-            ["order_number", "=", $order_number],
-            ["status", "<>", OrderStatus::CANCELLED],
-        ])->first();
+        $text = __("order.list", ["count" => $orders->count()]);
 
-        if (!$this->order) {
-            $bot->sendMessage("You haven't order!");
-            $this->closeMenu();
-            return null;
-        }
+        $this->clearButtons()->menuText($text);
 
-        $this->chatId = $this->userId = $this->customer->telegram_id;
-        $text = message("order", [
-            "order" => $this->order,
-            "customer" => $this->customer,
-        ]);
-
-        $this->clearButtons()->menuText($text, [
-            "parse_mode" => ParseMode::HTML,
-            "chat_id" => $this->chatId,
-        ]);
-        $this->addButtonRow(
-            InlineKeyboardButton::make(__("order.update_phone"), callback_data: "order@updatePhone"),
-            InlineKeyboardButton::make(__("order.update_address"), callback_data: "order@updateAddress")
-        )->addButtonRow(
-            InlineKeyboardButton::make(__("order.cancel"), callback_data: "order@cancelOrder")
-        );
-
-        collect(app(TelegramBotSettings::class)->customers_support)
-            ->map(fn($item, $key) => InlineKeyboardButton::make("Support $key", "tg://user?id=$item"))
+        $orders
+            ->map(function ($order) {
+                return InlineKeyboardButton::make(
+                    $order->order_number,
+                    callback_data: "$order->order_number@trackingOrder"
+                );
+            })
             ->chunk(3)
             ->each(fn($row) => $this->addButtonRow(...$row->values()));
 
+        $this->addButtonRow(
+            InlineKeyboardButton::make(
+                __("order.close"),
+                callback_data: "settings:cancel@end"
+            )
+        );
+
         $this->showMenu($this->reopen);
+    }
+
+    protected function trackingOrder(Nutgram $bot)
+    {
+        $order_number = $bot->callbackQuery()->data;
+        $this->order = Order::where("order_number", $order_number)->first();
+
+        $text = message("order-detail", ["order" => $this->order]);
+
+        $this->clearButtons()
+            ->menuText($text, [
+                "parse_mode" => ParseMode::HTML,
+            ])
+            ->addButtonRow(
+                InlineKeyboardButton::make(
+                    __("order.update_phone"),
+                    callback_data: "order@updatePhone"
+                ),
+                InlineKeyboardButton::make(
+                    __("order.update_address"),
+                    callback_data: "order@updateAddress"
+                )
+            )
+            ->addButtonRow(
+                InlineKeyboardButton::make(
+                    __("order.cancel"),
+                    callback_data: "order@cancelOrder"
+                )
+            );
+
+        collect(app(TelegramBotSettings::class)->customers_support)
+            ->map(
+                fn($item, $key) => InlineKeyboardButton::make(
+                    "Support $key",
+                    "tg://user?id=$item"
+                )
+            )
+            ->chunk(3)
+            ->each(fn($row) => $this->addButtonRow(...$row->values()));
+
+        $this->addButtonRow(
+            InlineKeyboardButton::make(
+                __("order.back"),
+                callback_data: "orderk@start"
+            )
+        );
+
+        $this->showMenu($this->reopen);
+        $this->reopen = false;
     }
 
     protected function updatePhone(Nutgram $bot)
@@ -103,7 +118,7 @@ class OrderConversation extends InlineMenu
         $this->customer->save();
 
         $this->reopen = true;
-        $this->start($bot);
+        $this->trackingOrder($bot);
     }
 
     protected function updateAddress(Nutgram $bot)
@@ -125,7 +140,7 @@ class OrderConversation extends InlineMenu
         $this->order->save();
 
         $this->reopen = true;
-        $this->start($bot);
+        $this->trackingOrder($bot);
     }
 
     protected function cancelOrder(Nutgram $bot)
@@ -133,6 +148,6 @@ class OrderConversation extends InlineMenu
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
 
-        $this->closeMenu();
+        $this->start($bot);
     }
 }

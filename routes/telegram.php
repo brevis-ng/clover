@@ -2,6 +2,7 @@
 
 use App\Telegram\Commands\StartCommand;
 use App\Telegram\Conversations\OrderConversation;
+use App\Telegram\Middleware\HasOrder;
 use Nutgram\Laravel\Facades\Telegram;
 
 /*
@@ -15,4 +16,4 @@ use Nutgram\Laravel\Facades\Telegram;
 */
 
 Telegram::onCommand("start", StartCommand::class);
-Telegram::onCommand("order", OrderConversation::class);
+Telegram::onCommand("order", OrderConversation::class)->middleware(HasOrder::class);

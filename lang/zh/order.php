@@ -2,7 +2,7 @@
 
 /**
  * Order translation file
- * Language: Vietnamese
+ * Language: Chinese
  * Author: @brevis-ng
  */
 
@@ -25,14 +25,13 @@ return [
     "cancelled" => "Đã hủy",
     "completed" => "Hoàn thành",
     "failed" => "Lỗi",
-    "update_phone" => "📞 Sửa SĐT",
-    "update_address" => "📦 Sửa địa chỉ",
-    "cancel" => "❌ Hủy đơn hàng",
+    "update_phone" => "Sửa SĐT",
+    "update_address" => "Sửa địa chỉ",
+    "cancel" => "Hủy đơn hàng",
     "invalid_value" => "Vui lòng chỉ nhập chữ và số",
     "update_phone_send" => "Vui lòng nhập SĐT mới:",
     "update_address_send" => "Vui lòng nhập địa chỉ mới:",
     "check" => "Kiểm tra đơn hàng",
     "list" => "Bạn có :count đơn hàng, vui lòng chọn đơn hàng bạn muốn kiểm tra.",
     "close" => "❌ Hủy",
-    "back" => "← Quay lại",
 ];

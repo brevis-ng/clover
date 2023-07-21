@@ -1,6 +1,6 @@
 <b>Thông tin đơn hàng <code>{{ $order->order_number }}</code> [{{ $order->status }}]</b><br>
-👤 Người nhận: <code>{{ $customer->name }}</code><br>
-📞 SĐT: <code>{{ $customer->phone }}</code><br>
+👤 Người nhận: <code>{{ $order->customer->name }}</code><br>
+📞 SĐT: <code>{{ $order->customer->phone }}</code><br>
 📦 Địa chỉ: <code>{{ $order->address }}</code><br><br>
 🛒<b>Sản phẩm</b><br>
 @forelse ($order->products as $item)
