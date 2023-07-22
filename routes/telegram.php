@@ -17,3 +17,4 @@ use Nutgram\Laravel\Facades\Telegram;
 
 Telegram::onCommand("start", StartCommand::class);
 Telegram::onCommand("order", OrderConversation::class)->middleware(HasOrder::class);
+Telegram::onText(__("order.check"), OrderConversation::class)->middleware(HasOrder::class);

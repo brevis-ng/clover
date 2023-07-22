@@ -38,7 +38,7 @@ class OrderConversation extends InlineMenu
                 );
             })
             ->chunk(3)
-            ->each(fn($row) => $this->addButtonRow(...$row->values()));
+            ->each(fn ($row) => $this->addButtonRow(...$row->values()));
 
         $this->addButtonRow(
             InlineKeyboardButton::make(
@@ -74,19 +74,19 @@ class OrderConversation extends InlineMenu
             ->addButtonRow(
                 InlineKeyboardButton::make(
                     __("order.cancel"),
-                    callback_data: "order@cancelOrder"
+                    callback_data: "order@askCancelOrder"
                 )
             );
 
         collect(app(TelegramBotSettings::class)->customers_support)
             ->map(
-                fn($item, $key) => InlineKeyboardButton::make(
-                    "Support $key",
+                fn ($item, $key) => InlineKeyboardButton::make(
+                    __("order.customer_service", ["name" => $key]),
                     "tg://user?id=$item"
                 )
             )
             ->chunk(3)
-            ->each(fn($row) => $this->addButtonRow(...$row->values()));
+            ->each(fn ($row) => $this->addButtonRow(...$row->values()));
 
         $this->addButtonRow(
             InlineKeyboardButton::make(
@@ -143,11 +143,36 @@ class OrderConversation extends InlineMenu
         $this->trackingOrder($bot);
     }
 
+    protected function askCancelOrder(Nutgram $bot)
+    {
+        if ($this->canCancelOrder()) {
+            $this->clearButtons()
+                ->menuText(__("order.cancel_confirm"))
+                ->orNext("cancelOrder")
+                ->showMenu(true);
+        }
+
+        $bot->sendMessage(__("order.unable_to_cancel_order"));
+        $this->end();
+    }
+
+    protected function canCancelOrder()
+    {
+        $this->order->refresh();
+
+        if (in_array($this->order->status, [OrderStatus::PROCESSING, OrderStatus::SHIPPED, OrderStatus::CANCELLED])) {
+            return false;
+        }
+
+        return true;
+    }
+
     protected function cancelOrder(Nutgram $bot)
     {
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
 
+        $this->reopen = true;
         $this->start($bot);
     }
 }

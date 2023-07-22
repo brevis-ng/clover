@@ -34,5 +34,7 @@ return [
     "check" => "Kiểm tra đơn hàng",
     "list" => "Bạn có :count đơn hàng, vui lòng chọn đơn hàng bạn muốn kiểm tra.",
     "close" => "❌ Hủy",
-    "back" => "← Quay lại",
+    "back" => "🔙 Quay lại",
+    "customer_service" => "💯 CSKH :name",
+    "unable_to_cancel_order" => "Đơn hàng đã được chuẩn bị nên bạn không thể hủy ngay bây giờ.",
 ];
