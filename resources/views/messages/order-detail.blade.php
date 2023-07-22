@@ -1,4 +1,4 @@
-<b>Thông tin đơn hàng <code>{{ $order->order_number }}</code> [{{ $order->status }}]</b><br>
+<b>Thông tin đơn hàng <code>{{ $order->order_number }}</code> [{{ __("order." . $order->status->value) }}]</b><br>
 👤 Người nhận: <code>{{ $order->customer->name }}</code><br>
 📞 SĐT: <code>{{ $order->customer->phone }}</code><br>
 📦 Địa chỉ: <code>{{ $order->address }}</code><br><br>

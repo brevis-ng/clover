@@ -6,6 +6,7 @@ use App\Enums\OrderStatus;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Settings\TelegramBotSettings;
+use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -19,7 +20,11 @@ class OrderConversation extends InlineMenu
 
     public function start(Nutgram $bot)
     {
-        $this->customer = Customer::whereTelegramId($bot->chatId())->first();
+        $this->customer = Cache::remember(
+            "active_customer_" . $bot->userId(),
+            300,
+            fn() => Customer::whereTelegramId($bot->userId())->first()
+        );
 
         $orders = $this->customer
             ->orders()
@@ -38,7 +43,7 @@ class OrderConversation extends InlineMenu
                 );
             })
             ->chunk(3)
-            ->each(fn ($row) => $this->addButtonRow(...$row->values()));
+            ->each(fn($row) => $this->addButtonRow(...$row->values()));
 
         $this->addButtonRow(
             InlineKeyboardButton::make(
@@ -52,8 +57,11 @@ class OrderConversation extends InlineMenu
 
     protected function trackingOrder(Nutgram $bot)
     {
-        $order_number = $bot->callbackQuery()->data;
-        $this->order = Order::where("order_number", $order_number)->first();
+        if ($bot->isCallbackQuery()) {
+            $order_number = $bot->callbackQuery()?->data;
+
+            $this->order = Order::where("order_number", $order_number)->first();
+        }
 
         $text = message("order-detail", ["order" => $this->order]);
 
@@ -80,22 +88,21 @@ class OrderConversation extends InlineMenu
 
         collect(app(TelegramBotSettings::class)->customers_support)
             ->map(
-                fn ($item, $key) => InlineKeyboardButton::make(
+                fn($item, $key) => InlineKeyboardButton::make(
                     __("order.customer_service", ["name" => $key]),
                     "tg://user?id=$item"
                 )
             )
             ->chunk(3)
-            ->each(fn ($row) => $this->addButtonRow(...$row->values()));
+            ->each(fn($row) => $this->addButtonRow(...$row->values()));
 
         $this->addButtonRow(
             InlineKeyboardButton::make(
                 __("order.back"),
                 callback_data: "orderk@start"
             )
-        );
+        )->showMenu($this->reopen);
 
-        $this->showMenu($this->reopen);
         $this->reopen = false;
     }
 
@@ -116,6 +123,7 @@ class OrderConversation extends InlineMenu
 
         $this->customer->phone = $bot->message()->text;
         $this->customer->save();
+        $this->order->refresh();
 
         $this->reopen = true;
         $this->trackingOrder($bot);
@@ -160,7 +168,13 @@ class OrderConversation extends InlineMenu
     {
         $this->order->refresh();
 
-        if (in_array($this->order->status, [OrderStatus::PROCESSING, OrderStatus::SHIPPED, OrderStatus::CANCELLED])) {
+        if (
+            in_array($this->order->status, [
+                OrderStatus::PROCESSING,
+                OrderStatus::SHIPPED,
+                OrderStatus::CANCELLED,
+            ])
+        ) {
             return false;
         }
 
