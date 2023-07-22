@@ -52,7 +52,7 @@
             is_active: true,
             is_visible: true,
         }).onClick(() => {
-            window.location.href = "{{ route('frontend.orderplaced') }}";
+            window.location.href = "/order-placed";
         });
     });
 </script>

@@ -43,7 +43,7 @@
             // Check if Web App is expanded to the maximum available height
             if (!Telegram.WebApp.isExpanded) {
                 setTimeout(function() {
-                    Telegram.WebApp.showConfirm("{{ __('admin.expand_confirm') }}", (result) => result && Telegram.WebApp.expand());
+                    Telegram.WebApp.showConfirm("{{ __('frontend.expand_confirm') }}", (result) => result && Telegram.WebApp.expand());
                 }, 1000);
             }
         </script>

@@ -109,7 +109,7 @@
                 is_active: true,
                 is_visible: true,
             }).onClick(() => {
-                window.location.href = "{{ route('frontend.carts') }}";
+                window.location.href = "/carts";
             });
         };
     });

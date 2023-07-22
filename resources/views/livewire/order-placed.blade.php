@@ -106,7 +106,7 @@
 
             const mainButton = Telegram.WebApp.MainButton;
             mainButton.setParams({
-                text: "{{ Str::upper(__('admin.order_placed')) }}",
+                text: "{{ Str::upper(__('frontend.order_placed')) }}",
                 color: "#525FE1",
                 is_active: true,
                 is_visible: true,

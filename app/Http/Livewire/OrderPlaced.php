@@ -9,6 +9,7 @@ use App\Telegram\Conversations\OrderConversation;
 use Livewire\Component;
 use Nutgram\Laravel\Facades\Telegram;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 
@@ -63,11 +64,12 @@ class OrderPlaced extends Component
             ]);
         }
 
-        $this->emit("tg:orderPlaced", __("admin.order_placed_successfully"));
+        $this->emit("tg:orderPlaced", __("frontend.order_placed_successfully"));
 
         Telegram::sendMessage(
             message("order-notify"),
             chat_id: $customer?->telegram_id,
+            parse_mode: ParseMode::HTML,
             reply_markup: ReplyKeyboardMarkup::make(
                 resize_keyboard: true,
                 one_time_keyboard: true,

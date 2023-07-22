@@ -3,8 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Helpers\CartManager;
-use App\Models\Customer;
-use App\Settings\GeneralSettings;
+use App\Settings\TelegramBotSettings;
 use Livewire\Component;
 
 class ShowCarts extends Component
@@ -39,7 +38,7 @@ class ShowCarts extends Component
         }
 
         $data_check_str = implode("\n", $data_check_str);
-        $secret_key = hash_hmac("sha256", app(GeneralSettings::class)->bot_token, "WebAppData", true);
+        $secret_key = hash_hmac("sha256", app(TelegramBotSettings::class)->bot_token, "WebAppData", true);
         $sig = hash_hmac("sha256", $data_check_str, $secret_key);
 
         return $sig === $data["hash"];
