@@ -3,6 +3,7 @@
 use App\Http\Livewire\Index;
 use App\Http\Livewire\OrderPlaced;
 use App\Http\Livewire\ShowCarts;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,3 +20,12 @@ use Illuminate\Support\Facades\Route;
 Route::get("/", Index::class)->name("frontend.index");
 Route::get("/carts", ShowCarts::class)->name("frontend.carts");
 Route::get("/order-placed", OrderPlaced::class)->name("frontend.orderplaced");
+
+Route::get("/clear-cache", function () {
+    Artisan::call("cache:clear");
+   \Filament\Notifications\Notification::make()
+        ->title("Cache was cleared successfully")
+        ->success()
+        ->send();
+    return redirect()->back();
+})->name("backend.clear");

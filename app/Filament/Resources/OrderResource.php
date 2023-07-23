@@ -90,6 +90,7 @@ class OrderResource extends Resource
                     ->toggleable(),
                 BadgeColumn::make("status")
                     ->label(__("order.status"))
+                    ->sortable()
                     ->enum(OrderStatus::all())
                     ->colors([
                         "danger" => OrderStatus::CANCELLED->value,
@@ -105,8 +106,7 @@ class OrderResource extends Resource
                     ->sortable(),
                 TextColumn::make("shipping_amount")
                     ->label(__("order.shipping_amount"))
-                    ->money(shouldConvert: true)
-                    ->sortable(),
+                    ->money(shouldConvert: true),
                 TextColumn::make("payment_method")
                     ->label(__("order.payment_method"))
                     ->formatStateUsing(
@@ -115,6 +115,7 @@ class OrderResource extends Resource
                 TextColumn::make("created_at")
                     ->label(__("order.created_at"))
                     ->date()
+                    ->sortable()
                     ->toggleable(),
             ])
             ->filters([Tables\Filters\TrashedFilter::make()])

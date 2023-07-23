@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use App\Settings\GeneralSettings;
 use Illuminate\Support\ServiceProvider;
+use Filament\Facades\Filament;
+use Filament\Navigation\UserMenuItem;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,8 +14,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //load helpers folder
-        foreach (glob(app_path().'/Helpers/*.php') as $file) {
-            require_once($file);
+        foreach (glob(app_path() . "/Helpers/*.php") as $file) {
+            require_once $file;
         }
     }
 
@@ -24,5 +25,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // config(['nutgram.token' => app(GeneralSettings::class)->bot_token]);
+        Filament::serving(function () {
+            Filament::registerUserMenuItems([
+                UserMenuItem::make()
+                    ->label("Clear cache")
+                    ->url(route("backend.clear"))
+                    ->icon("heroicon-o-trash"),
+            ]);
+        });
     }
 }
