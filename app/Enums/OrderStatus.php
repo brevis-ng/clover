@@ -19,4 +19,9 @@ enum OrderStatus: string
         }
         return $res;
     }
+
+    public static function trans(self $status): string
+    {
+        return __("order.s." . $status->value);
+    }
 }

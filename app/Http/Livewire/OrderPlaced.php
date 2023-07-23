@@ -73,7 +73,7 @@ class OrderPlaced extends Component
             reply_markup: ReplyKeyboardMarkup::make(
                 resize_keyboard: true,
                 one_time_keyboard: true,
-                input_field_placeholder: "/order",
+                input_field_placeholder: "/myorder",
                 selective: true,
             )->addRow(
                 KeyboardButton::make(__("order.check"))

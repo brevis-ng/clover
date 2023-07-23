@@ -7,11 +7,13 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Pages\SettingsPage;
 use Nutgram\Laravel\Facades\Telegram;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
+use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonCommands;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonWebApp;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
@@ -94,8 +96,24 @@ class ManageTelegramBot extends SettingsPage
         Telegram::setChatMenuButton(
             menu_button: new MenuButtonWebApp(
                 text: app(TelegramBotSettings::class)->webapp_menu_button,
-                web_app: new WebAppInfo(app(TelegramBotSettings::class)->webapp_url)
+                web_app: new WebAppInfo(
+                    app(TelegramBotSettings::class)->webapp_url
+                )
             )
+        );
+
+        Telegram::setMyCommands(
+            [
+                BotCommand::make("start", "Welcome message"),
+                BotCommand::make("myorder", "Tracking your order"),
+                BotCommand::make("cancel", "Close a conversation or a keyboard"),
+            ],
+            new BotCommandScopeDefault()
+        );
+
+        Telegram::setChatMenuButton(
+            chat_id: app(TelegramBotSettings::class)->administrator,
+            menu_button: new MenuButtonCommands()
         );
     }
 }

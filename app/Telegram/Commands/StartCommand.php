@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -17,6 +18,11 @@ class StartCommand extends Command
     protected string $command = "start";
 
     protected ?string $description = "Welcome message";
+
+    public function scopes(): array
+    {
+        return [new BotCommandScopeDefault()];
+    }
 
     public function handle(Nutgram $bot): void
     {

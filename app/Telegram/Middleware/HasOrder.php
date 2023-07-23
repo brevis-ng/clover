@@ -11,14 +11,23 @@ class HasOrder
 {
     public function __invoke(Nutgram $bot, $next)
     {
-        $customer = Customer::where("telegram_id", $bot->chatId())->first();
+        $hasOrder = false;
 
-        $orders = $customer
-            ->orders()
-            ->whereIn("status", [OrderStatus::PENDING, OrderStatus::PROCESSING])
-            ->count();
+        $customer = Customer::where("telegram_id", $bot->userId())->first();
 
-        if ($orders == 0) {
+        if ($customer) {
+            $orders = $customer
+                ->orders()
+                ->whereIn("status", [
+                    OrderStatus::PENDING,
+                    OrderStatus::PROCESSING,
+                ])
+                ->count();
+
+            $hasOrder = $orders > 0;
+        }
+
+        if (!$hasOrder) {
             $bot->sendMessage("You don't have any orders yet!");
 
             return;

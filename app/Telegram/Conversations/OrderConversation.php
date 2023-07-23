@@ -66,9 +66,7 @@ class OrderConversation extends InlineMenu
         $text = message("order-detail", ["order" => $this->order]);
 
         $this->clearButtons()
-            ->menuText($text, [
-                "parse_mode" => ParseMode::HTML,
-            ])
+            ->menuText($text, ["parse_mode" => ParseMode::HTML])
             ->addButtonRow(
                 InlineKeyboardButton::make(
                     __("order.update_phone"),
