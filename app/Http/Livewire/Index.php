@@ -6,6 +6,7 @@ use App\Helpers\CartManager;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -58,16 +59,14 @@ class Index extends Component
 
     public function render()
     {
-        if ($this->category_id != 0) {
-            $products = Product::visibility()
-                ->where("category_id", $this->category_id)
-                ->latest("updated_at")
-                ->paginate(10);
-        } else {
-            $products = Product::visibility()
-                ->latest("updated_at")
-                ->paginate(10);
-        }
+        $products = Cache::remember(
+            "products_" . $this->category_id . "_" . $this->page,
+            3600,
+            fn() => Product::visibility()->when(
+                $this->category_id != 0,
+                fn($query) => $query->where("category_id", $this->category_id)
+            )->latest("updated_at")->paginate(16)
+        );
 
         return view("livewire.index", [
             "products" => $products,

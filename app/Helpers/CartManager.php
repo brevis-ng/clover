@@ -24,11 +24,12 @@ class CartManager
         $customer = static::customer();
 
         if (!$customer) {
-            $customer = Customer::firstOrNew(
-                ["telegram_id" => intval($data["id"])],
+
+            $customer = Customer::firstOrCreate(
+                ["id" => intval($data["id"])],
                 [
-                    "telegram_username" => $data["username"],
                     "name" => $data["first_name"] . " " . $data["last_name"],
+                    "username" => $data["username"],
                 ]
             );
 

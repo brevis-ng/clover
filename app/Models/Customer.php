@@ -15,7 +15,7 @@ class Customer extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ["name", "phone", "telegram_id", "telegram_username"];
+    protected $fillable = ["id", "name", "phone", "username", "language_code"];
 
     public function orders()
     {

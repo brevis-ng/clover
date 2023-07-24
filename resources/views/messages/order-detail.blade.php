@@ -15,3 +15,4 @@
 🛵 Phí ship: {{ money($order->shipping_amount, convert: true) }}<br>
 💸 Tổng tiền: {{ money($order->total_amount, convert: true) }}<br><br>
 📌 <i>Ghi chú: {{ $order->notes }}</i><br>
+🕒 Thời gian: {{ $order->created_at->diffForHumans() }}

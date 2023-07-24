@@ -12,6 +12,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -34,6 +36,7 @@ class CustomerResource extends Resource
             ->schema([
                 Card::make()
                     ->schema([
+                        TextInput::make("id")->disabled(),
                         TextInput::make("name")
                             ->label(__("customer.name"))
                             ->maxLength(255)
@@ -42,11 +45,8 @@ class CustomerResource extends Resource
                             ->label(__("customer.phone"))
                             ->maxLength(12)
                             ->tel(),
-                        TextInput::make("telegram_id")
-                            ->label(__("customer.telegram_id"))
-                            ->numeric(),
-                        TextInput::make("telegram_username")
-                            ->label(__("customer.telegram_username"))
+                        TextInput::make("username")
+                            ->label(__("customer.username"))
                             ->minLength(5),
                     ])
                     ->columns(2)
@@ -83,22 +83,21 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make("name")
+                TextColumn::make("id")->sortable(),
+                TextColumn::make("name")
                     ->label(__("customer.name"))
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make("phone")
+                    ->copyable()
+                    ->searchable(),
+                TextColumn::make("phone")
                     ->label(__("customer.phone"))
                     ->searchable()
                     ->copyable(),
-                Tables\Columns\TextColumn::make("telegram_id")
-                    ->label(__("customer.telegram_id"))
-                    ->formatStateUsing(
-                        fn(string $state): string => "tg://user?id={$state}"
-                    )
-                    ->placeholder("N/A")
-                    ->copyable(),
-                Tables\Columns\TextColumn::make("created_at")
+                ViewColumn::make("username")
+                    ->searchable()
+                    ->view("columns.username"),
+                TextColumn::make("language_code")
+                    ->label(__("customer.language_code")),
+                TextColumn::make("created_at")
                     ->label(__("customer.created_at"))
                     ->dateTime()
                     ->sortable(),
@@ -129,6 +128,6 @@ class CustomerResource extends Resource
     {
         return parent::getEloquentQuery()->withoutGlobalScopes([
             SoftDeletingScope::class,
-        ]);
+        ])->latest();
     }
 }

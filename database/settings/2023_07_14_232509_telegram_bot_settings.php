@@ -13,9 +13,7 @@ return new class extends SettingsMigration
         $this->migrator->add("telegram.webapp_url", route("frontend.index"));
         $this->migrator->add("telegram.administrator", 6246702463);
         $this->migrator->add("telegram.customers_support", [6246702463]);
-        $this->migrator->add("telegram.should_send_start_msg", true);
         $this->migrator->add("telegram.start_msg_content", "Hello World!");
         $this->migrator->add("telegram.start_msg_photo", "");
-        $this->migrator->add("telegram.start_msg_photo_id", "");
     }
 };

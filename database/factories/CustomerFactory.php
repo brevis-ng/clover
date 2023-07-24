@@ -19,8 +19,8 @@ class CustomerFactory extends Factory
         return [
             "name" => fake()->name(),
             "phone" => fake()->phoneNumber(),
-            "telegram_id" => fake()->randomNumber(9, true),
-            "telegram_username" => fake()->userName(),
+            "username" => fake()->userName(),
+            "language_code" => fake()->languageCode(),
         ];
     }
 }

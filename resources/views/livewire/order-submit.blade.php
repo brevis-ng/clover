@@ -85,7 +85,7 @@
         </div>
         <div class="flex justify-between items-center">
             <h3>{{ __('frontend.shipping_amount') }}</h3>
-            <p class="font-oswald">{{ 0 }}</p>
+            <p class="font-oswald">N/A</p>
         </div>
         <div class="flex justify-between items-center">
             <h3>{{ __('frontend.total_amount') }}</h3>

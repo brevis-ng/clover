@@ -50,5 +50,5 @@ return [
         "completed" => "✅ Hoàn thành",
         "failed" => "❗Lỗi",
     ],
-    "explain_cancelled" => "Lý do hủy đơn hàng là gì:",
+    "explain_cancelled" => "Lý do hủy đơn hàng là gì:\nNhập /cancel để hủy bỏ hành động.",
 ];

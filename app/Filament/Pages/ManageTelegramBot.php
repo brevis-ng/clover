@@ -53,24 +53,22 @@ class ManageTelegramBot extends SettingsPage
                 ->columns(2),
             Section::make("Greating messages")
                 ->schema([
-                    Toggle::make("should_send_start_msg")->label(
-                        __("settings.should_send_start_msg")
-                    ),
-                    FileUpload::make("start_msg_photo")
-                        ->label(__("settings.start_msg_photo"))
-                        ->image()
-                        ->preserveFilenames()
-                        ->maxSize(1024),
                     MarkdownEditor::make("start_msg_content")
                         ->label(__("settings.start_msg_content"))
-                        ->requiredIf("should_send_start_msg", "true")
                         ->maxLength(1024)
                         ->disableToolbarButtons([
                             "bulletList",
                             "orderedList",
                             "link",
                             "attachFiles",
+                            "bold",
+                            "strike"
                         ]),
+                    FileUpload::make("start_msg_photo")
+                        ->label(__("settings.start_msg_photo"))
+                        ->image()
+                        ->preserveFilenames()
+                        ->maxSize(1024),
                 ])
                 ->description(__("settings.start_message_description"))
                 ->columns(2),
