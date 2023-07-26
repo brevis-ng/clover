@@ -35,7 +35,7 @@ return [
     "list" => "Bạn có :count đơn hàng, vui lòng chọn đơn hàng bạn muốn kiểm tra.",
     "close" => "🆑 Hủy",
     "back" => "🔙 Quay lại",
-    "customer_service" => "💯 CSKH :name",
+    "assistant" => "💯 CSKH :name",
     "unable_to_cancel_order" => "⛔ Đơn hàng của bạn đã được chuẩn bị nên bạn không thể hủy ngay bây giờ.",
     "latest_orders" => "Đây là :count đơn hàng mới nhất",
     "update_shipping_amount" => "🛵Cập nhật tiền Ship",
@@ -52,4 +52,5 @@ return [
     ],
     "explain_cancelled" => "Lý do hủy đơn hàng là gì:\n<i>Nhập /cancel để hủy bỏ hành động.</i>",
     "chat_with_user" => "👤Chat với khách",
+    "order_cancelled" => "<b>Đơn hàng <code> :order </code>đã bị hủy. Lý do:</b>",
 ];

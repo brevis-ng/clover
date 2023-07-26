@@ -3,9 +3,9 @@
 namespace App\Telegram\Conversations;
 
 use App\Enums\OrderStatus;
+use App\Jobs\UserCancelledOrder;
 use App\Models\Customer;
 use App\Models\Order;
-use App\Settings\TelegramBotSettings;
 use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
@@ -145,9 +145,7 @@ class OrderConversation extends InlineMenu
         }
 
         $this->clearButtons()
-            ->menuText(__("order.explain_cancelled"), [
-                "parse_mode" => ParseMode::HTML,
-            ])
+            ->menuText(__("order.explain_cancelled"), ["parse_mode" => ParseMode::HTML])
             ->orNext("cancelOrder")
             ->showMenu();
     }
@@ -157,13 +155,9 @@ class OrderConversation extends InlineMenu
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
 
-        $bot->forwardMessage(
-            app(TelegramBotSettings::class)->administrator,
-            $bot->userId(),
-            $bot->messageId()
-        );
-        $bot->sendMessage("Order cancelled");
+        UserCancelledOrder::dispatch($bot->userId(), $bot->messageId(), $this->order->order_number);
 
+        $bot->sendMessage("Order cancelled");
         $this->start($bot);
     }
 }

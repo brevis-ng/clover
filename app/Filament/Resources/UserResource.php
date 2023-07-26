@@ -4,10 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Enums\Roles;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\Customer;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -18,11 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Columns\Layout\Split;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -49,20 +43,19 @@ class UserResource extends Resource
                                 ->password()
                                 ->autocomplete("new-password")
                                 ->minLength(6)
-                                ->same("passwordConfirmation"),
-                            TextInput::make("passwordConfirmation")
                                 ->required()
-                                ->minLength(6),
+                                ->reactive(),
+                            TextInput::make("passwordConfirmation")
+                                ->minLength(6)
+                                ->dehydrated(false)
+                                ->same("password")
+                                ->hidden(fn($get) => $get("password") !== null),
                         ])->columns(2),
                         Section::make("Telegram")->schema([
                             Select::make("telegram_id")
                                 ->options(Customer::all()->pluck("name", "id"))
                                 ->searchable()
-                                ->required(),
-                            Select::make("username")
-                                ->label("Telegram username")
-                                ->options(Customer::all()->pluck("name", "username"))
-                                ->searchable()
+                                ->required()
                         ]),
                     ])
                     ->columnSpan(["lg" => 2]),
@@ -92,10 +85,6 @@ class UserResource extends Resource
                 TextColumn::make("email")
                     ->searchable()
                     ->color("secondary"),
-                TextColumn::make("username")
-                    ->prefix("@")
-                    ->copyable()
-                    ->searchable(),
                 TextColumn::make("telegram_id")
                     ->icon("icons.telegram")
                     ->url(fn($record) => $record->getTelegramUrl(), true),

@@ -10,6 +10,7 @@ use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
@@ -21,7 +22,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      *
      * @var array<int, string>
      */
-    protected $fillable = ["name", "username", "telegram_id", "email", "role", "password"];
+    protected $fillable = [
+        "name",
+        "telegram_id",
+        "email",
+        "role",
+        "password",
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -38,7 +45,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     protected $casts = [
         "email_verified_at" => "datetime",
         "password" => "hashed",
-        "role" => Roles::class
+        "role" => Roles::class,
     ];
 
     public function canAccessFilament(): bool
@@ -55,5 +62,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function getTelegramUrl(): ?string
     {
         return "tg://user?id=" . $this->telegram_id;
+    }
+
+    public function scopeAdmin($query): void
+    {
+        $query->where("role", Roles::ADMIN);
+    }
+
+    public function scopeAssistant($query): void
+    {
+        $query->where("role", Roles::ASSISTANT);
     }
 }

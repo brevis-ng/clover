@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use App\Enums\Roles;
 use App\Filament\Resources\UserResource;
+use App\Models\User;
+use Cache;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -12,8 +15,13 @@ class EditUser extends EditRecord
 
     protected function getActions(): array
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return [Actions\DeleteAction::make()];
+    }
+
+    protected function afterSave(): void
+    {
+        $this->data["role"] == Roles::ADMIN
+            ? Cache::forever("administrator", User::admin()->get())
+            : Cache::forever("assistant", User::assistant()->get());
     }
 }

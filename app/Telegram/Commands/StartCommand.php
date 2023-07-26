@@ -36,23 +36,25 @@ class StartCommand extends Command
                 $bot->sendPhoto(
                     photo: InputFile::make($photo_data),
                     caption: app(TelegramBotSettings::class)->start_msg_content,
-                    parse_mode: ParseMode::MARKDOWN,
+                    parse_mode: ParseMode::HTML,
                     reply_markup: $inline_button
                 );
             }
         } else {
             $bot->sendMessage(
                 text: app(TelegramBotSettings::class)->start_msg_content,
-                parse_mode: ParseMode::MARKDOWN,
+                parse_mode: ParseMode::HTML,
                 reply_markup: $inline_button
             );
         }
 
-        Customer::create([
-            "id" => $bot->userId(),
-            "name" => $bot->user()?->first_name . " " . $bot->user()?->last_name,
-            "username" => $bot->user()?->username,
-            "language_code" => $bot->user()?->language_code
-        ]);
+        Customer::updateOrCreate(
+            ["id" => $bot->userId()],
+            [
+                "name" => $bot->user()?->first_name . " " . $bot->user()?->last_name,
+                "username" => $bot->user()?->username,
+                "language_code" => $bot->user()?->language_code,
+            ]
+        );
     }
 }

@@ -53,10 +53,10 @@ namespace App\Models{
  * App\Models\Customer
  *
  * @property int $id
- * @property string $name
- * @property string $phone
- * @property int|null $telegram_id
- * @property string|null $telegram_username
+ * @property string|null $name
+ * @property string|null $phone
+ * @property string|null $username
+ * @property string|null $language_code
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -70,11 +70,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereTelegramId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereTelegramUsername($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUsername($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer withoutTrashed()
  */
@@ -173,7 +173,10 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
+ * @property string|null $username
+ * @property int|null $telegram_id
  * @property string $email
+ * @property \App\Enums\Roles|null $role
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property mixed $password
  * @property string|null $remember_token
@@ -183,6 +186,8 @@ namespace App\Models{
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User admin()
+ * @method static \Illuminate\Database\Eloquent\Builder|User assistant()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -194,7 +199,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTelegramId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser, \Filament\Models\Contracts\HasAvatar {}
 }

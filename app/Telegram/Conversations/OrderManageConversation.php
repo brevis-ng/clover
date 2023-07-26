@@ -124,11 +124,11 @@ class OrderManageConversation extends InlineMenu
 
     protected function askCancelOrder(Nutgram $bot)
     {
-        // if () {
-        //     $bot->sendMessage("Order can't be canceled.");
-        //     $this->end();
-        //     return null;
-        // }
+        if ($this->order->status == OrderStatus::CANCELLED) {
+            $bot->sendMessage("Order can't be canceled.");
+            $this->end();
+            return null;
+        }
 
         $this->clearButtons()
             ->menuText(__("order.explain_cancelled"), [
@@ -143,7 +143,11 @@ class OrderManageConversation extends InlineMenu
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
 
-        $bot->forwardMessage($this->order->customer->id, $bot->userId(), $bot->messageId());
+        $bot->forwardMessage(
+            $this->order->customer->id,
+            $bot->userId(),
+            $bot->messageId()
+        );
 
         $bot->sendMessage("Order cancelled");
         $this->end();

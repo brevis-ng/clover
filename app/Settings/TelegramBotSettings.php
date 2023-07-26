@@ -11,8 +11,6 @@ class TelegramBotSettings extends Settings
     public string $webapp_inline_button;
     public string $webapp_menu_button;
     public string $webapp_url;
-    public int $administrator;
-    public array $customers_support;
     public ?string $start_msg_content;
     public ?string $start_msg_photo;
 

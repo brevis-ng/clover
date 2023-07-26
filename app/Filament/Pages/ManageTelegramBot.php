@@ -6,6 +6,7 @@ use App\Settings\TelegramBotSettings;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -53,17 +54,17 @@ class ManageTelegramBot extends SettingsPage
                 ->columns(2),
             Section::make("Greating messages")
                 ->schema([
-                    MarkdownEditor::make("start_msg_content")
+                    RichEditor::make("start_msg_content")
                         ->label(__("settings.start_msg_content"))
                         ->maxLength(1024)
-                        ->disableToolbarButtons([
-                            "bulletList",
-                            "orderedList",
-                            "link",
-                            "attachFiles",
+                        ->disableAllToolbarButtons()
+                        ->enableToolbarButtons([
                             "bold",
-                            "strike"
-                        ]),
+                            "italic",
+                            "strike",
+                            "underline",
+                        ])
+                        ->hint("Using bold, italic, strike and underline styles only"),
                     FileUpload::make("start_msg_photo")
                         ->label(__("settings.start_msg_photo"))
                         ->image()
@@ -72,21 +73,27 @@ class ManageTelegramBot extends SettingsPage
                 ])
                 ->description(__("settings.start_message_description"))
                 ->columns(2),
-            Section::make("Notifications")
-                ->schema([
-                    TextInput::make("administrator")
-                        ->label(__("settings.administrator"))
-                        ->helperText(__("settings.administrator_hint"))
-                        ->required(),
-                    KeyValue::make("customers_support")
-                        ->label(__("settings.customers_support"))
-                        ->helperText(__("settings.customers_support_hint"))
-                        ->keyLabel(__("settings.sp_name"))
-                        ->valueLabel(__("settings.sp_telegramid"))
-                        ->required(),
-                ])
-                ->columns(2),
         ];
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $html_el = [
+            "<p>",
+            "</p>",
+            "<span style=\"text-decoration: underline;\">",
+            "</span>",
+        ];
+        $replacement = ["", "\n", "<u>", "</u>"];
+        $content = str_replace(
+            $html_el,
+            $replacement,
+            $data["start_msg_content"]
+        );
+
+        $data["start_msg_content"] = $content;
+
+        return $data;
     }
 
     protected function afterSave()
@@ -104,14 +111,12 @@ class ManageTelegramBot extends SettingsPage
             [
                 BotCommand::make("start", "Welcome message"),
                 BotCommand::make("myorder", "Tracking your order"),
-                BotCommand::make("cancel", "Close a conversation or a keyboard"),
+                BotCommand::make(
+                    "cancel",
+                    "Close a conversation or a keyboard"
+                ),
             ],
             new BotCommandScopeDefault()
-        );
-
-        Telegram::setChatMenuButton(
-            chat_id: app(TelegramBotSettings::class)->administrator,
-            menu_button: new MenuButtonCommands()
         );
     }
 }
