@@ -60,11 +60,7 @@ class CategoryResource extends Resource
                             ])
                             ->columns(2),
                     ])
-                    ->columnSpan([
-                        "lg" => fn(?Category $record) => $record === null
-                            ? 3
-                            : 2,
-                    ]),
+                    ->columnSpan(["lg" => 2]),
                 Group::make()
                     ->schema([
                         Section::make("Status")->schema([

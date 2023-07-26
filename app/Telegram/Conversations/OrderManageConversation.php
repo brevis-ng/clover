@@ -4,67 +4,26 @@ namespace App\Telegram\Conversations;
 
 use App\Enums\OrderStatus;
 use App\Models\Order;
-use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 
-class NewOrderConversation extends InlineMenu
+class OrderManageConversation extends InlineMenu
 {
     protected Order $order;
-    protected bool $reopen = false;
     protected OrderStatus $status;
 
     public function start(Nutgram $bot)
     {
-        $orders = Cache::remember(
-            "latest_five_orders",
-            300,
-            fn() => Order::whereIn("status", [
-                OrderStatus::PENDING,
-                OrderStatus::PROCESSING,
-                OrderStatus::SHIPPED,
-            ])
-                ->latest()
-                ->take(6)
-                ->get()
-        );
+        $this->order =
+            $this->order ??
+            Order::where("order_number", $bot->currentParameters()[0])->first();
 
-        $this->clearButtons()->menuText(
-            __("order.latest_orders", ["count" => $orders->count()])
-        );
-
-        $orders
-            ->map(
-                fn($order) => InlineKeyboardButton::make(
-                    $order->order_number,
-                    callback_data: "$order->order_number@trackingOrder"
-                )
-            )
-            ->chunk(3)
-            ->each(fn($row) => $this->addButtonRow(...$row->values()));
-
-        $this->addButtonRow(
-            InlineKeyboardButton::make(
-                __("order.close"),
-                callback_data: "settings:cancel@end"
-            )
-        )->showMenu();
-    }
-
-    protected function trackingOrder(Nutgram $bot)
-    {
-        if ($bot->isCallbackQuery()) {
-            $order_number = $bot->callbackQuery()?->data;
-
-            $this->order = Order::where("order_number", $order_number)
-                ->with(["customer", "products"])
-                ->first();
-            $this->status = $this->order->status;
-        }
+        $this->status = $this->order->status;
 
         $text = message("order-detail", ["order" => $this->order]);
+
         $this->clearButtons()
             ->menuText($text, ["parse_mode" => ParseMode::HTML])
             ->addButtonRow(
@@ -81,17 +40,19 @@ class NewOrderConversation extends InlineMenu
                 InlineKeyboardButton::make(
                     __("order.cancel"),
                     callback_data: "order@askCancelOrder"
+                ),
+                InlineKeyboardButton::make(
+                    __("order.chat_with_user"),
+                    "tg://user?id=" . $this->order->customer->id
                 )
             )
             ->addButtonRow(
                 InlineKeyboardButton::make(
-                    __("order.back"),
-                    callback_data: "order@start"
+                    __("order.close"),
+                    callback_data: "order@end"
                 )
             )
-            ->showMenu($this->reopen);
-
-        $this->reopen = false;
+            ->showMenu();
     }
 
     protected function updateShippingAmount(Nutgram $bot)
@@ -100,7 +61,7 @@ class NewOrderConversation extends InlineMenu
             ->menuText(__("order.update_shipping_amount_send"))
             ->orNext("setShippingAmount");
 
-        $this->showMenu(true);
+        $this->showMenu();
     }
 
     protected function setShippingAmount(Nutgram $bot)
@@ -113,46 +74,43 @@ class NewOrderConversation extends InlineMenu
         $this->order->shipping_amount = intval($bot->message()->text);
         $this->order->total_amount += $this->order->shipping_amount;
         $this->order->save();
-        $this->order->refresh();
 
-        $this->reopen = true;
-        $this->trackingOrder($bot);
+        $this->start($bot);
     }
 
     protected function updateStatus(Nutgram $bot)
     {
         $text = __("order.update_status_send", [
-            "status" => OrderStatus::trans($this->status),
-            "new_status" => OrderStatus::trans($this->order->status),
+            "old" => OrderStatus::trans($this->status),
+            "new" => OrderStatus::trans($this->order->status),
         ]);
         $this->clearButtons()
             ->menuText($text, ["parse_mode" => ParseMode::HTML])
             ->addButtonRow(
                 InlineKeyboardButton::make(
                     OrderStatus::trans(OrderStatus::PROCESSING),
-                    callback_data: OrderStatus::PROCESSING->value .
-                        "@setOrderStatus"
-                ),
+                    callback_data: "processing@setOrderStatus"
+                )
+            )
+            ->addButtonRow(
                 InlineKeyboardButton::make(
                     OrderStatus::trans(OrderStatus::SHIPPED),
-                    callback_data: OrderStatus::SHIPPED->value .
-                        "@setOrderStatus"
-                ),
+                    callback_data: "shipped@setOrderStatus"
+                )
+            )
+            ->addButtonRow(
                 InlineKeyboardButton::make(
                     OrderStatus::trans(OrderStatus::COMPLETED),
-                    callback_data: OrderStatus::COMPLETED->value .
-                        "@setOrderStatus"
+                    callback_data: "completed@setOrderStatus"
                 )
             )
             ->addButtonRow(
                 InlineKeyboardButton::make(
                     __("order.back"),
-                    callback_data: $this->order->order_number . "@trackingOrder"
+                    callback_data: "order@start"
                 )
-            );
-
-        $this->showMenu($this->reopen);
-        $this->reopen = false;
+            )
+            ->showMenu();
     }
 
     protected function setOrderStatus(Nutgram $bot)
@@ -166,26 +124,28 @@ class NewOrderConversation extends InlineMenu
 
     protected function askCancelOrder(Nutgram $bot)
     {
+        // if () {
+        //     $bot->sendMessage("Order can't be canceled.");
+        //     $this->end();
+        //     return null;
+        // }
+
         $this->clearButtons()
-            ->menuText(__("order.explain_cancelled"))
+            ->menuText(__("order.explain_cancelled"), [
+                "parse_mode" => ParseMode::HTML,
+            ])
             ->orNext("cancelOrder")
             ->showMenu(true);
     }
 
     protected function cancelOrder(Nutgram $bot)
     {
-        if ($bot->message()?->text === null) {
-            $bot->sendMessage(__("order.invalid_value"));
-            $this->askCancelOrder($bot);
-        }
-
-        $explain = $bot->message()?->text;
-
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
-        Cache::forget("latest_five_orders");
 
-        $this->reopen = true;
-        $this->start($bot);
+        $bot->forwardMessage($this->order->customer->id, $bot->userId(), $bot->messageId());
+
+        $bot->sendMessage("Order cancelled");
+        $this->end();
     }
 }

@@ -27,4 +27,9 @@ return [
     "shipping_amount" => "Phí giao hàng",
     "total_amount" => "Tổng tiền",
     "status" => "Trạng thái",
+    "help" => "<b>Xin chào quý khách</b>\n\nDanh sách cách lệnh được hỗ trợ cho quý khách như sau:\n".
+        "• /start  Tin nhắn chào mừng\n".
+        "• /myorder  Kiểm tra đơn hàng\n".
+        "• /cancel  Hủy bỏ thao tác\n\n".
+        "✳️<b>Quý khách cũng có thể chat với CSKH 24/7 của chúng tôi</b>✳️"
 ];

@@ -13,7 +13,7 @@ class HasOrder
     {
         $hasOrder = false;
 
-        $customer = Customer::where("telegram_id", $bot->userId())->first();
+        $customer = Customer::find($bot->userId());
 
         if ($customer) {
             $orders = $customer
@@ -21,6 +21,7 @@ class HasOrder
                 ->whereIn("status", [
                     OrderStatus::PENDING,
                     OrderStatus::PROCESSING,
+                    OrderStatus::SHIPPED
                 ])
                 ->count();
 
