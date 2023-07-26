@@ -21,7 +21,7 @@ return [
     "notes" => "Ghi chú",
     "pending" => "Chờ xử lý",
     "processing" => "Đang xử lý",
-    "shipped" => "Đã giao",
+    "shipped" => "Đang giao",
     "cancelled" => "Đã hủy",
     "completed" => "Hoàn thành",
     "failed" => "Lỗi",

@@ -111,7 +111,7 @@ class CategoryResource extends Resource
                     ->sortable(),
                 TextColumn::make("updated_at")
                     ->label(__("category.updated_at"))
-                    ->date()
+                    ->dateTime()
                     ->sortable(),
             ])
             ->filters([])

@@ -2,15 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Roles;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\Customer;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
@@ -28,45 +35,87 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form->schema([
-            TextInput::make("name")->required(),
-            TextInput::make("email")
-                ->required()
-                ->email()
-                ->unique(Author::class, "email", ignoreRecord: true),
-            TextInput::make("username")->label("Telegram username"),
-            TextInput::make("telegram_id")->required()
-        ]);
+        return $form
+            ->schema([
+                Group::make()
+                    ->schema([
+                        Card::make()->schema([
+                            TextInput::make("name")->required(),
+                            TextInput::make("email")
+                                ->required()
+                                ->email()
+                                ->unique(User::class, "email", ignoreRecord: true),
+                            TextInput::make("password")
+                                ->password()
+                                ->autocomplete("new-password")
+                                ->minLength(6)
+                                ->same("passwordConfirmation"),
+                            TextInput::make("passwordConfirmation")
+                                ->required()
+                                ->minLength(6),
+                        ])->columns(2),
+                        Section::make("Telegram")->schema([
+                            Select::make("telegram_id")
+                                ->options(Customer::all()->pluck("name", "id"))
+                                ->searchable()
+                                ->required(),
+                            Select::make("username")
+                                ->label("Telegram username")
+                                ->options(Customer::all()->pluck("name", "username"))
+                                ->searchable()
+                        ]),
+                    ])
+                    ->columnSpan(["lg" => 2]),
+                Group::make()
+                    ->schema([
+                        Section::make(__("customer.role"))->schema([
+                            Select::make("role")
+                                ->label(__("customer.role"))
+                                ->options(Roles::all())
+                                ->default(Roles::ASSISTANT->value)
+                                ->required(),
+                        ]),
+                    ])
+                    ->columnSpan(["lg" => 1]),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Split::make([
-                    Stack::make([
-                        TextColumn::make("name")
-                            ->searchable()
-                            ->sortable()
-                            ->weight("medium")
-                            ->alignLeft(),
-                        TextColumn::make("email")
-                            ->searchable()
-                            ->sortable()
-                            ->color("secondary")
-                            ->alignLeft(),
-                    ]),
-                    TextColumn::make("username"),
-                    TextColumn::make("telegram_id")
-                        ->icon("icons.telegram")
-                        ->iconPosition("before"),
-                    TextColumn::make("created_at")
-                        ->date()
-                        ->sortable(),
-                ]),
+                TextColumn::make("name")
+                    ->searchable()
+                    ->sortable()
+                    ->weight("medium"),
+                TextColumn::make("email")
+                    ->searchable()
+                    ->color("secondary"),
+                TextColumn::make("username")
+                    ->prefix("@")
+                    ->copyable()
+                    ->searchable(),
+                TextColumn::make("telegram_id")
+                    ->icon("icons.telegram")
+                    ->url(fn($record) => $record->getTelegramUrl(), true),
+                BadgeColumn::make("role")
+                    ->colors([
+                        "danger" => "Administrator",
+                        "success" => "Assistant",
+                    ])
+                    ->sortable(),
+                TextColumn::make("created_at")
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([])
-            ->actions([Tables\Actions\EditAction::make()])
+            ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
+            ])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 

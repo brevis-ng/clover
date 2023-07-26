@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('username')->nullable();
             $table->bigInteger("telegram_id")->nullable();
             $table->string('email')->unique();
+            $table->string("role")->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

@@ -21,7 +21,7 @@ Route::get("/", Index::class)->name("frontend.index");
 Route::get("/carts", ShowCarts::class)->name("frontend.carts");
 Route::get("/order-placed", OrderSubmit::class)->name("frontend.orderplaced");
 
-Route::get("/clear-cache", function () {
+Route::get("admin/clear-cache", function () {
     Artisan::call("cache:clear");
    \Filament\Notifications\Notification::make()
         ->title("Cache was cleared successfully")

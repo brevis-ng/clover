@@ -32,12 +32,14 @@ class StartCommand extends Command
         if ($photo_name = app(TelegramBotSettings::class)->start_msg_photo) {
             $photo_data = fopen(Storage::path($photo_name), "r+");
 
-            $bot->sendPhoto(
-                photo: InputFile::make($photo_data),
-                caption: app(TelegramBotSettings::class)->start_msg_content,
-                parse_mode: ParseMode::MARKDOWN,
-                reply_markup: $inline_button
-            );
+            if ($photo_data) {
+                $bot->sendPhoto(
+                    photo: InputFile::make($photo_data),
+                    caption: app(TelegramBotSettings::class)->start_msg_content,
+                    parse_mode: ParseMode::MARKDOWN,
+                    reply_markup: $inline_button
+                );
+            }
         } else {
             $bot->sendMessage(
                 text: app(TelegramBotSettings::class)->start_msg_content,

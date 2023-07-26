@@ -9,7 +9,6 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,12 +17,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a admin user
         User::create([
             "name" => "Brevis Nguyen",
             "email" => "brevisnguyen@gmail.com",
-            "password" => Hash::make("admin123"),
+            "password" => "admin123",
+            "role" => "admin",
         ]);
+
+        User::factory()->count(5)->create();
 
         Category::factory()
             ->has(

@@ -127,9 +127,11 @@ class ProductResource extends Resource
                     ->sortable(),
                 TextColumn::make("code")
                     ->label(__("product.code"))
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make("category.name")
                     ->label(__("product.category"))
+                    ->sortable()
                     ->toggleable(),
                 TextColumn::make("price")
                     ->label(__("product.price"))
@@ -151,7 +153,7 @@ class ProductResource extends Resource
                     ->toggleable(),
                 TextColumn::make("updated_at")
                     ->label(__("product.updated_at"))
-                    ->date()
+                    ->dateTime()
                     ->sortable()
                     ->toggleable(),
             ])

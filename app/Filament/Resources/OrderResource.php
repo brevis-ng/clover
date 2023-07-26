@@ -93,8 +93,14 @@ class OrderResource extends Resource
                     ->sortable()
                     ->enum(OrderStatus::all())
                     ->colors([
-                        "danger" => OrderStatus::CANCELLED->value,
-                        "warning" => OrderStatus::PENDING->value,
+                        "danger" => fn($state) => in_array($state, [
+                            OrderStatus::CANCELLED->value,
+                            OrderStatus::FAILED->value,
+                        ]),
+                        "warning" => fn($state) => in_array($state, [
+                            OrderStatus::PENDING->value,
+                            OrderStatus::PROCESSING->value,
+                        ]),
                         "success" => fn($state) => in_array($state, [
                             OrderStatus::COMPLETED->value,
                             OrderStatus::SHIPPED->value,
@@ -114,7 +120,7 @@ class OrderResource extends Resource
                     ),
                 TextColumn::make("created_at")
                     ->label(__("order.created_at"))
-                    ->date()
+                    ->dateTime()
                     ->sortable()
                     ->toggleable(),
             ])
