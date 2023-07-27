@@ -138,16 +138,26 @@ class OrderConversation extends InlineMenu
 
     protected function askCancelOrder(Nutgram $bot)
     {
+        if (
+            $this->customer->id == $this->order->customer_id &&
+            in_array($this->order->status, [
+                OrderStatus::PENDING,
+                OrderStatus::PROCESSING,
+            ])
+        ) {
+            $this->clearButtons()
+                ->menuText(__("order.cancelled_ask"), [
+                    "parse_mode" => ParseMode::HTML,
+                ])
+                ->orNext("cancelOrder")
+                ->showMenu();
+        }
+
         if ($this->customer->cannot("cancel", $this->order)) {
             $bot->sendMessage(__("order.unable_to_cancel_order"));
             $this->end();
             return null;
         }
-
-        $this->clearButtons()
-            ->menuText(__("order.explain_cancelled"), ["parse_mode" => ParseMode::HTML])
-            ->orNext("cancelOrder")
-            ->showMenu();
     }
 
     protected function cancelOrder(Nutgram $bot)
@@ -155,7 +165,11 @@ class OrderConversation extends InlineMenu
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
 
-        UserCancelledOrder::dispatch($bot->userId(), $bot->messageId(), $this->order->order_number);
+        UserCancelledOrder::dispatch(
+            $bot->userId(),
+            $bot->messageId(),
+            $this->order->order_number
+        );
 
         $bot->sendMessage("Order cancelled");
         $this->start($bot);

@@ -50,7 +50,7 @@ return [
         "completed" => "✅ Hoàn thành",
         "failed" => "❗Lỗi",
     ],
-    "explain_cancelled" => "Lý do hủy đơn hàng là gì:\n<i>Nhập /cancel để hủy bỏ hành động.</i>",
+    "cancelled_ask" => "Lý do hủy đơn hàng là gì:\n<i>Nhập /cancel để hủy bỏ hành động.</i>",
     "chat_with_user" => "👤Chat với khách",
     "order_cancelled" => "<b>Đơn hàng <code> :order </code>đã bị hủy. Lý do:</b>",
 ];

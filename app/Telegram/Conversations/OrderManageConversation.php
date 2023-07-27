@@ -131,7 +131,7 @@ class OrderManageConversation extends InlineMenu
         }
 
         $this->clearButtons()
-            ->menuText(__("order.explain_cancelled"), [
+            ->menuText(__("order.cancelled_ask"), [
                 "parse_mode" => ParseMode::HTML,
             ])
             ->orNext("cancelOrder")
