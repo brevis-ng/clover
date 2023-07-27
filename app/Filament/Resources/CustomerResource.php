@@ -100,13 +100,9 @@ class CustomerResource extends Resource
                     ->dateTime()
                     ->sortable(),
             ])
-            ->filters([Tables\Filters\TrashedFilter::make()])
+            ->filters([])
             ->actions([Tables\Actions\EditAction::make()])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
-            ]);
+            ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 
     public static function getRelations(): array
