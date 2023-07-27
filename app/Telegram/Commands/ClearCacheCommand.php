@@ -8,7 +8,7 @@ use SergiX44\Nutgram\Handlers\Type\Command;
 
 class ClearCacheCommand extends Command
 {
-    protected string $command = "clear_cache";
+    protected string $command = "cache";
 
     protected ?string $description = "Flush the application cache";
 
