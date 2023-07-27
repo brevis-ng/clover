@@ -23,10 +23,8 @@ class StartCommand extends Command
     {
         $inline_button = InlineKeyboardMarkup::make()->addRow(
             InlineKeyboardButton::make(
-                text: app(TelegramBotSettings::class)->webapp_inline_button,
-                web_app: new WebAppInfo(
-                    app(TelegramBotSettings::class)->webapp_url
-                )
+                app(TelegramBotSettings::class)->webapp_inline_button,
+                web_app: new WebAppInfo(app(TelegramBotSettings::class)->webapp_url)
             )
         );
         if ($photo_name = app(TelegramBotSettings::class)->start_msg_photo) {
@@ -47,14 +45,5 @@ class StartCommand extends Command
                 reply_markup: $inline_button
             );
         }
-
-        Customer::updateOrCreate(
-            ["id" => $bot->userId()],
-            [
-                "name" => $bot->user()?->first_name . " " . $bot->user()?->last_name,
-                "username" => $bot->user()?->username,
-                "language_code" => $bot->user()?->language_code,
-            ]
-        );
     }
 }
