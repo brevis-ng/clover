@@ -17,6 +17,8 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         return [
+            "id" => fake()->randomNumber(5),
+            "type" => fake()->randomElement(["private", "group", "supergroup", "channel"]),
             "name" => fake()->name(),
             "phone" => fake()->phoneNumber(),
             "username" => fake()->userName(),

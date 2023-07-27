@@ -20,7 +20,6 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            "username" => fake()->userName(),
             "telegram_id" => fake()->randomNumber(8),
             'email' => fake()->unique()->safeEmail(),
             "role" => fake()->randomElement(Roles::class),

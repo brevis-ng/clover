@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             "name" => "Brevis Nguyen",
             "email" => "brevisnguyen@gmail.com",
             "password" => "admin123",
-            "role" => "admin",
+            "role" => "Administrator",
         ]);
 
         User::factory()->count(5)->create();

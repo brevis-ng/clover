@@ -4,19 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Customer extends Authenticatable
+class Customer extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = ["id", "name", "phone", "username", "language_code"];
+    public $incrementing = false;
+    protected $fillable = ["id", "type", "name", "phone", "username", "language_code"];
+    protected $casts = ["started_at" => "datetime", "blocked_at" => "datetime"];
 
     public function orders()
     {
