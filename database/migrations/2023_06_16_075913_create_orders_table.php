@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string("order_number")->unique()->nullable();
-            $table->foreignId('customer_id')->constrained()->noActionOnDelete();
+            $table->bigInteger("customer_id");
             $table->string('status', 20)->default('pending');
             $table->text('address');
             $table->double('total_amount')->default(0);
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign("customer_id")->references("id")->on("customers");
         });
     }
 
