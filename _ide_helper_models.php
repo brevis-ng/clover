@@ -53,30 +53,34 @@ namespace App\Models{
  * App\Models\Customer
  *
  * @property int $id
+ * @property \SergiX44\Nutgram\Telegram\Properties\ChatType $type
  * @property string|null $name
  * @property string|null $phone
  * @property string|null $username
  * @property string|null $language_code
+ * @property \Illuminate\Support\Carbon|null $started_at
+ * @property \Illuminate\Support\Carbon|null $blocked_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $orders
  * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read int|null $tasks_count
  * @method static \Database\Factories\CustomerFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer group()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Customer onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereBlockedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereStartedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUsername($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Customer withoutTrashed()
  */
 	class Customer extends \Eloquent {}
 }
@@ -169,11 +173,39 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Task
+ *
+ * @property int $id
+ * @property int $chat_id
+ * @property string $name
+ * @property string $content
+ * @property string|null $image
+ * @property string $cron
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Customer $chat
+ * @method static \Illuminate\Database\Eloquent\Builder|Task enabled()
+ * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Task newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Task query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereChatId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereCron($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereUpdatedAt($value)
+ */
+	class Task extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\User
  *
  * @property int $id
  * @property string $name
- * @property string|null $username
  * @property int|null $telegram_id
  * @property string $email
  * @property \App\Enums\Roles|null $role
@@ -202,7 +234,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTelegramId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser, \Filament\Models\Contracts\HasAvatar {}
 }
