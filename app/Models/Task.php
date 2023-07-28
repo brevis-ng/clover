@@ -9,7 +9,21 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["chat_id", "name", "content", "image", "cron"];
+    protected $fillable = [
+        "chat_id",
+        "name",
+        "content",
+        "image",
+        "cron",
+        "enabled",
+    ];
+
+    protected $casts = ["enabled" => "boolean"];
+
+    public function scopeEnabled($query): void
+    {
+        $query->where("enabled", true);
+    }
 
     public function chat()
     {

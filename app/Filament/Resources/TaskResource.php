@@ -3,10 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TaskResource\Pages;
-use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Models\Customer;
 use App\Models\Task;
-use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
@@ -14,16 +12,14 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\ViewField;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
-use SergiX44\Nutgram\Telegram\Properties\ChatType;
+use Filament\Tables\Columns\ToggleColumn;
 
 class TaskResource extends Resource
 {
@@ -86,6 +82,11 @@ class TaskResource extends Resource
                                 ->searchable()
                                 ->required(),
                         ]),
+                        Section::make("Trạng thái")->schema([
+                            Toggle::make("enabled")
+                                ->label(__("settings.enabled"))
+                                ->inline(),
+                        ]),
                     ])
                     ->columnSpan(["lg" => 1]),
             ])
@@ -103,6 +104,7 @@ class TaskResource extends Resource
                     ->color("green"),
                 TextColumn::make("content")->html(),
                 TextColumn::make("cron")->label("Schedule"),
+                ToggleColumn::make("enabled")->label(__("settings.enabled")),
                 ImageColumn::make("image")
                     ->disk("tasks")
                     ->defaultImageUrl("/images/placeholder.png")

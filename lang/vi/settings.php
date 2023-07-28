@@ -29,5 +29,6 @@ return [
     "image" => "Hình ảnh",
     "image_hint" => "Ảnh rõ nét, có tỷ lệ 4:3, độ phân giải có thể là 640x480, 800x600, 1280x960",
     "cron_desc" => "Biểu thức lịch trình cron tạo thành từ 5 trường phút, giờ, ngày, tháng, tuần. Tham khảo thêm tại [https://crontab.guru] hoặc [https://cronexpressiontogo.com]",
-    "cron_help" => "Một số ví dụ gợi ý: Mỗi giờ: 0 * * * *, Mỗi ngày lúc 8h sáng: 0 8 * * *, Mỗi chủ nhật lúc 10h: 0 10 * * SUN, chú ý dấu cách."
+    "cron_help" => "Một số ví dụ gợi ý: Mỗi giờ: 0 * * * *, Mỗi ngày lúc 8h sáng: 0 8 * * *, Mỗi chủ nhật lúc 10h: 0 10 * * SUN, chú ý dấu cách.",
+    "enabled" => "Bật/Tắt",
 ];

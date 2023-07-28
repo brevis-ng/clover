@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text("content");
             $table->string("image")->nullable();
             $table->string("cron")->default("0 */4 * * *");
+            $table->boolean("enabled")->default(true);
             $table->timestamps();
 
             $table->foreign("chat_id")->references("id")->on("customers");
