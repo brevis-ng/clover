@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SergiX44\Nutgram\Telegram\Properties\ChatType;
 
 class Customer extends Model
 {
@@ -20,7 +21,21 @@ class Customer extends Model
         "started_at",
         "blocked_at",
     ];
-    protected $casts = ["started_at" => "datetime", "blocked_at" => "datetime"];
+    protected $casts = [
+        "started_at" => "datetime",
+        "blocked_at" => "datetime",
+        "type" => ChatType::class,
+    ];
+
+    public function scopeGroup($query): void
+    {
+        $query->whereIn("type", [ChatType::GROUP, ChatType::SUPERGROUP, ChatType::CHANNEL]);
+    }
+
+    public function getTelegramUrl(): ?string
+    {
+        return "tg://user?id=" . $this->id;
+    }
 
     public function orders()
     {

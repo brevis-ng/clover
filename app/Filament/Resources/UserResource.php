@@ -86,7 +86,7 @@ class UserResource extends Resource
                     ->searchable()
                     ->color("secondary"),
                 TextColumn::make("telegram_id")
-                    ->icon("icons.telegram")
+                    ->icon("heroicon-o-link")
                     ->url(fn($record) => $record->getTelegramUrl(), true),
                 BadgeColumn::make("role")
                     ->colors([

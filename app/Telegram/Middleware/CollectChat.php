@@ -10,31 +10,29 @@ class CollectChat
 {
     public function __invoke(Nutgram $bot, $next): void
     {
-        $user = $bot->user();
+        $chat = $bot->chat();
 
-        if ($user === null) {
+        if ($chat === null) {
             return;
         }
 
-        $chat = DB::transaction(function () use ($user, $bot) {
-
+        $chat = DB::transaction(function () use ($chat, $bot) {
             $chat = Customer::updateOrCreate(
                 [
-                    "id" => $user->id,
+                    "id" => $chat->id,
                 ],
                 [
-                    "type" => $bot->message()?->chat?->type,
-                    "name" => $user->first_name . " " . $user->last_name,
-                    "username" => $user->username,
-                    "language_code" => $user->language_code,
+                    "type" => $chat->type,
+                    "name" =>
+                        $chat->title ??
+                        $chat->first_name . " " . $chat->last_name,
+                    "username" => $chat->username,
+                    "language_code" => $bot->user()?->language_code,
                     "blocked_at" => null,
                 ]
             );
 
-            if (
-                !$chat->started_at &&
-                $bot->message()?->chat?->type === "private"
-            ) {
+            if (!$chat->started_at) {
                 $chat->started_at = now();
                 $chat->save();
             }

@@ -9,10 +9,18 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["name", "content", "image", "cron"];
+    protected $fillable = ["chat_id", "name", "content", "image", "cron"];
 
     public function chat()
     {
         return $this->belongsTo(Customer::class, "chat_id", "id");
+    }
+
+    public function getContent(): string
+    {
+        $elements = ["<p>", "</p>"];
+        $replaces = ["", "\n"];
+
+        return str_replace($elements, $replaces, $this->content);
     }
 }

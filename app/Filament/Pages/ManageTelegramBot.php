@@ -20,8 +20,9 @@ use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 class ManageTelegramBot extends SettingsPage
 {
-    protected static ?string $navigationGroup = "Settings";
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = "System";
+    protected static ?string $title = "Telegram Bot";
+    protected static ?int $navigationSort = 3;
     protected static ?string $navigationIcon = "heroicon-o-cog";
 
     protected static string $settings = TelegramBotSettings::class;

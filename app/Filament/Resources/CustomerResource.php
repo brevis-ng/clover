@@ -13,7 +13,6 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ViewColumn;
 
 class CustomerResource extends Resource
 {
@@ -84,17 +83,21 @@ class CustomerResource extends Resource
                 TextColumn::make("id")->sortable(),
                 TextColumn::make("name")
                     ->label(__("customer.name"))
+                    ->weight("medium")
                     ->copyable()
                     ->searchable(),
                 TextColumn::make("phone")
                     ->label(__("customer.phone"))
                     ->searchable()
                     ->copyable(),
-                ViewColumn::make("username")
-                    ->searchable()
-                    ->view("columns.username"),
-                TextColumn::make("language_code")
-                    ->label(__("customer.language_code")),
+                TextColumn::make("username")
+                    ->label("Telegram")
+                    ->icon("heroicon-o-link")
+                    ->url(fn($record) => $record->getTelegramUrl(), true)
+                    ->default("Unknown")
+                    ->searchable(),
+                TextColumn::make("language_code")->label(__("customer.language_code")),
+                TextColumn::make("type"),
                 TextColumn::make("created_at")
                     ->label(__("customer.created_at"))
                     ->dateTime()

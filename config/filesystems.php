@@ -60,6 +60,14 @@ return [
             'throw' => false,
         ],
 
+        'tasks' => [
+            'driver' => 'local',
+            'root' => storage_path('app/tasks'),
+            'url' => env('APP_URL').'/images/tasks',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -89,6 +97,7 @@ return [
         public_path('storage') => storage_path('app/public'),
         public_path('images/products') => storage_path('app/products'),
         public_path('images/categories') => storage_path('app/categories'),
+        public_path('images/tasks') => storage_path('app/tasks'),
     ],
 
 ];
