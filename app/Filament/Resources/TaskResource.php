@@ -85,6 +85,7 @@ class TaskResource extends Resource
                         Section::make("Trạng thái")->schema([
                             Toggle::make("enabled")
                                 ->label(__("settings.enabled"))
+                                ->default(true)
                                 ->inline(),
                         ]),
                     ])
@@ -111,7 +112,10 @@ class TaskResource extends Resource
                     ->square(),
             ])
             ->filters([])
-            ->actions([Tables\Actions\EditAction::make()])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 

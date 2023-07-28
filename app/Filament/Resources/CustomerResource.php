@@ -69,6 +69,20 @@ class CustomerResource extends Resource
                                     Customer $record
                                 ): ?string => $record->updated_at?->diffForHumans()
                             ),
+                        Placeholder::make("started_at")
+                            ->label(__("customer.started_at"))
+                            ->content(
+                                fn(
+                                    Customer $record
+                                ): ?string => $record->started_at?->diffForHumans()
+                            ),
+                        Placeholder::make("blocked_at")
+                            ->label(__("customer.blocked_at"))
+                            ->content(
+                                fn(
+                                    Customer $record
+                                ): ?string => $record->blocked_at?->diffForHumans()
+                            ),
                     ])
                     ->columnSpan(1)
                     ->hidden(fn(?Customer $record) => $record === null),
@@ -96,7 +110,9 @@ class CustomerResource extends Resource
                     ->url(fn($record) => $record->getTelegramUrl(), true)
                     ->default("Unknown")
                     ->searchable(),
-                TextColumn::make("language_code")->label(__("customer.language_code")),
+                TextColumn::make("language_code")->label(
+                    __("customer.language_code")
+                ),
                 TextColumn::make("type"),
                 TextColumn::make("created_at")
                     ->label(__("customer.created_at"))

@@ -18,4 +18,6 @@ return [
         "Administrator" => "Quản Lý",
         "Assistant" => "Trợ lý & CSKH",
     ],
+    "started_at" => "Tương tác với bot lần đầu",
+    "blocked_at" => "Bị chặn, ban lúc",
 ];

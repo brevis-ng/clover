@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 class Task extends Model
 {
@@ -36,5 +38,16 @@ class Task extends Model
         $replaces = ["", "\n"];
 
         return str_replace($elements, $replaces, $this->content);
+    }
+
+    public function getImage(): InputFile|null
+    {
+        if ($this->image && Storage::disk("tasks")->exists($this->image)) {
+            $img_data = fopen(Storage::path($this->image), "r+");
+
+            return InputFile::make($img_data);
+        }
+
+        return null;
     }
 }
