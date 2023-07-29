@@ -33,5 +33,9 @@ class AppServiceProvider extends ServiceProvider
                     ->icon("heroicon-o-trash"),
             ]);
         });
+        Filament::registerRenderHook(
+            'footer.start',
+            fn () => view('layouts.ramshop'),
+        );
     }
 }
