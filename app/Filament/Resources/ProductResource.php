@@ -57,7 +57,7 @@ class ProductResource extends Resource
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),
-                        Section::make("Image")
+                        Section::make(__("product.sec_image"))
                             ->schema([
                                 FileUpload::make("image")
                                     ->label(__("product.image"))
@@ -74,14 +74,16 @@ class ProductResource extends Resource
                                     ),
                             ])
                             ->collapsible(),
-                        Section::make("Pricing")
+                        Section::make(__("product.sec_price"))
                             ->schema([
                                 TextInput::make("price")
                                     ->label(__("product.price"))
+                                    ->hint(__("product.price_hint"))
                                     ->numeric()
                                     ->required(),
                                 TextInput::make("old_price")
                                     ->label(__("product.old_price"))
+                                    ->hint(__("product.old_price_hint"))
                                     ->numeric(),
                                 TextInput::make("cost")
                                     ->label(__("product.cost"))
@@ -99,7 +101,7 @@ class ProductResource extends Resource
                                 ->helperText(__("product.visibility_hint"))
                                 ->default(true),
                         ]),
-                        Section::make("Associations")->schema([
+                        Section::make(__("product.associations"))->schema([
                             Select::make("category_id")
                                 ->label(__("product.category"))
                                 ->options(Category::all()->pluck("name", "id"))
@@ -157,6 +159,7 @@ class ProductResource extends Resource
                     ->sortable()
                     ->toggleable(),
             ])
+            ->defaultSort("updated_at", "desc")
             ->filters([])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -179,5 +182,10 @@ class ProductResource extends Resource
             "create" => Pages\CreateProduct::route("/create"),
             "edit" => Pages\EditProduct::route("/{record}/edit"),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __("product.label");
     }
 }

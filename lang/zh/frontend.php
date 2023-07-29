@@ -2,7 +2,7 @@
 
 /**
  * Frontend translation file
- * Language: Vietnamese
+ * Language: Chinese
  * Author: @brevis-ng
  */
 
@@ -27,4 +27,9 @@ return [
     "shipping_amount" => "运费",
     "total_amount" => "合计",
     "status" => "状态",
+    "help" => "<b>贵客您好，</b>\n\n机器人支持的命令列表如下:\n".
+        "• /start  欢迎留言\n".
+        "• /myorder  检查您的订单\n".
+        "• /cancel  取消操作\n\n".
+        "✳️<b>您可以与我们的 24/7 客户服务聊天</b>✳️"
 ];

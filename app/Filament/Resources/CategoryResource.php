@@ -69,7 +69,7 @@ class CategoryResource extends Resource
                                 ->helperText(__("category.visibility_hint"))
                                 ->default(true),
                         ]),
-                        Section::make("Timeline")
+                        Section::make(__("category.timeline"))
                             ->schema([
                                 Placeholder::make("created_at")
                                     ->label(__("category.created_at"))
@@ -136,5 +136,10 @@ class CategoryResource extends Resource
             "create" => Pages\CreateCategory::route("/create"),
             "edit" => Pages\EditCategory::route("/{record}/edit"),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __("category.label");
     }
 }

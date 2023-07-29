@@ -10,8 +10,6 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Group;
@@ -22,6 +20,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 
 class OrderResource extends Resource
 {
@@ -44,7 +43,7 @@ class OrderResource extends Resource
                         Card::make()
                             ->schema(static::getFormSchema())
                             ->columns(2),
-                        Section::make("Order items")->schema(
+                        Section::make(__("order.items"))->schema(
                             static::getFormSchema("items")
                         ),
                     ])
@@ -85,6 +84,7 @@ class OrderResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make("customer.name")
+                    ->label(__("order.customer"))
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
@@ -124,7 +124,8 @@ class OrderResource extends Resource
                     ->sortable()
                     ->toggleable(),
             ])
-            ->filters([Tables\Filters\TrashedFilter::make()])
+            ->defaultSort("updated_at", "desc")
+            ->filters([SelectFilter::make("status")->options(OrderStatus::class)])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -134,7 +135,6 @@ class OrderResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
                 Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 
@@ -152,13 +152,6 @@ class OrderResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->withoutGlobalScopes([
-            SoftDeletingScope::class,
-        ]);
-    }
-
     public static function getFormSchema(?string $section = null): array
     {
         if ($section === "items") {
@@ -167,7 +160,7 @@ class OrderResource extends Resource
                     ->relationship()
                     ->schema([
                         Select::make("product_id")
-                            ->label("Product")
+                            ->label(__("product.name"))
                             ->options(Product::query()->pluck("name", "id"))
                             ->required()
                             ->searchable()
@@ -182,6 +175,7 @@ class OrderResource extends Resource
                             ->columnSpan(["md" => 5]),
 
                         TextInput::make("quantity")
+                            ->label(__("order.quantity"))
                             ->numeric()
                             ->default(1)
                             ->required()
@@ -239,5 +233,10 @@ class OrderResource extends Resource
                 ->label(__("order.notes"))
                 ->columnSpan("full"),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __("order.label");
     }
 }

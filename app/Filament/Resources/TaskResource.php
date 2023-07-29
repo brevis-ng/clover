@@ -37,7 +37,7 @@ class TaskResource extends Resource
                         Card::make()->schema([
                             TextInput::make("name")->required(),
                             RichEditor::make("content")
-                                ->label(__("settings.content"))
+                                ->label(__("task.content"))
                                 ->hint(
                                     "Using bold, italic, strike and underline styles only"
                                 )
@@ -51,8 +51,8 @@ class TaskResource extends Resource
                                 ->required()
                                 ->columnSpanFull(),
                             FileUpload::make("image")
-                                ->label(__("settings.image"))
-                                ->helperText(__("product.image_hint"))
+                                ->label(__("task.image"))
+                                ->helperText(__("task.image_hint"))
                                 ->image()
                                 ->disk("tasks")
                                 ->maxSize(1024)
@@ -63,12 +63,12 @@ class TaskResource extends Resource
                                 ->preserveFilenames(),
                         ]),
                         Section::make("Crontab")
-                            ->description(__("settings.cron_desc"))
+                            ->description(__("task.cron_desc"))
                             ->schema([
                                 TextInput::make("cron")
-                                    ->label(__("settings.crontab"))
+                                    ->label(__("task.cron"))
                                     ->placeholder("* * * * *")
-                                    ->helperText(__("settings.cron_help"))
+                                    ->helperText(__("task.cron_help"))
                                     ->required(),
                             ]),
                     ])
@@ -84,7 +84,7 @@ class TaskResource extends Resource
                         ]),
                         Section::make("Trạng thái")->schema([
                             Toggle::make("enabled")
-                                ->label(__("settings.enabled"))
+                                ->label(__("task.enabled"))
                                 ->default(true)
                                 ->inline(),
                         ]),
@@ -99,13 +99,17 @@ class TaskResource extends Resource
         return $table
             ->columns([
                 TextColumn::make("id"),
-                TextColumn::make("name")->weight("medium"),
+                TextColumn::make("name")
+                    ->label(__("task.name"))
+                    ->weight("medium"),
                 TextColumn::make("chat.name")
-                    ->label("Group")
+                    ->label(__("task.chat"))
                     ->color("green"),
-                TextColumn::make("content")->html(),
-                TextColumn::make("cron")->label("Schedule"),
-                ToggleColumn::make("enabled")->label(__("settings.enabled")),
+                TextColumn::make("content")
+                    ->label(__("task.content"))
+                    ->html(),
+                TextColumn::make("cron")->label(__("task.cron")),
+                ToggleColumn::make("enabled")->label(__("task.enabled")),
                 ImageColumn::make("image")
                     ->disk("tasks")
                     ->defaultImageUrl("/images/placeholder.png")
@@ -131,5 +135,10 @@ class TaskResource extends Resource
             "create" => Pages\CreateTask::route("/create"),
             "edit" => Pages\EditTask::route("/{record}/edit"),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __("task.label");
     }
 }

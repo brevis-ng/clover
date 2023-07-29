@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use SergiX44\Nutgram\Telegram\Properties\ChatType;
 
 class CustomerResource extends Resource
 {
@@ -119,7 +121,8 @@ class CustomerResource extends Resource
                     ->dateTime()
                     ->sortable(),
             ])
-            ->filters([])
+            ->defaultSort("created_at", "desc")
+            ->filters([SelectFilter::make("type")->options(ChatType::class)])
             ->actions([Tables\Actions\EditAction::make()])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
@@ -135,5 +138,10 @@ class CustomerResource extends Resource
             "index" => Pages\ListCustomers::route("/"),
             "edit" => Pages\EditCustomer::route("/{record}/edit"),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __("customer.label");
     }
 }

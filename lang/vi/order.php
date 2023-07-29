@@ -7,6 +7,7 @@
  */
 
 return [
+    "label" => "Đơn Hàng",
     "order_number" => "Mã đơn hàng",
     "status" => "Trạng thái",
     "total_amount" => "Tổng tiền",
@@ -37,7 +38,6 @@ return [
     "back" => "🔙 Quay lại",
     "assistant" => "💯 CSKH :name",
     "unable_to_cancel_order" => "⛔ Đơn hàng của bạn đã được chuẩn bị nên bạn không thể hủy ngay bây giờ.",
-    "latest_orders" => "Đây là :count đơn hàng mới nhất",
     "update_shipping_amount" => "🛵Cập nhật tiền Ship",
     "update_status" => "♻️Cập nhật trạng thái",
     "update_shipping_amount_send" => "Vui lòng nhập phí ship, chỉ nhập chữ số.",
@@ -53,4 +53,7 @@ return [
     "cancelled_ask" => "Lý do hủy đơn hàng là gì:\n<i>Nhập /cancel để hủy bỏ hành động.</i>",
     "chat_with_user" => "👤Chat với khách",
     "order_cancelled" => "<b>Đơn hàng <code> :order </code>đã bị hủy. Lý do:</b>",
+    "customer" => "Khách hàng",
+    "items" => "Đơn Hàng",
+    "quantity" => "Số lượng",
 ];
