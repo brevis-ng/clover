@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::view("/", "welcome");
 
-Route::get("/", Index::class)->name("frontend.index");
-Route::get("/carts", ShowCarts::class)->name("frontend.carts");
-Route::get("/order-placed", OrderSubmit::class)->name("frontend.orderplaced");
+Route::prefix("/webapp")->group(function () {
+    Route::get("/", Index::class)->name("frontend.index");
+    Route::get("/carts", ShowCarts::class)->name("frontend.carts");
+    Route::get("/order-placed", OrderSubmit::class)->name("frontend.orderplaced");
+});
 
 Route::get("admin/clear-cache", function () {
     Artisan::call("cache:clear");
