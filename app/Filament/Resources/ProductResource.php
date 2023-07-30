@@ -108,6 +108,13 @@ class ProductResource extends Resource
                                 ->searchable()
                                 ->required(),
                         ]),
+                        Section::make(__("product.variation"))->schema([
+                            Select::make("variations")
+                                ->label(__("product.variation"))
+                                ->relationship("variations", "name")
+                                ->multiple()
+                                ->searchable()
+                        ]),
                     ])
                     ->columnSpan(["lg" => 1]),
             ])

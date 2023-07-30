@@ -39,4 +39,5 @@ return [
     "sec_image" => "Hình Ảnh Sản Phầm",
     "sec_price" => "Giá Bán",
     "associations" => "Liên Kết",
+    "variation" => "Tùy chọn",
 ];

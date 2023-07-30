@@ -71,4 +71,9 @@ class Product extends Model
             "amount",
         ]);
     }
+
+    public function variations()
+    {
+        return $this->belongsToMany(Variation::class);
+    }
 }
