@@ -15,36 +15,45 @@
             Telegram.WebApp.HapticFeedback.impactOccurred('soft');
             $wire.decrement(data);
         },
+        username: function () {
+            var full_name = Telegram.WebApp.initDataUnsafe.user.first_name + Telegram.WebApp.initDataUnsafe.user.last_name;
+            return full_name ? full_name : 'My Darling';
+        }
     }">
-    <div class="mb-3">
-        <ul class="flex -mb-px text-center flex-nowrap scroll-smooth scrollbar-hidden overflow-x-scroll">
-            <li class="flex-auto text-center mx-2">
-                <div>
-                    <button @click="setActive(0)"
-                        class="w-full inline-block pb-3 pt-1 border-b-2 whitespace-nowrap"
-                        :class="isActive(0) ? 'border-indigo-500 tg-link-color' : 'border-transparent tg-text-color'"
-                    >
-                        All
-                    </button>
+    <div class="m-2 mt-0">
+        <h3 class="text-xl text-gray-800 dark:text-white">Welcome <span x-text="username()" class="font-bold"></span></h3>
+    </div>
+    <div class="my-3 scrollbar-hidden">
+        <ul class="flex flex-nowrap gap-3 items-center scroll-smooth snap-x snap-mandatory overflow-x-auto no-scrollbar">
+            <li class="flex-none snap-always snap-center">
+                <div @click="setActive(0)"
+                    class="overflow-hidden inline-flex items-center rounded-r-full rounded-l-full p-1 border border-gray-200 dark:border-slate-700"
+                    :class="isActive(0) ? 'bg-amber-400 text-white' : 'bg-white dark:bg-slate-600 text-amber-400'"
+                >
+                    <img class="w-10 h-10 object-cover rounded-full" src="{{ '/storage/default.jpg' }}">
+                    <div class="ml-2">All</div>
                 </div>
             </li>
             @foreach ($categories as $category)
-            <li class="flex-auto text-center mx-2">
-                <div>
-                    <button @click="setActive({{ $category->id }})"
-                        class="w-full inline-block pb-3 pt-1 border-b-2 whitespace-nowrap"
-                        :class="isActive({{ $category->id }}) ? 'border-indigo-500 tg-link-color' : 'border-transparent tg-text-color'"
-                    >
-                        {{ $category->name }}
-                    </button>
+            <li class="flex-none snap-always snap-center">
+                <div @click="setActive({{ $category->id }})"
+                    class="overflow-hidden inline-flex items-center rounded-r-full rounded-l-full p-1 border border-gray-200 dark:border-gray-900"
+                    :class="isActive({{ $category->id }}) ? 'bg-amber-400 text-white' : 'bg-white dark:bg-slate-700 text-amber-400'"
+                >
+                    @if($category->image && Illuminate\Support\Facades\Storage::disk("categories")->exists($category->image))
+                        <img class="w-10 h-10 object-cover rounded-full" src="{{ Illuminate\Support\Facades\Storage::disk('categories')->url($category->image) }}">
+                    @else
+                        <img class="w-10 h-10 object-cover rounded-full" src="{{ '/storage/default.jpg' }}">
+                    @endif
+                    <div class="ml-2">{{ $category->name }}</div>
                 </div>
             </li>
             @endforeach
         </ul>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 tg-bg-color p-2">
+    <div class="grid grid-cols-2 gap-x-3 gap-y-5 p-2">
         @foreach ($products as $product)
-        <div class="tg-secondary-bg-color flex flex-col">
+        <div class="flex flex-col bg-white dark:bg-gray-600 shadow-lg rounded-lg overflow-hidden">
             <div class="relative">
                 <div class="bg-red-500 text-white absolute p-1 uppercase">{{ $product->code }}</div>
                 <div class="bg-blue-500 text-white absolute px-1 bottom-0 right-0">{{ $product?->remarks }}</div>
@@ -55,13 +64,13 @@
                 @endif
             </div>
             <div class="text-center justify-center my-1 grow">
-                <h3 class="font-bold tracking-wide tg-text-color">{{ $product->name }}</h3>
-                <p class="text-xs line-clamp-2 tg-hint-color">{!! $product->description !!}</p>
-                <p class="font-semibold tracking-wide text-base text-orange-600 font-oswald">{{ money($product->price, convert: true) }}/{{ App\Enums\Units::getTranslation($product->unit) }}</p>
+                <h3 class="font-bold tracking-wide text-gray-800 dark:text-white">{{ $product->name }}</h3>
+                <p class="text-xs line-clamp-2 text-slate-600 dark:text-gray-300">{!! $product->description !!}</p>
+                <p class="font-semibold tracking-wide text-base text-orange-500 font-oswald">{{ money($product->price, convert: true) }}{{ App\Enums\Units::getTranslation($product->unit) }}</p>
             </div>
             @if ($this->getQuantity($product->id) == 0)
             <button @click="handleIncrement" data-product="{{ $product }}"
-                class="subpixel-antialiased tracking-tighter uppercase w-full tg-btn-color tg-btn-text-color py-2 flex justify-center bottom-0"
+                class="subpixel-antialiased tracking-tighter uppercase w-full bg-blue-600 text-white py-2 flex justify-center bottom-0"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -70,13 +79,13 @@
             </button>
             @else
             <div class="flex justify-between items-center">
-                <button class="py-2 px-5 bg-rose-400 text-white" @click="handleDecrement({{ $product->id }})">
+                <button class="py-2 px-5 bg-red-500 text-white" @click="handleDecrement({{ $product->id }})">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
                     </svg>
                 </button>
-                <p>{{ $this->getQuantity($product->id) }}</p>
-                <button class="py-2 px-5 tg-btn-color tg-btn-text-color" @click="handleIncrement" data-product="{{ $product }}">
+                <p class="text-black dark:text-white font-bold">{{ $this->getQuantity($product->id) }}</p>
+                <button class="py-2 px-5 bg-blue-600 text-white" @click="handleIncrement" data-product="{{ $product }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -94,6 +103,18 @@
     document.addEventListener("DOMContentLoaded", () => {
         Telegram.WebApp.BackButton.isVisible = false;
 
+        function showMainButton() {
+            Telegram.WebApp.MainButton.setParams({
+                text: "{{ Str::upper(__('frontend.cart_view')) }}",
+                text_color: "#ffffff",
+                color: "#6366f1",
+                is_active: true,
+                is_visible: true,
+            }).onClick(() => {
+                window.location.href = "/webapp/carts";
+            });
+        };
+
         if (parseInt("{{ App\Helpers\CartManager::count() }}") > 0) {
             showMainButton();
         }
@@ -101,17 +122,6 @@
         Livewire.on("cart-updated", (count) => {
             count > 0 ? showMainButton() : Telegram.WebApp.MainButton.hide();
         });
-
-        function showMainButton() {
-            Telegram.WebApp.MainButton.setParams({
-                text: "{{ Str::upper(__('frontend.cart_view')) }}",
-                color: "#525FE1",
-                is_active: true,
-                is_visible: true,
-            }).onClick(() => {
-                window.location.href = "/carts";
-            });
-        };
     });
 </script>
 @endpush

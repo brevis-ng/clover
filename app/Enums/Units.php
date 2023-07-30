@@ -26,6 +26,9 @@ enum Units: string
 
     public static function getTranslation(Units $units): string
     {
-        return __("product.units.{$units->value}");
+        if ($units == self::NONE) {
+            return "";
+        }
+        return "/" . __("product.units.{$units->value}");
     }
 }

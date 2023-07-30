@@ -9,36 +9,12 @@ input:invalid, textarea:invalid, select:invalid {
     box-shadow: none;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.scrollbar-hidden {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.tg-bg-color {
-    background-color: var(--tg-theme-bg-color, #ffffff);
-    color-scheme: var(--tg-color-scheme);
-}
-.tg-text-color {
-    color: var(--tg-theme-text-color, #222);
-}
-.tg-hint-color {
-    color: var(--tg-theme-hint-color, #ccc);
-}
-.tg-link-color {
-    color: var(--tg-theme-link-color, #2678b6);
-}
-.tg-btn-color {
-    background-color: var(--tg-theme-button-color, #50a8eb);
-}
-.tg-btn-text-color {
-    color: var(--tg-theme-button-text-color, #ffffff);
-}
-.tg-secondary-bg-color {
-    background-color: var(--tg-theme-secondary-bg-color, #efefef);
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 }

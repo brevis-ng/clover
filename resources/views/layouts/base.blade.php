@@ -8,12 +8,6 @@
         <meta name="MobileOptimized" content="176" />
         <meta name="HandheldFriendly" content="True" />
         <meta name="robots" content="noindex,nofollow" />
-        @hasSection('title')
-            <title>@yield('title') - {{ config('app.name') }}</title>
-        @else
-            <title>{{ config('app.name') }}</title>
-        @endif
-
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -27,24 +21,29 @@
         @livewireStyles
     </head>
 
-    <body class="min-h-screen container tg-secondary-bg-color tg-text-color">
+    <body class="min-h-screen container bg-[#F0F2F5] dark:bg-slate-800 no-scrollbar">
         {{ $slot }}
 
         @livewireScripts
         @stack('scripts')
         <script>
             Telegram.WebApp.ready();
-            // Enables a confirmation dialog while the user is trying to close the Web App.
             Telegram.WebApp.enableClosingConfirmation();
-            // HapticFeedback sorf when MainButton is clicked
+
+            function setThemeClass() {
+                document.documentElement.className = Telegram.WebApp.colorScheme;
+            }
+            Telegram.WebApp.onEvent("themeChanged", setThemeClass);
+            setThemeClass();
+
             Telegram.WebApp.onEvent("mainButtonClicked", () => {
                 Telegram.WebApp.HapticFeedback.impactOccurred('soft');
             });
-            // Check if Web App is expanded to the maximum available height
+
             if (!Telegram.WebApp.isExpanded) {
                 setTimeout(function() {
                     Telegram.WebApp.showConfirm("{{ __('frontend.expand_confirm') }}", (result) => result && Telegram.WebApp.expand());
-                }, 1000);
+                }, 500);
             }
         </script>
     </body>

@@ -65,7 +65,7 @@ class Index extends Component
             fn() => Product::visibility()->when(
                 $this->category_id != 0,
                 fn($query) => $query->where("category_id", $this->category_id)
-            )->latest("updated_at")->paginate(16)
+            )->latest("updated_at")->paginate(20)
         );
 
         return view("livewire.index", [
