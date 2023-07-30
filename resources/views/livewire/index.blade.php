@@ -70,7 +70,7 @@
             </div>
             @if ($this->getQuantity($product->id) == 0)
             <button @click="handleIncrement" data-product="{{ $product }}"
-                class="subpixel-antialiased tracking-tighter uppercase w-full bg-blue-600 text-white py-2 flex justify-center bottom-0"
+                class="subpixel-antialiased tracking-tighter uppercase w-full bg-indigo-500 text-white py-2 flex justify-center bottom-0 rounded-lg"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -85,7 +85,7 @@
                     </svg>
                 </button>
                 <p class="text-black dark:text-white font-bold">{{ $this->getQuantity($product->id) }}</p>
-                <button class="py-2 px-5 bg-blue-600 text-white" @click="handleIncrement" data-product="{{ $product }}">
+                <button class="py-2 px-5 bg-indigo-500 text-white" @click="handleIncrement" data-product="{{ $product }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
