@@ -66,7 +66,10 @@
             <div class="text-center justify-center my-1 grow">
                 <h3 class="font-bold tracking-wide text-gray-800 dark:text-white">{{ $product->name }}</h3>
                 <p class="text-xs line-clamp-2 text-slate-600 dark:text-gray-300">{!! $product->description !!}</p>
-                <p class="font-semibold tracking-wide text-base text-orange-500 font-oswald">{{ money($product->price, convert: true) }}{{ App\Enums\Units::getTranslation($product->unit) }}</p>
+                <div class="inline-flex gap-x-2 justify-center items-baseline">
+                    <p class="font-semibold tracking-wide text-sm line-through text-gray-600 dark:text-gray-200 font-oswald">{{ money($product->old_price, convert: true) }}</p>
+                    <p class="font-semibold tracking-wide text-base text-orange-500 font-oswald">{{ money($product->price, convert: true) }}{{ App\Enums\Units::getTranslation($product->unit) }}</p>
+                </div>
             </div>
             @if ($this->getQuantity($product->id) == 0)
             <button @click="handleIncrement" data-product="{{ $product }}"
