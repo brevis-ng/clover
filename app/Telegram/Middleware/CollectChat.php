@@ -40,7 +40,7 @@ class CollectChat
             return $chat;
         });
 
-        $bot->setData(Customer::class, $chat);
+        $bot->set(Customer::class, $chat);
 
         $next($bot);
     }

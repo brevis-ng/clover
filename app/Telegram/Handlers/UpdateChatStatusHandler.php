@@ -10,7 +10,7 @@ class UpdateChatStatusHandler
 {
     public function __invoke(Nutgram $bot): void
     {
-        $chat = $bot->getData(Customer::class);
+        $chat = $bot->get(Customer::class);
         $chatMember = $bot->chatMember();
 
         if ($chat !== null && $chatMember !== null) {
