@@ -16,5 +16,6 @@ return [
     "webapp_url_hint" => "Địa chỉ https được gọi khi người dùng khởi tạo WebApp",
     "start_message_description" => "Tin nhắn được gửi khi người dùng bắt đầu chat với Bot",
     "start_msg_content" => "Nội dung tin nhắn",
+    "start_msg_hint" => "Hiện tại chỉ hỗ trợ chữ IN ĐẬM, IN NGIÊNG, GẠCH DƯỚI",
     "start_msg_photo" => "Hình ảnh đính kèm",
 ];

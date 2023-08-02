@@ -16,5 +16,6 @@ return [
     "webapp_url_hint" => "https链接",
     "start_message_description" => "用户发起与 Bot 私聊时发送的消息",
     "start_msg_content" => "消息内容",
+    "start_msg_hint" => "目前支持粗体、斜体、下划线而已",
     "start_msg_photo" => "图片",
 ];

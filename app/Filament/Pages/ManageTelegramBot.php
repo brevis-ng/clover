@@ -4,17 +4,13 @@ namespace App\Filament\Pages;
 
 use App\Settings\TelegramBotSettings;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\KeyValue;
-use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Pages\SettingsPage;
 use Nutgram\Laravel\Facades\Telegram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
-use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonCommands;
 use SergiX44\Nutgram\Telegram\Types\Command\MenuButtonWebApp;
 use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
@@ -65,7 +61,7 @@ class ManageTelegramBot extends SettingsPage
                             "strike",
                             "underline",
                         ])
-                        ->hint("Using bold, italic, strike and underline styles only"),
+                        ->hint(__("settings.start_msg_hint")),
                     FileUpload::make("start_msg_photo")
                         ->label(__("settings.start_msg_photo"))
                         ->image()
@@ -112,10 +108,8 @@ class ManageTelegramBot extends SettingsPage
             [
                 BotCommand::make("start", "Welcome message"),
                 BotCommand::make("myorder", "Tracking your order"),
-                BotCommand::make(
-                    "cancel",
-                    "Close a conversation or a keyboard"
-                ),
+                BotCommand::make("cancel", "Close conversation or keyboard"),
+                BotCommand::make("help", "Help message"),
             ],
             new BotCommandScopeDefault()
         );
