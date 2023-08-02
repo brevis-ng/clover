@@ -17,11 +17,4 @@ class EditUser extends EditRecord
     {
         return [Actions\DeleteAction::make()];
     }
-
-    protected function afterSave(): void
-    {
-        $this->data["role"] == Roles::ADMIN
-            ? Cache::forever("administrator", User::admin()->get())
-            : Cache::forever("assistant", User::assistant()->get());
-    }
 }
