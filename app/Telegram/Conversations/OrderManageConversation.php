@@ -20,6 +20,11 @@ class OrderManageConversation extends InlineMenu
             $this->order ??
             Order::where("order_number", $bot->currentParameters()[0])->first();
 
+        if (!$this->order) {
+            $this->end();
+            return null;
+        }
+
         $this->status = $this->order->status;
 
         $text = message("order-detail", ["order" => $this->order]);
@@ -81,26 +86,26 @@ class OrderManageConversation extends InlineMenu
     protected function updateStatus(Nutgram $bot)
     {
         $text = __("order.update_status_send", [
-            "old" => OrderStatus::trans($this->status),
-            "new" => OrderStatus::trans($this->order->status),
+            "old" => $this->status->getTrans(),
+            "new" => $this->order->status->getTrans(),
         ]);
         $this->clearButtons()
             ->menuText($text, ["parse_mode" => ParseMode::HTML])
             ->addButtonRow(
                 InlineKeyboardButton::make(
-                    OrderStatus::trans(OrderStatus::PROCESSING),
+                    OrderStatus::PROCESSING->getTrans(),
                     callback_data: "processing@setOrderStatus"
                 )
             )
             ->addButtonRow(
                 InlineKeyboardButton::make(
-                    OrderStatus::trans(OrderStatus::SHIPPED),
+                    OrderStatus::SHIPPED->getTrans(),
                     callback_data: "shipped@setOrderStatus"
                 )
             )
             ->addButtonRow(
                 InlineKeyboardButton::make(
-                    OrderStatus::trans(OrderStatus::COMPLETED),
+                    OrderStatus::COMPLETED->getTrans(),
                     callback_data: "completed@setOrderStatus"
                 )
             )

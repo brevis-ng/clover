@@ -20,8 +20,8 @@ enum OrderStatus: string
         return $res;
     }
 
-    public static function trans(self $status): string
+    public function getTrans(): string
     {
-        return __("order.s." . $status->value);
+        return __("order.s." . $this->value);
     }
 }

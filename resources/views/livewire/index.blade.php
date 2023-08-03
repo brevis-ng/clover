@@ -68,7 +68,7 @@
                 <p class="text-xs line-clamp-2 text-slate-600 dark:text-gray-300">{!! $product->description !!}</p>
                 <div class="inline-flex gap-x-2 justify-center items-baseline">
                     <p class="font-semibold tracking-wide text-sm line-through text-gray-600 dark:text-gray-200 font-oswald">{{ money($product->old_price, convert: true) }}</p>
-                    <p class="font-semibold tracking-wide text-base text-orange-500 font-oswald">{{ money($product->price, convert: true) }}{{ App\Enums\Units::getTranslation($product->unit) }}</p>
+                    <p class="font-semibold tracking-wide text-base text-orange-500 font-oswald">{{ money($product->price, convert: true) }}{{ $product->unit->getTrans() }}</p>
                 </div>
             </div>
             @if ($this->getQuantity($product->id) == 0)

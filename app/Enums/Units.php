@@ -24,11 +24,11 @@ enum Units: string
         return $res;
     }
 
-    public static function getTranslation(Units $units): string
+    public function getTrans(): string
     {
-        if ($units == self::NONE) {
+        if ($this == self::NONE) {
             return "";
         }
-        return "/" . __("product.units.{$units->value}");
+        return "/" . __("product.units.{$this->value}");
     }
 }
