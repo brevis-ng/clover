@@ -21,4 +21,5 @@ return [
     "started_at" => "第一次与机器人互动",
     "blocked_at" => "封锁、禁止",
     "label" => "客户",
+    "edit_password" => "修改密码",
 ];

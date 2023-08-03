@@ -33,29 +33,20 @@ class UserResource extends Resource
             ->schema([
                 Group::make()
                     ->schema([
-                        Card::make()->schema([
-                            TextInput::make("name")->required(),
-                            TextInput::make("email")
-                                ->required()
-                                ->email()
-                                ->unique(User::class, "email", ignoreRecord: true),
-                            TextInput::make("password")
-                                ->password()
-                                ->autocomplete("new-password")
-                                ->minLength(6)
-                                ->required()
-                                ->reactive(),
-                            TextInput::make("passwordConfirmation")
-                                ->minLength(6)
-                                ->dehydrated(false)
-                                ->same("password")
-                                ->hidden(fn($get) => $get("password") !== null),
-                        ])->columns(2),
+                        Card::make()
+                            ->schema([
+                                TextInput::make("name")->required(),
+                                TextInput::make("email")
+                                    ->required()
+                                    ->email()
+                                    ->unique(User::class, "email", ignoreRecord: true),
+                            ])
+                            ->columns(2),
                         Section::make("Telegram")->schema([
                             Select::make("telegram_id")
                                 ->options(Customer::all()->pluck("name", "id"))
                                 ->searchable()
-                                ->required()
+                                ->required(),
                         ]),
                     ])
                     ->columnSpan(["lg" => 2]),
@@ -103,6 +94,16 @@ class UserResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make(__("customer.edit_password"))
+                        ->action(function ($record, $data) {
+                            $record->password = $data["password"];
+                            $record->save();
+                        })
+                        ->form([
+                            TextInput::make("password")->required(),
+                            TextInput::make("confirmation")->same("password"),
+                        ])
+                        ->icon("heroicon-o-lock-closed"),
                 ]),
             ])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);

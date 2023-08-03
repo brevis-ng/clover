@@ -21,4 +21,5 @@ return [
     "started_at" => "Tương tác với bot lần đầu",
     "blocked_at" => "Bị chặn, ban lúc",
     "label" => "Khách Hàng",
+    "edit_password" => "Đổi mật khẩu",
 ];
