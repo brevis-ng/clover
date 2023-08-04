@@ -108,5 +108,5 @@ function cast(string $type, mixed $value, mixed $default = null): array|bool|flo
  */
 function generateOrderNumber(): string
 {
-    return Str::upper(Str::random(2) . date("ynjgh"));
+    return Str::upper(Str::random(3) . date("njgi"));
 }
