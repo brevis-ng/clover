@@ -4,6 +4,7 @@ namespace App\Telegram\Middleware;
 
 use App\Enums\OrderStatus;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
@@ -11,44 +12,41 @@ class VerifyOrder
 {
     public function __invoke(Nutgram $bot, $next): void
     {
-        if (!$bot->currentParameters()) {
-            $bot->sendMessage(
-                "❌ *Invalid Format\!*\nChecking order should be entered in the following format:\n `/order ABC123`",
-                parse_mode: ParseMode::MARKDOWN
-            );
-            return;
-        }
+        try {
+            $order = Order::where("order_number", $bot->currentParameters()[0])->first();
 
-        [$order_number] = $bot->currentParameters();
-
-        $order = Order::where("order_number", $order_number)->first();
-
-        if ($order) {
-            if (
-                in_array($order->status, [
-                    OrderStatus::FAILED,
-                    OrderStatus::CANCELLED,
-                    OrderStatus::COMPLETED,
-                ])
-            ) {
+            if ($order) {
+                if (
+                    in_array($order->status, [
+                        OrderStatus::FAILED,
+                        OrderStatus::CANCELLED,
+                        OrderStatus::COMPLETED,
+                    ])
+                ) {
+                    $bot->sendMessage(
+                        "⚠️ *Order not editable\!*\nThis order just edited in admin panel only\.",
+                        parse_mode: ParseMode::MARKDOWN
+                    );
+                    return;
+                }
+            } else {
                 $bot->sendMessage(
-                    "⚠️ *Order not editable\!*\nOrder status is " .
-                        $order->status->value .
-                        "\. Please edit in admin panel\.",
+                    "❌ *Order not found\!*\nPlease ensure that you have entered the correct order number and try again\.",
                     parse_mode: ParseMode::MARKDOWN
                 );
                 return;
             }
-        } else {
-            $bot->sendMessage(
-                "❌ *Order not found\!*",
-                parse_mode: ParseMode::MARKDOWN
-            );
-            return;
+
+            $bot->set(Order::class, $order);
+
+            $next($bot);
+        } catch (\Throwable $e) {
+            Log::critical("{class} Error in line {line}: {message}", [
+                "class" => self::class,
+                "line" => $e->getLine(),
+                "message" => $e->getMessage(),
+            ]);
         }
 
-        $bot->set(Order::class, $order);
-
-        $next($bot);
     }
 }
