@@ -28,7 +28,7 @@ class UserUpdatedOrder implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(Order $order, ?int $msg_id, ?string $was_changed)
+    public function __construct(Order $order, ?int $msg_id = null, ?string $was_changed = null)
     {
         $this->order = $order;
         $this->msg_id = $msg_id;

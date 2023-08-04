@@ -149,11 +149,7 @@ class OrderManageConversation extends InlineMenu
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
 
-        $bot->forwardMessage(
-            $this->order->customer->id,
-            $bot->userId(),
-            $bot->messageId()
-        );
+        AdminUpdatedOrder::dispatch($this->order, $bot->messageId());
 
         $bot->sendMessage("Order cancelled");
         $this->end();
