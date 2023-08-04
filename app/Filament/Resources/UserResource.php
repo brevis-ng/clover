@@ -40,6 +40,17 @@ class UserResource extends Resource
                                     ->required()
                                     ->email()
                                     ->unique(User::class, "email", ignoreRecord: true),
+                                TextInput::make("password")
+                                    ->password()
+                                    ->minLength(6)
+                                    ->same('passwordConfirmation')
+                                    ->hidden(fn(?User $record) => $record === null)
+                                    ->required(),
+                                TextInput::make("passwordConfirmation")
+                                    ->password()
+                                    ->minLength(6)
+                                    ->hidden(fn(?User $record) => $record === null)
+                                    ->required(),
                             ])
                             ->columns(2),
                         Section::make("Telegram")->schema([
