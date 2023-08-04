@@ -44,12 +44,12 @@ class UserResource extends Resource
                                     ->password()
                                     ->minLength(6)
                                     ->same('passwordConfirmation')
-                                    ->hidden(fn(?User $record) => $record === null)
+                                    ->hidden(fn(?User $record) => $record !== null)
                                     ->required(),
                                 TextInput::make("passwordConfirmation")
                                     ->password()
                                     ->minLength(6)
-                                    ->hidden(fn(?User $record) => $record === null)
+                                    ->hidden(fn(?User $record) => $record !== null)
                                     ->required(),
                             ])
                             ->columns(2),
