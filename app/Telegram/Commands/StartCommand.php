@@ -48,7 +48,11 @@ class StartCommand extends Command
                 );
             }
         } catch (\Throwable $e) {
-            Log::error(self::class." Error in line ".$e->getLine().": ".$e->getMessage());
+            Log::critical("{class} Error in line {line}: {message}", [
+                "class" => self::class,
+                "line" => $e->getLine(),
+                "message" => $e->getMessage(),
+            ]);
         }
     }
 }

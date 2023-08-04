@@ -2,9 +2,11 @@
 
 namespace App\Telegram\Commands;
 
+use App\Enums\Roles;
 use App\Models\User;
 use App\Settings\TelegramBotSettings;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -22,7 +24,11 @@ class HelpCommand extends Command
     {
         $inline_button = new InlineKeyboardMarkup();
 
-        $assistant = Cache::get("assistant", User::assistant()->get());
+        $assistant = Cache::remember("assistant", 3600, function () {
+            return User::whereIn("role", [Roles::ADMIN, Roles::ASSISTANT])
+                ->whereNotNull("telegram_id")
+                ->get();
+        });
 
         $assistant
             ->map(
@@ -50,7 +56,11 @@ class HelpCommand extends Command
                 reply_markup: $inline_button
             );
         } catch (\Throwable $e) {
-            info($e->getMessage());
+            Log::critical("{class} Error in line {line}: {message}", [
+                "class" => self::class,
+                "line" => $e->getLine(),
+                "message" => $e->getMessage(),
+            ]);
         }
     }
 }
