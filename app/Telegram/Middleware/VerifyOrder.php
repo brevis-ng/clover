@@ -13,7 +13,8 @@ class VerifyOrder
     public function __invoke(Nutgram $bot, $next): void
     {
         try {
-            $order = Order::where("order_number", $bot->currentParameters()[0])->first();
+            $order_number = trim($bot->currentParameters()[0]);
+            $order = Order::where("order_number", $order_number)->first();
 
             if ($order) {
                 if (
@@ -29,6 +30,10 @@ class VerifyOrder
                     );
                     return;
                 }
+
+                $bot->set(Order::class, $order);
+
+                $next($bot);
             } else {
                 $bot->sendMessage(
                     "❌ *Order not found\!*\nPlease ensure that you have entered the correct order number and try again\.",
@@ -36,10 +41,6 @@ class VerifyOrder
                 );
                 return;
             }
-
-            $bot->set(Order::class, $order);
-
-            $next($bot);
         } catch (\Throwable $e) {
             Log::critical("{class} Error in line {line}: {message}", [
                 "class" => self::class,

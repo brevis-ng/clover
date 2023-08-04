@@ -19,7 +19,10 @@ class OrderManageConversation extends InlineMenu
     {
         $this->order = $bot->get(
             Order::class,
-            Order::where("order_number", $bot->currentParameters()[0])->first()
+            Order::where(
+                "order_number",
+                trim($bot->currentParameters()[0])
+            )->first()
         );
 
         $this->status = $this->order->status;
