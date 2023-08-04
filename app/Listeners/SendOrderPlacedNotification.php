@@ -40,7 +40,11 @@ class SendOrderPlacedNotification implements ShouldQueue
                 )->addRow(KeyboardButton::make(__("order.check")))
             );
         } catch (\Throwable $e) {
-            Log::error(self::class." Error in line ".$e->getLine().": ".$e->getMessage());
+            Log::critical("{class} Error in line {line}: {message}", [
+                "class" => self::class,
+                "line" => $e->getLine(),
+                "message" => $e->getMessage(),
+            ]);
         }
 
         $users = User::whereNotNull("telegram_id")->get();
@@ -53,7 +57,11 @@ class SendOrderPlacedNotification implements ShouldQueue
                         parse_mode: ParseMode::HTML
                     );
                 } catch (\Throwable $e) {
-                    Log::error(self::class." Error in line ".$e->getLine().": ".$e->getMessage());
+                    Log::critical("{class} Error in line {line}: {message}", [
+                        "class" => self::class,
+                        "line" => $e->getLine(),
+                        "message" => $e->getMessage(),
+                    ]);
                     continue;
                 }
             }
