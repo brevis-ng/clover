@@ -17,6 +17,8 @@ class IsAdmin
             return;
         }
 
+        $bot->set(User::class, $admin);
+
         $next($bot);
     }
 }

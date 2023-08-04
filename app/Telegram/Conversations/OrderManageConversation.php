@@ -3,6 +3,7 @@
 namespace App\Telegram\Conversations;
 
 use App\Enums\OrderStatus;
+use App\Jobs\AdminUpdatedOrder;
 use App\Models\Order;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
@@ -16,14 +17,10 @@ class OrderManageConversation extends InlineMenu
 
     public function start(Nutgram $bot)
     {
-        $this->order =
-            $this->order ??
-            Order::where("order_number", $bot->currentParameters()[0])->first();
-
-        if (!$this->order) {
-            $this->end();
-            return null;
-        }
+        $this->order = $bot->get(
+            Order::class,
+            Order::where("order_number", $bot->currentParameters()[0])->first()
+        );
 
         $this->status = $this->order->status;
 
@@ -80,6 +77,8 @@ class OrderManageConversation extends InlineMenu
         $this->order->total_amount += $this->order->shipping_amount;
         $this->order->save();
 
+        AdminUpdatedOrder::dispatch($this->order, null, __("order.shipping_amount"));
+
         $this->start($bot);
     }
 
@@ -123,6 +122,8 @@ class OrderManageConversation extends InlineMenu
         $this->order->status = OrderStatus::from($bot->callbackQuery()->data);
         $this->status = $this->order->getOriginal("status");
         $this->order->save();
+
+        AdminUpdatedOrder::dispatch($this->order, null, __("order.status"));
 
         $this->updateStatus($bot);
     }

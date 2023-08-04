@@ -56,4 +56,5 @@ return [
     "customer" => "客户",
     "items" => "订单",
     "quantity" => "数量",
+    "order_updated" => "订单 :order 的 :field 已经更新。如下",
 ];

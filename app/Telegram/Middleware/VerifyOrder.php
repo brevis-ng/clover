@@ -23,6 +23,8 @@ class VerifyOrder
             return;
         }
 
+        $bot->set(Order::class, $order);
+
         $next($bot);
     }
 }

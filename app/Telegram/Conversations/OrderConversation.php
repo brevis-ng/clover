@@ -3,10 +3,9 @@
 namespace App\Telegram\Conversations;
 
 use App\Enums\OrderStatus;
-use App\Jobs\UserCancelledOrder;
+use App\Jobs\UserUpdatedOrder;
 use App\Models\Customer;
 use App\Models\Order;
-use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -19,10 +18,9 @@ class OrderConversation extends InlineMenu
 
     public function start(Nutgram $bot)
     {
-        $this->customer = Cache::remember(
-            "active_customer_" . $bot->userId(),
-            300,
-            fn() => Customer::find($bot->userId())
+        $this->customer = $bot->get(
+            Customer::class,
+            Customer::find($bot->userId())
         );
 
         $orders = $this->customer
@@ -87,7 +85,7 @@ class OrderConversation extends InlineMenu
             ->addButtonRow(
                 InlineKeyboardButton::make(
                     __("order.back"),
-                    callback_data: "orderk@start"
+                    callback_data: "order@start"
                 )
             )
             ->showMenu();
@@ -110,7 +108,8 @@ class OrderConversation extends InlineMenu
 
         $this->customer->phone = $bot->message()->text;
         $this->customer->save();
-        $this->order->refresh();
+
+        UserUpdatedOrder::dispatch($this->order, null, __("customer.phone"));
 
         $this->trackingOrder($bot);
     }
@@ -132,6 +131,8 @@ class OrderConversation extends InlineMenu
 
         $this->order->address = $bot->message()?->text;
         $this->order->save();
+
+        UserUpdatedOrder::dispatch($this->order, null, __("order.address"));
 
         $this->trackingOrder($bot);
     }
@@ -165,11 +166,7 @@ class OrderConversation extends InlineMenu
         $this->order->status = OrderStatus::CANCELLED;
         $this->order->save();
 
-        UserCancelledOrder::dispatch(
-            $bot->userId(),
-            $bot->messageId(),
-            $this->order->order_number
-        );
+        UserUpdatedOrder::dispatch($this->order, $bot->messageId());
 
         $bot->sendMessage("Order cancelled");
         $this->start($bot);
