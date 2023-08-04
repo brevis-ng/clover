@@ -34,7 +34,7 @@ class VerifyOrder
                 $bot->sendMessage(
                     "⚠️ *Order not editable\!*\nOrder status is " .
                         $order->status->value .
-                        ". Please edit in admin panel.",
+                        "\. Please edit in admin panel\.",
                     parse_mode: ParseMode::MARKDOWN
                 );
                 return;
