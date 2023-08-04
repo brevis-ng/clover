@@ -100,7 +100,7 @@ class CategoryResource extends Resource
                 ImageColumn::make("image")
                     ->label(__("category.image"))
                     ->disk("categories")
-                    ->defaultImageUrl("/images/placeholder.png")
+                    ->defaultImageUrl("/storage/default.jpg")
                     ->square(),
                 TextColumn::make("name")
                     ->label(__("category.name"))

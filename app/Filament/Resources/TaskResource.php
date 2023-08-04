@@ -112,7 +112,7 @@ class TaskResource extends Resource
                 ToggleColumn::make("enabled")->label(__("task.enabled")),
                 ImageColumn::make("image")
                     ->disk("tasks")
-                    ->defaultImageUrl("/images/placeholder.png")
+                    ->defaultImageUrl("/storage/default.jpg")
                     ->square(),
             ])
             ->filters([])

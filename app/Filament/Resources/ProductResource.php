@@ -128,7 +128,7 @@ class ProductResource extends Resource
                 ImageColumn::make("image")
                     ->label(__("product.image"))
                     ->disk("products")
-                    ->defaultImageUrl("/images/placeholder.png")
+                    ->defaultImageUrl("/storage/default.jpg")
                     ->square(),
                 TextColumn::make("name")
                     ->label(__("product.name"))
