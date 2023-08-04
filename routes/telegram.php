@@ -54,7 +54,7 @@ Telegram::onText(__("order.check"), OrderConversation::class)->middleware(HasOrd
 |--------------------------------------------------------------------------
 */
 Telegram::group(function () {
-    Telegram::onCommand("order {order_number}", OrderManageConversation::class)->middleware(VerifyOrder::class);
+    Telegram::onCommand("order", OrderManageConversation::class)->middleware(VerifyOrder::class);
     Telegram::onCommand("cache", ClearCacheCommand::class);
 })->middleware(IsAdmin::class);
 
