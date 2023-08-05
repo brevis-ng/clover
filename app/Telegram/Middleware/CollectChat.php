@@ -3,6 +3,7 @@
 namespace App\Telegram\Middleware;
 
 use App\Models\Customer;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use SergiX44\Nutgram\Nutgram;
 
@@ -39,6 +40,16 @@ class CollectChat
 
             return $chat;
         });
+
+        if ($chat->language_code) {
+            if ($chat->language_code == "vi") {
+                App::setLocale("vi");
+                session()->put("locale", "vi");
+            } else {
+                App::setLocale("zh");
+                session()->put("locale", "zh");
+            }
+        }
 
         $bot->set(Customer::class, $chat);
 
