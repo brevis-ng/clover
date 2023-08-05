@@ -53,10 +53,12 @@
     </div>
     <div class="grid grid-cols-2 gap-x-3 gap-y-5 p-2">
         @foreach ($products as $product)
-        <div class="flex flex-col bg-white dark:bg-gray-600 shadow-lg rounded-lg overflow-hidden">
+        <div class="flex flex-col bg-white dark:bg-gray-600 shadow-lg shadow-black/30 overflow-visible">
             <div class="relative">
-                <div class="bg-red-500 text-white absolute p-1 uppercase">{{ $product->code }}</div>
-                <div class="bg-blue-500 text-white absolute px-1 bottom-0 right-0">{{ $product?->remarks }}</div>
+                <div class="bg-red-600 absolute px-1 uppercase top-1 -left-1 before:content-[''] before:inline-block before:absolute before:brightness-75 before:left-0 before:-bottom-1 before:border-red-600 before:border-t-4 before:border-l-4 before:border-solid before:border-l-transparent">
+                    <span class="text-white">{{ $product->code }}</span>
+                </div>
+                <div class="bg-gray-800/40 text-slate-200 absolute px-1 bottom-0 right-0 rounded">{{ $product?->remarks }}</div>
                 @if($product->image && Illuminate\Support\Facades\Storage::disk("products")->exists($product->image))
                     <img class="aspect-[4/3] object-cover" src="{{ Illuminate\Support\Facades\Storage::disk('products')->url($product->image) }}" alt="{{ $product->name }}">
                 @else
@@ -64,16 +66,16 @@
                 @endif
             </div>
             <div class="text-center justify-center my-1 grow">
-                <h3 class="font-bold tracking-wide text-gray-800 dark:text-white">{{ $product->name }}</h3>
+                <h3 class="font-bold text-gray-800 dark:text-white">{{ $product->name }}</h3>
                 <p class="text-xs line-clamp-2 text-slate-600 dark:text-gray-300">{!! $product->description !!}</p>
                 <div class="inline-flex gap-x-2 justify-center items-baseline">
-                    <p class="font-semibold tracking-wide text-sm line-through text-gray-600 dark:text-gray-200 font-oswald">{{ money($product->old_price, convert: true) }}</p>
+                    <p class="tracking-wide text-xs line-through text-gray-700 dark:text-gray-200 font-oswald">{{ money($product->old_price, convert: true) }}</p>
                     <p class="font-semibold tracking-wide text-base text-orange-500 font-oswald">{{ money($product->price, convert: true) }}{{ $product->unit->getTrans() }}</p>
                 </div>
             </div>
             @if ($this->getQuantity($product->id) == 0)
             <button @click="handleIncrement" data-product="{{ $product }}"
-                class="subpixel-antialiased tracking-tighter uppercase w-full bg-indigo-500 text-white py-2 flex justify-center bottom-0 rounded-lg"
+                class="subpixel-antialiased tracking-tighter uppercase w-full bg-purple text-white py-2 flex justify-center bottom-0"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -88,7 +90,7 @@
                     </svg>
                 </button>
                 <p class="text-black dark:text-white font-bold">{{ $this->getQuantity($product->id) }}</p>
-                <button class="py-2 px-5 bg-indigo-500 text-white" @click="handleIncrement" data-product="{{ $product }}">
+                <button class="py-2 px-5 bg-purple text-white" @click="handleIncrement" data-product="{{ $product }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -110,7 +112,7 @@
             Telegram.WebApp.MainButton.setParams({
                 text: "{{ Str::upper(__('frontend.cart_view')) }}",
                 text_color: "#ffffff",
-                color: "#6366f1",
+                color: "#6528F7",
                 is_active: true,
                 is_visible: true,
             }).onClick(() => {
