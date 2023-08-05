@@ -16,7 +16,7 @@
             $wire.decrement(data);
         },
         username: function () {
-            var full_name = Telegram.WebApp.initDataUnsafe.user.first_name + Telegram.WebApp.initDataUnsafe.user.last_name;
+            var full_name = Telegram.WebApp.initDataUnsafe.user.first_name + ' ' + Telegram.WebApp.initDataUnsafe.user.last_name;
             return full_name ? full_name : 'My Darling';
         }
     }">
@@ -24,28 +24,28 @@
         <h3 class="text-xl text-gray-800 dark:text-white">Welcome <span x-text="username()" class="font-bold"></span></h3>
     </div>
     <div class="my-3 scrollbar-hidden">
-        <ul class="flex flex-nowrap gap-3 items-center scroll-smooth snap-x snap-mandatory overflow-x-auto no-scrollbar">
+        <ul class="flex flex-nowrap gap-2 items-center scroll-smooth snap-x snap-mandatory overflow-x-auto no-scrollbar">
             <li class="flex-none snap-always snap-center">
                 <div @click="setActive(0)"
-                    class="overflow-hidden inline-flex items-center rounded-r-full rounded-l-full p-1 border border-gray-200 dark:border-slate-700"
-                    :class="isActive(0) ? 'bg-amber-400 text-white' : 'bg-white dark:bg-slate-600 text-amber-400'"
+                    class="overflow-hidden inline-flex items-center rounded-s-md rounded-e-md p-1 border border-gray-200 dark:border-slate-700"
+                    :class="isActive(0) ? 'bg-amber-500 text-white' : 'bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200'"
                 >
-                    <img class="w-10 h-10 object-cover rounded-full" src="{{ '/storage/default.jpg' }}">
-                    <div class="ml-2">All</div>
+                    <img class="w-10 h-10 object-cover rounded-md" src="{{ '/storage/default.jpg' }}">
+                    <div class="mx-1">All</div>
                 </div>
             </li>
             @foreach ($categories as $category)
             <li class="flex-none snap-always snap-center">
                 <div @click="setActive({{ $category->id }})"
-                    class="overflow-hidden inline-flex items-center rounded-r-full rounded-l-full p-1 border border-gray-200 dark:border-gray-900"
-                    :class="isActive({{ $category->id }}) ? 'bg-amber-400 text-white' : 'bg-white dark:bg-slate-700 text-amber-400'"
+                    class="overflow-hidden inline-flex items-center rounded-s-md rounded-e-md p-1 border border-gray-200 dark:border-gray-900"
+                    :class="isActive({{ $category->id }}) ? 'bg-amber-500 text-white' : 'bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200'"
                 >
                     @if($category->image && Illuminate\Support\Facades\Storage::disk("categories")->exists($category->image))
-                        <img class="w-10 h-10 object-cover rounded-full" src="{{ Illuminate\Support\Facades\Storage::disk('categories')->url($category->image) }}">
+                        <img class="w-10 h-10 object-cover rounded-md" src="{{ Illuminate\Support\Facades\Storage::disk('categories')->url($category->image) }}">
                     @else
-                        <img class="w-10 h-10 object-cover rounded-full" src="{{ '/storage/default.jpg' }}">
+                        <img class="w-10 h-10 object-cover rounded-md" src="{{ '/storage/default.jpg' }}">
                     @endif
-                    <div class="ml-2">{{ $category->name }}</div>
+                    <div class="mx-1">{{ $category->name }}</div>
                 </div>
             </li>
             @endforeach
