@@ -18,10 +18,25 @@
         username: function () {
             var full_name = Telegram.WebApp.initDataUnsafe.user.first_name + ' ' + Telegram.WebApp.initDataUnsafe.user.last_name;
             return full_name ? full_name : 'My Darling';
+        },
+        setLang: function (val) {
+            $wire.setLanguage(val)
         }
     }">
-    <div class="m-2 mt-0">
+    <div class="my-4 mx-2 flex justify-between items-center">
         <h3 class="text-xl text-gray-800 dark:text-white">Welcome <span x-text="username()" class="font-bold"></span></h3>
+        <div class="inline-flex items-center gap-1">
+            <label for="languages" class="text-gray-900 dark:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+            </label>
+            <select id="languages" x-on:change="setLang($event.target.value)"
+                class="text-sm bg-white border border-gray-300 text-gray-900 rounded-lg dark:bg-slate-700 dark:border-slate-800 dark:placeholder-gray-300 dark:text-white">
+                <option @if(app()->getLocale() == 'vi') selected @endif value="vi">Tiếng Việt</option>
+                <option @if(app()->getLocale() == 'zh') selected @endif value="zh">中文</option>
+            </select>
+        </div>
     </div>
     <div class="my-3 scrollbar-hidden">
         <ul class="flex flex-nowrap gap-2 items-center scroll-smooth snap-x snap-mandatory overflow-x-auto no-scrollbar">

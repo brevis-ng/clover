@@ -5,8 +5,8 @@ namespace App\Http\Livewire;
 use App\Helpers\CartManager;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -55,6 +55,13 @@ class Index extends Component
         $item = CartManager::item($id);
 
         return $item === null ? 0 : $item->quantity;
+    }
+
+    public function setLanguage($language)
+    {
+        App::setLocale($language);
+        session()->put("locale", $language);
+        return redirect()->route("frontend.index");
     }
 
     public function render()
