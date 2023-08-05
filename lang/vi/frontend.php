@@ -30,6 +30,7 @@ return [
     "help" => "<b>Xin chào quý khách</b>\n\nDanh sách các lệnh được hỗ trợ cho quý khách như sau:\n".
         "• /start  Tin nhắn chào mừng\n".
         "• /myorder  Kiểm tra đơn hàng\n".
-        "• /cancel  Hủy bỏ thao tác\n\n".
+        "• /cancel  Hủy bỏ thao tác\n".
+        "• /help  Hướng dẫn sử dụng\n\n".
         "✳️<b>Quý khách cũng có thể chat với CSKH 24/7 của chúng tôi</b>✳️"
 ];
