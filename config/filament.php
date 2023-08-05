@@ -135,7 +135,7 @@ return [
     "widgets" => [
         "namespace" => "App\\Filament\\Widgets",
         "path" => app_path("Filament/Widgets"),
-        "register" => [Widgets\AccountWidget::class],
+        "register" => [],
     ],
 
     /*

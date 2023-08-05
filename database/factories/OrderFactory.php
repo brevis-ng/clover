@@ -27,6 +27,7 @@ class OrderFactory extends Factory
             "shipping_amount" => fake()->randomFloat(2, 50, 200),
             "payment_method" => fake()->randomElement(["cod", "bank"]),
             "notes" => fake()->sentence(),
+            "created_at" => fake()->dateTimeThisMonth()
         ];
     }
 }

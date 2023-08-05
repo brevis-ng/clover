@@ -31,9 +31,15 @@ class LatestOrders extends BaseWidget
     {
         return "desc";
     }
+
     protected function getTableQuery(): Builder
     {
         return Order::query()->latest();
+    }
+
+    protected function getTableHeading(): string
+    {
+        return __("stats.latest_orders");
     }
 
     protected function getTableColumns(): array
@@ -46,8 +52,7 @@ class LatestOrders extends BaseWidget
             TextColumn::make("customer.name")
                 ->label(__("order.customer"))
                 ->searchable()
-                ->sortable()
-                ->toggleable(),
+                ->sortable(),
             BadgeColumn::make("status")
                 ->label(__("order.status"))
                 ->sortable()
@@ -79,8 +84,7 @@ class LatestOrders extends BaseWidget
             TextColumn::make("created_at")
                 ->label(__("order.created_at"))
                 ->dateTime()
-                ->sortable()
-                ->toggleable(),
+                ->sortable(),
         ];
     }
 }

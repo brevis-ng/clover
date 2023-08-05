@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\Units;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -66,10 +65,9 @@ class Product extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class)->withPivot([
-            "quantity",
-            "amount",
-        ]);
+        return $this->belongsToMany(Order::class)
+            ->withPivot(["quantity", "amount"])
+            ->withTimestamps();
     }
 
     public function variations()
