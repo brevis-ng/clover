@@ -156,7 +156,7 @@ class OrderResource extends Resource
     {
         if ($section === "items") {
             return [
-                Repeater::make("products")
+                Repeater::make("items")
                     ->relationship()
                     ->schema([
                         Select::make("product_id")
