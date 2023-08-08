@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Events\OrderPlaced;
 use App\Helpers\CartManager;
-use App\Models\OrderProduct;
 use Livewire\Component;
 
 class OrderSubmit extends Component
@@ -43,20 +42,17 @@ class OrderSubmit extends Component
         $order->save();
 
         foreach (CartManager::items() as $item) {
-            $order_product = new OrderProduct([
-                "product_id" => $item->product["id"],
+            $order->products()->attach($item->product["id"], [
                 "quantity" => $item->quantity,
-                "amount" => $item->amount
+                "amount" => $item->amount,
             ]);
-
-            $order->products()->save($order_product);
         }
 
         $this->emit("tg:orderPlaced", __("frontend.order_placed_successfully"));
 
         OrderPlaced::dispatch($order);
 
-        session()->flush();
+        CartManager::clear();
     }
 
     public function render()
