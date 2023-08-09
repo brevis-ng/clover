@@ -210,6 +210,7 @@ class OrderResource extends Resource
                 ->disabled()
                 ->required(),
             Select::make("customer_id")
+                ->label(__("order.customer"))
                 ->relationship("customer", "name")
                 ->searchable()
                 ->required(),
@@ -229,6 +230,13 @@ class OrderResource extends Resource
                 ->label(__("order.address"))
                 ->required()
                 ->columnSpan("full"),
+            TextInput::make("shipping_amount")
+                ->label(__("order.shipping_amount"))
+                ->numeric()
+                ->required(),
+            TextInput::make("total_amount")
+                ->label(__("order.total_amount"))
+                ->disabled(),
             TextInput::make("notes")
                 ->label(__("order.notes"))
                 ->columnSpan("full"),

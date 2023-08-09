@@ -57,4 +57,5 @@ return [
     "items" => "Đơn Hàng",
     "quantity" => "Số lượng",
     "order_updated" => "Đơn hàng :order đã được cập nhật :field . Chi tiết như dưới:",
+    "cancel_note" => "Lý do hủy",
 ];

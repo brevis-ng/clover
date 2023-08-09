@@ -15,7 +15,7 @@ enum OrderStatus: string
     {
         $res = [];
         foreach (self::cases() as $case) {
-            $res[$case->value] = __("order." . $case->value);
+            $res[$case->value] = __("order.s." . $case->value);
         }
         return $res;
     }

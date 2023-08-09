@@ -57,4 +57,5 @@ return [
     "items" => "订单",
     "quantity" => "数量",
     "order_updated" => "订单 :order 的 :field 已经更新。如下",
+    "cancel_note" => "订单取消说明",
 ];
