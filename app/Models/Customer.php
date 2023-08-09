@@ -34,6 +34,10 @@ class Customer extends Model
 
     public function getTelegramUrl(): ?string
     {
+        if ($this->username) {
+            return "https://t.me/" . $this->username;
+        }
+
         return "tg://user?id=" . $this->id;
     }
 

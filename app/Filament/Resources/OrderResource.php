@@ -134,7 +134,8 @@ class OrderResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Action::make(__("order.chat_with_user"))->url(
-                        fn(Order $record): string => "tg://user?id=$record->customer_id"
+                        fn(Order $record): string => $record->customer->getTelegramUrl(),
+                        true
                     ),
                 ]),
             ])
