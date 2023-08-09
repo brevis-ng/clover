@@ -10,6 +10,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Group;
@@ -125,11 +126,16 @@ class OrderResource extends Resource
                     ->toggleable(),
             ])
             ->defaultSort("updated_at", "desc")
-            ->filters([SelectFilter::make("status")->options(OrderStatus::class)])
+            ->filters([
+                SelectFilter::make("status")->options(OrderStatus::class),
+            ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
+                    Action::make(__("order.chat_with_user"))->url(
+                        fn(Order $record): string => "tg://user?id=$record->customer_id"
+                    ),
                 ]),
             ])
             ->bulkActions([
