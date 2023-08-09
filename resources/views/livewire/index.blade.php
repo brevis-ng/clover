@@ -50,7 +50,7 @@
                 </div>
             </li>
             @foreach ($categories as $category)
-            <li class="flex-none snap-always snap-center">
+            <li class="flex-none snap-always snap-center cursor-pointer">
                 <div @click="setActive({{ $category->id }})"
                     class="overflow-hidden inline-flex items-center rounded-s-md rounded-e-md p-1 border border-gray-200 dark:border-gray-900"
                     :class="isActive({{ $category->id }}) ? 'bg-amber-500 text-white' : 'bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200'"
@@ -90,7 +90,7 @@
             </div>
             @if ($this->getQuantity($product->id) == 0)
             <button @click="handleIncrement" data-product="{{ $product }}"
-                class="subpixel-antialiased tracking-tighter uppercase w-full bg-purple text-white py-2 flex justify-center bottom-0"
+                class="subpixel-antialiased tracking-tighter uppercase w-full bg-purple text-white py-2 flex justify-center bottom-0 cursor-pointer"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -99,13 +99,13 @@
             </button>
             @else
             <div class="flex justify-between items-center">
-                <button class="py-2 px-5 bg-red-500 text-white" @click="handleDecrement({{ $product->id }})">
+                <button class="py-2 px-5 bg-red-500 text-white cursor-pointer" @click="handleDecrement({{ $product->id }})">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
                     </svg>
                 </button>
                 <p class="text-black dark:text-white font-bold">{{ $this->getQuantity($product->id) }}</p>
-                <button class="py-2 px-5 bg-purple text-white" @click="handleIncrement" data-product="{{ $product }}">
+                <button class="py-2 px-5 bg-purple text-white cursor-pointer" @click="handleIncrement" data-product="{{ $product }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
