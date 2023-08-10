@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
@@ -38,7 +39,18 @@ class Category extends Model
     protected static function booted(): void
     {
         static::deleted(function (Category $category) {
-            // ...
+            $image = $category->image;
+            if (Storage::disk("categories")->exists($image)) {
+                Storage::disk("categories")->delete($image);
+            }
+        });
+        static::updating(function (Category $category) {
+            if ($category->isDirty("image")) {
+                $image = $category->getOriginal("image");
+                if (Storage::disk("categories")->exists($image)) {
+                    Storage::disk("categories")->delete($image);
+                }
+            }
         });
     }
 

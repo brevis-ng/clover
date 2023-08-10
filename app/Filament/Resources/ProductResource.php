@@ -71,7 +71,8 @@ class ProductResource extends Resource
                                     ->imageResizeTargetHeight("480")
                                     ->getUploadedFileNameForStorageUsing(
                                         fn($file) => Str::uuid()
-                                    ),
+                                    )
+                                    ->enableDownload(),
                             ])
                             ->collapsible(),
                         Section::make(__("product.sec_price"))
@@ -113,7 +114,7 @@ class ProductResource extends Resource
                                 ->label(__("product.variation"))
                                 ->relationship("variations", "name")
                                 ->multiple()
-                                ->searchable()
+                                ->searchable(),
                         ]),
                     ])
                     ->columnSpan(["lg" => 1]),

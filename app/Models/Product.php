@@ -6,6 +6,7 @@ use App\Enums\Units;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -54,7 +55,18 @@ class Product extends Model
     protected static function booted(): void
     {
         static::deleted(function (Product $product) {
-            // ...
+            $image = $product->image;
+            if (Storage::disk("products")->exists($image)) {
+                Storage::disk("products")->delete($image);
+            }
+        });
+        static::updating(function (Product $product) {
+            if ($product->isDirty("image")) {
+                $image = $product->getOriginal("image");
+                if (Storage::disk("products")->exists($image)) {
+                    Storage::disk("products")->delete($image);
+                }
+            }
         });
     }
 
