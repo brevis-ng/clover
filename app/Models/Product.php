@@ -63,7 +63,7 @@ class Product extends Model
         static::updating(function (Product $product) {
             if ($product->isDirty("image")) {
                 $image = $product->getOriginal("image");
-                if (Storage::disk("products")->exists($image)) {
+                if ($image && Storage::disk("products")->exists($image)) {
                     Storage::disk("products")->delete($image);
                 }
             }

@@ -47,7 +47,7 @@ class Category extends Model
         static::updating(function (Category $category) {
             if ($category->isDirty("image")) {
                 $image = $category->getOriginal("image");
-                if (Storage::disk("categories")->exists($image)) {
+                if ($image && Storage::disk("categories")->exists($image)) {
                     Storage::disk("categories")->delete($image);
                 }
             }

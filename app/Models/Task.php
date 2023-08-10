@@ -53,16 +53,16 @@ class Task extends Model
 
     protected static function booted(): void
     {
-        static::deleted(function (Product $product) {
-            $image = $product->image;
+        static::deleted(function (Task $task) {
+            $image = $task->image;
             if ($image && Storage::disk("tasks")->exists($image)) {
                 Storage::disk("tasks")->delete($image);
             }
         });
-        static::updating(function (Product $product) {
-            if ($product->isDirty("image")) {
-                $image = $product->getOriginal("image");
-                if (Storage::disk("tasks")->exists($image)) {
+        static::updating(function (Task $task) {
+            if ($task->isDirty("image")) {
+                $image = $task->getOriginal("image");
+                if ($image && Storage::disk("tasks")->exists($image)) {
                     Storage::disk("tasks")->delete($image);
                 }
             }
