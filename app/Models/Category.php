@@ -40,7 +40,7 @@ class Category extends Model
     {
         static::deleted(function (Category $category) {
             $image = $category->image;
-            if (Storage::disk("categories")->exists($image)) {
+            if ($image && Storage::disk("categories")->exists($image)) {
                 Storage::disk("categories")->delete($image);
             }
         });

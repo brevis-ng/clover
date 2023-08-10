@@ -55,7 +55,7 @@ class Task extends Model
     {
         static::deleted(function (Product $product) {
             $image = $product->image;
-            if (Storage::disk("tasks")->exists($image)) {
+            if ($image && Storage::disk("tasks")->exists($image)) {
                 Storage::disk("tasks")->delete($image);
             }
         });
