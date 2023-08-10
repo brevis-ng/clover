@@ -8,6 +8,7 @@ use App\Models\Task;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -78,7 +79,9 @@ class TaskResource extends Resource
                         Section::make("Group & Channel")->schema([
                             Select::make("chat_id")
                                 ->label("Group & Channel")
-                                ->options(Customer::group()->pluck("name", "id"))
+                                ->options(
+                                    Customer::group()->pluck("name", "id")
+                                )
                                 ->searchable()
                                 ->required(),
                         ]),
@@ -88,6 +91,26 @@ class TaskResource extends Resource
                                 ->default(true)
                                 ->inline(),
                         ]),
+                        Section::make("TimeLine")
+                            ->schema([
+                                Placeholder::make("created_at")
+                                    ->label(__("task.created_at"))
+                                    ->content(
+                                        fn(
+                                            Task $record
+                                        ): ?string => $record->created_at?->diffForHumans()
+                                    ),
+
+                                Placeholder::make("updated_at")
+                                    ->label(__("task.updated_at"))
+                                    ->content(
+                                        fn(
+                                            Task $record
+                                        ): ?string => $record->updated_at?->diffForHumans()
+                                    ),
+                            ])
+                            ->columnSpan(["lg" => 1])
+                            ->hidden(fn(?Task $record) => $record === null),
                     ])
                     ->columnSpan(["lg" => 1]),
             ])

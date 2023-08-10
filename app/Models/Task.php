@@ -43,11 +43,29 @@ class Task extends Model
     public function getImage(): InputFile|null
     {
         if ($this->image && Storage::disk("tasks")->exists($this->image)) {
-            $img_data = fopen(Storage::path($this->image), "r+");
+            $img_data = fopen(Storage::disk("tasks")->path($this->image), "r+");
 
             return InputFile::make($img_data);
         }
 
         return null;
+    }
+
+    protected static function booted(): void
+    {
+        static::deleted(function (Product $product) {
+            $image = $product->image;
+            if (Storage::disk("tasks")->exists($image)) {
+                Storage::disk("tasks")->delete($image);
+            }
+        });
+        static::updating(function (Product $product) {
+            if ($product->isDirty("image")) {
+                $image = $product->getOriginal("image");
+                if (Storage::disk("tasks")->exists($image)) {
+                    Storage::disk("tasks")->delete($image);
+                }
+            }
+        });
     }
 }

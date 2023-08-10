@@ -17,4 +17,6 @@ return [
     "cron_help" => "Một số ví dụ gợi ý: Mỗi giờ: 0 * * * *, Mỗi ngày lúc 8h sáng: 0 8 * * *, Mỗi chủ nhật lúc 10h: 0 10 * * SUN, chú ý dấu cách.",
     "enabled" => "Bật/Tắt",
     "label" => "Tin nhắn",
+    "created_at" => "Thời gian tạo",
+    "updated_at" => "Sửa đổi lần cuối",
 ];
