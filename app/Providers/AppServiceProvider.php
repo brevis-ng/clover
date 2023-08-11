@@ -24,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // config(['nutgram.token' => app(GeneralSettings::class)->bot_token]);
         Filament::serving(function () {
             Filament::registerUserMenuItems([
                 UserMenuItem::make()
