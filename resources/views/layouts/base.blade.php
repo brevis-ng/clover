@@ -31,9 +31,7 @@
             Telegram.WebApp.enableClosingConfirmation();
 
             function setThemeClass() {
-                // document.documentElement.className = Telegram.WebApp.colorScheme;
-                document.documentElement.className = "dark";
-                // document.documentElement.className = "light";
+                document.documentElement.className = Telegram.WebApp.colorScheme;
             }
             Telegram.WebApp.onEvent("themeChanged", setThemeClass);
             setThemeClass();
