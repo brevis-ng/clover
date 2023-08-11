@@ -1,6 +1,6 @@
 <div>
     <!-- Shipping information -->
-    <div class="p-2 mb-3 text-slate-900 dark:text-white bg-white dark:bg-slate-700">
+    <div class="p-2 mb-3 text-[#1B1A17] dark:text-[#EEEEEE] bg-white dark:bg-[#04293A]">
         <h3 class="text-base font-bold uppercase">{{ __('frontend.order_information') }}</h3>
         <form wire:submit.prevent="submit">
             <div class="grid grid-cols-1 gap-3 my-2">
@@ -67,7 +67,7 @@
         </form>
     </div>
     <!-- Bill -->
-    <div class="bg-white dark:bg-slate-700 text-slate-900 dark:text-white p-2">
+    <div class="bg-white dark:bg-[#04293A] text-[#1B1A17] dark:text-[#EEEEEE] p-2">
         <h3 class="text-base font-bold uppercase">{{ __('frontend.bill') }}</h3>
         <div class="my-3 divide-y divide-dashed divide-[--tg-theme-hint-color]">
             @foreach ($cart as $item)
@@ -77,7 +77,7 @@
                 @else
                     <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product['name'] }}">
                 @endif
-                <h3 class="ml-2 grow">{{ $item->product['name'] }} <span class="text-orange-500 ml-2 font-semibold">x{{ $item->quantity }}</span></h3>
+                <h3 class="ml-2 grow">{{ $item->product['name'] }} <span class="text-[#E45826] ml-2 font-semibold">x{{ $item->quantity }}</span></h3>
                 <div class="font-oswald">{{ money($item->amount, convert: true) }}</div>
             </div>
             @endforeach
@@ -88,7 +88,7 @@
         </div>
         <div class="flex justify-between items-center">
             <h3>{{ __('frontend.total_amount') }}</h3>
-            <p class="font-oswald text-orange-500">{{ money($subtotal, convert: true) }}</p>
+            <p class="font-oswald text-[#E45826]">{{ money($subtotal, convert: true) }}</p>
         </div>
     </div>
 </div>
@@ -106,7 +106,8 @@
             const mainButton = Telegram.WebApp.MainButton;
             mainButton.setParams({
                 text: "{{ Str::upper(__('frontend.order_placed')) }}",
-                color: "#525FE1",
+                text_color: "#EEEEEE",
+                color: "#F0A500",
                 is_active: true,
                 is_visible: true,
             });

@@ -32,18 +32,18 @@
                 </svg>
             </label>
             <select id="languages" x-on:change="setLang($event.target.value)"
-                class="text-xs bg-white border border-gray-300 text-gray-900 rounded-lg dark:bg-slate-700 dark:border-slate-800 dark:placeholder-gray-300 dark:text-white">
+                class="text-xs bg-white border border-gray-300 text-gray-900 rounded-lg dark:bg-[#04293A] dark:border-slate-800 dark:placeholder-gray-300 dark:text-white">
                 <option @if(app()->getLocale() == 'vi') selected @endif value="vi">Tiếng Việt</option>
                 <option @if(app()->getLocale() == 'zh') selected @endif value="zh">中文</option>
             </select>
         </div>
     </div>
-    <div class="my-3 scrollbar-hidden">
+    <div class="my-3 scrollbar-hidden px-2">
         <ul class="flex flex-nowrap gap-2 items-center scroll-smooth snap-x snap-mandatory overflow-x-auto no-scrollbar">
             <li class="flex-none snap-always snap-center">
                 <div @click="setActive(0)"
-                    class="overflow-hidden inline-flex items-center rounded-s-md rounded-e-md p-1 border border-gray-200 dark:border-slate-700"
-                    :class="isActive(0) ? 'bg-amber-500 text-white' : 'bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200'"
+                    class="overflow-hidden inline-flex items-center rounded-s-md rounded-e-md p-1 border"
+                    :class="isActive(0) ? 'bg-[#F0A500] text-[#EEEEEE] dark:bg-[#03506F] dark:text-white dark:border-[#2D4263]' : 'bg-white dark:bg-[#04293A] text-gray-700 dark:text-[#BBBBBB] dark:border-[#04293A]'"
                 >
                     <img class="w-10 h-10 object-cover rounded-md" src="{{ '/storage/default.jpg' }}">
                     <div class="mx-1">All</div>
@@ -52,8 +52,8 @@
             @foreach ($categories as $category)
             <li class="flex-none snap-always snap-center cursor-pointer">
                 <div @click="setActive({{ $category->id }})"
-                    class="overflow-hidden inline-flex items-center rounded-s-md rounded-e-md p-1 border border-gray-200 dark:border-gray-900"
-                    :class="isActive({{ $category->id }}) ? 'bg-amber-500 text-white' : 'bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200'"
+                    class="overflow-hidden inline-flex items-center rounded-s-md rounded-e-md p-1 border"
+                    :class="isActive({{ $category->id }}) ? 'bg-[#F0A500] text-[#EEEEEE] dark:bg-[#03506F] dark:text-white dark:border-[#2D4263]' : 'bg-white dark:bg-[#04293A] text-gray-700 dark:text-[#BBBBBB] dark:border-[#04293A]'"
                 >
                     @if($category->image && Illuminate\Support\Facades\Storage::disk("categories")->exists($category->image))
                         <img class="w-10 h-10 object-cover rounded-md" src="{{ Illuminate\Support\Facades\Storage::disk('categories')->url($category->image) }}">
@@ -68,10 +68,10 @@
     </div>
     <div class="grid grid-cols-2 gap-x-3 gap-y-5 p-2">
         @foreach ($products as $product)
-        <div class="flex flex-col bg-white dark:bg-gray-600 shadow-lg shadow-black/30 overflow-visible">
+        <div class="flex flex-col bg-white dark:bg-[#064663] shadow-lg shadow-black/30 overflow-visible">
             <div class="relative">
-                <div class="bg-red-600 absolute px-1 uppercase top-1 -left-1 before:content-[''] before:inline-block before:absolute before:brightness-75 before:left-0 before:-bottom-1 before:border-red-600 before:border-t-4 before:border-l-4 before:border-solid before:border-l-transparent">
-                    <span class="text-white">{{ $product->code }}</span>
+                <div class="bg-[#E45826] absolute px-1 uppercase top-1 -left-1 before:content-[''] before:inline-block before:absolute before:brightness-75 before:left-0 before:-bottom-1 before:border-[#E45826] before:border-t-4 before:border-l-4 before:border-solid before:border-l-transparent">
+                    <span class="text-[#FDF6EC]">{{ $product->code }}</span>
                 </div>
                 <div class="bg-gray-800/40 text-slate-200 absolute px-1 bottom-0 right-0 rounded">{{ $product?->remarks }}</div>
                 @if($product->image && Illuminate\Support\Facades\Storage::disk("products")->exists($product->image))
@@ -81,16 +81,16 @@
                 @endif
             </div>
             <div class="text-center justify-center my-1 grow">
-                <h3 class="font-bold text-gray-800 dark:text-white">{{ $product->name }}</h3>
-                <p class="text-xs line-clamp-1 text-slate-700 dark:text-gray-300">{!! $product->description !!}</p>
+                <h3 class="font-bold text-[#1B1A17] dark:text-white">{{ $product->name }}</h3>
+                <p class="text-sm line-clamp-1 text-[#00092C] dark:text-[#DDDDDD]">{!! $product->description !!}</p>
                 <div class="inline-flex gap-x-2 justify-center items-baseline">
                     <p class="tracking-wide text-xs line-through text-gray-700 dark:text-gray-200 font-oswald">{{ money($product->old_price, convert: true) }}</p>
-                    <p class="font-semibold tracking-wide text-base text-orange-500 font-oswald">{{ money($product->price, convert: true) }}{{ $product->unit->getTrans() }}</p>
+                    <p class="font-semibold tracking-wide text-base text-[#E45826] font-oswald">{{ money($product->price, convert: true) }}{{ $product->unit->getTrans() }}</p>
                 </div>
             </div>
             @if ($this->getQuantity($product->id) == 0)
             <button @click="handleIncrement" data-product="{{ $product }}"
-                class="subpixel-antialiased tracking-tighter uppercase w-full bg-purple text-white py-2 flex justify-center bottom-0 cursor-pointer"
+                class="subpixel-antialiased tracking-tighter uppercase w-full bg-[#F0A500] text-[#EEEEEE] py-1.5 flex justify-center bottom-0 cursor-pointer"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -99,13 +99,13 @@
             </button>
             @else
             <div class="flex justify-between items-center">
-                <button class="py-2 px-5 bg-red-500 text-white cursor-pointer" @click="handleDecrement({{ $product->id }})">
+                <button class="py-1.5 px-5 bg-[#E6D5B8] text-white dark:bg-[#04293A] cursor-pointer" @click="handleDecrement({{ $product->id }})">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
                     </svg>
                 </button>
-                <p class="text-black dark:text-white font-bold">{{ $this->getQuantity($product->id) }}</p>
-                <button class="py-2 px-5 bg-purple text-white cursor-pointer" @click="handleIncrement" data-product="{{ $product }}">
+                <p class="text-[#1B1A17] dark:text-white font-bold">{{ $this->getQuantity($product->id) }}</p>
+                <button class="py-1.5 px-5 bg-[#F0A500] text-[#EEEEEE] cursor-pointer" @click="handleIncrement" data-product="{{ $product }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -126,8 +126,8 @@
         function showMainButton() {
             Telegram.WebApp.MainButton.setParams({
                 text: "{{ Str::upper(__('frontend.cart_view')) }}",
-                text_color: "#ffffff",
-                color: "#6528F7",
+                text_color: "#EEEEEE",
+                color: "#F0A500",
                 is_active: true,
                 is_visible: true,
             }).onClick(() => {

@@ -1,4 +1,4 @@
-<div class="p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+<div class="p-2 bg-white dark:bg-[#04293A] text-slate-900 dark:text-white">
     <div class="flex justify-between items-center">
         <h3 class="text-base font-semibold uppercase">{{ __('frontend.your_cart') }}</h3>
         <div x-data>
@@ -25,8 +25,8 @@
                 <img class="aspect-[4/3] object-cover w-1/5 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product['name'] }}">
             @endif
             <div class="flex flex-col pl-1 grow">
-                <h3 class="font-bold">{{ $item->product['name'] }} - {{ $item->product['code'] }} <span class="text-orange-500 ml-2">x{{ $item->quantity }}</span></h3>
-                <p class="text-slate-600 dark:text-gray-300 text-xs line-clamp-1 overflow-hidden text-ellipsis">{!! $item->product['description'] !!}</p>
+                <h3 class="font-bold">{{ $item->product['name'] }} - {{ $item->product['code'] }} <span class="text-[#E45826] ml-2">x{{ $item->quantity }}</span></h3>
+                <p class="text-[#00092C] dark:text-gray-300 text-xs line-clamp-1 overflow-hidden text-ellipsis">{!! $item->product['description'] !!}</p>
             </div>
             <div class="font-oswald">{{ money($item->amount, convert: true) }}</div>
         </div>
@@ -48,8 +48,8 @@
         // Show mainbutton
         Telegram.WebApp.MainButton.setParams({
             text: "{{ Str::upper(__('frontend.order')) . ' ' . money($subtotal, convert: true) }}",
-            text_color: "#ffffff",
-            color: "#6366f1",
+            text_color: "#EEEEEE",
+            color: "#F0A500",
             is_active: true,
             is_visible: true,
         }).onClick(() => {

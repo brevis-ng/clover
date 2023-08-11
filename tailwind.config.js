@@ -13,9 +13,6 @@ export default {
                 ],
                 oswald: ["Oswald", "sans-serif"],
             },
-            colors: {
-                purple: "#6528F7",
-            },
         },
         container: {
             center: true,

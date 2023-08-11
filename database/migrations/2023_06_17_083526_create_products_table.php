@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->decimal("price")->default(0);
             $table->decimal("old_price")->default(0);
             $table->decimal('cost')->default(0);
-            $table->string("unit")->nullable();
+            $table->string("unit")->default("");
             $table->string("image")->nullable();
             $table->string("description")->nullable();
             $table->boolean("is_visible")->default(true);

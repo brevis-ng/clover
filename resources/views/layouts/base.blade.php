@@ -21,7 +21,7 @@
         @livewireStyles
     </head>
 
-    <body class="min-h-screen container bg-[#F0F2F5] dark:bg-slate-800 no-scrollbar">
+    <body class="min-h-screen container bg-[#F1EEE9] dark:bg-[#041C32] no-scrollbar">
         {{ $slot }}
 
         @livewireScripts
@@ -31,7 +31,9 @@
             Telegram.WebApp.enableClosingConfirmation();
 
             function setThemeClass() {
-                document.documentElement.className = Telegram.WebApp.colorScheme;
+                // document.documentElement.className = Telegram.WebApp.colorScheme;
+                document.documentElement.className = "dark";
+                // document.documentElement.className = "light";
             }
             Telegram.WebApp.onEvent("themeChanged", setThemeClass);
             setThemeClass();
