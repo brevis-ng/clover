@@ -37,7 +37,6 @@ return [
     */
 
     'locales' => [
-        'en' => ['name' => 'English',                'script' => 'Latn', 'native' => 'English', 'flag_code' => 'us'],
         'vi' => ['name' => 'Vietnamese',             'script' => 'Latn', 'native' => 'Tiếng Việt', 'flag_code' => 'vn' ],
         'zh' => ['name' => 'Chinese (Simplified)',   'script' => 'Hans', 'native' => '简体中文', 'flag_code' => 'cn' ],
     ],
