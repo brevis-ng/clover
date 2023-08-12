@@ -5,6 +5,7 @@ namespace App\Telegram\Conversations;
 use App\Enums\OrderStatus;
 use App\Jobs\AdminUpdatedOrder;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -17,15 +18,20 @@ class OrderManageConversation extends InlineMenu
 
     public function start(Nutgram $bot)
     {
-        $this->order = $bot->get(
-            Order::class,
-            Order::where(
-                "order_number",
-                trim($bot->currentParameters()[0])
-            )->first()
-        );
+        try {
+            $this->order = $bot->getUserData(Order::class, $bot->userId());
+            $this->status = $this->order->status;
+        } catch (\Throwable $e) {
+            $bot->sendMessage("Server Error. Please try again.");
 
-        $this->status = $this->order->status;
+            Log::critical("{class} Error in line {line}: {message}", [
+                "class" => self::class,
+                "line" => $e->getLine(),
+                "message" => $e->getMessage(),
+            ]);
+            $this->end();
+            return null;
+        }
 
         $text = message("order-detail", ["order" => $this->order]);
 

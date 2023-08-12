@@ -31,7 +31,7 @@ class VerifyOrder
                     return;
                 }
 
-                $bot->set(Order::class, $order);
+                $bot->setUserData(Order::class, $order, $bot->userId());
 
                 $next($bot);
             } else {
