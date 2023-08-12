@@ -54,7 +54,7 @@ class CategoryResource extends Resource
                                     ->getUploadedFileNameForStorageUsing(function (
                                         TemporaryUploadedFile $file
                                     ): string {
-                                        return Str::uuid() . "." . $file->getExtension();
+                                        return Str::uuid() . "." . $file->guessExtension();
                                     }),
                             ])
                             ->columns(2),
