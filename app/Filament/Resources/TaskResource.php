@@ -21,6 +21,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Illuminate\Support\Str;
 
 class TaskResource extends Resource
 {
@@ -61,7 +62,9 @@ class TaskResource extends Resource
                                 ->imageCropAspectRatio("4:3")
                                 ->imageResizeTargetWidth("640")
                                 ->imageResizeTargetHeight("480")
-                                ->preserveFilenames(),
+                                ->getUploadedFileNameForStorageUsing(
+                                    fn($file) => Str::uuid()
+                                ),
                         ]),
                         Section::make("Crontab")
                             ->description(__("task.cron_desc"))
@@ -85,7 +88,7 @@ class TaskResource extends Resource
                                 ->searchable()
                                 ->required(),
                         ]),
-                        Section::make("Trạng thái")->schema([
+                        Section::make(__("task.status"))->schema([
                             Toggle::make("enabled")
                                 ->label(__("task.enabled"))
                                 ->default(true)

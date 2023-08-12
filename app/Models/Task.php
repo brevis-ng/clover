@@ -40,12 +40,12 @@ class Task extends Model
         return str_replace($elements, $replaces, $this->content);
     }
 
-    public function getImage(): InputFile|null
+    public function getImage(): string|null
     {
         if ($this->image && Storage::disk("tasks")->exists($this->image)) {
-            $img_data = fopen(Storage::disk("tasks")->path($this->image), "r+");
+            $image_url = Storage::disk("tasks")->url($this->image);
 
-            return InputFile::make($img_data);
+            return $image_url;
         }
 
         return null;

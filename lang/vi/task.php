@@ -19,4 +19,5 @@ return [
     "label" => "Tin nhắn",
     "created_at" => "Thời gian tạo",
     "updated_at" => "Sửa đổi lần cuối",
+    "status" => "Trạng thái",
 ];

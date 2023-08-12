@@ -19,4 +19,5 @@ return [
     "label" => "消息",
     "created_at" => "创建时间",
     "updated_at" => "上一次更改",
+    "status" => "状态",
 ];
