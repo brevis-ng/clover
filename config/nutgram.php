@@ -9,7 +9,7 @@ return [
 
     // Extra or specific configurations
     "config" => [
-        "client_timeout" => 60,
+        "timeout" => 60,
     ],
 
     // Set if the service provider should automatically load
