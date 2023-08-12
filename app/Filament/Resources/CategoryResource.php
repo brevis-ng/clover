@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
-use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
@@ -20,9 +18,8 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Livewire\TemporaryUploadedFile;
 
 class CategoryResource extends Resource
 {
@@ -54,9 +51,11 @@ class CategoryResource extends Resource
                                     ->imageResizeTargetWidth("640")
                                     ->imageResizeTargetHeight("480")
                                     ->columnSpanFull()
-                                    ->getUploadedFileNameForStorageUsing(
-                                        fn($file) => Str::uuid()
-                                    ),
+                                    ->getUploadedFileNameForStorageUsing(function (
+                                        TemporaryUploadedFile $file
+                                    ): string {
+                                        return Str::uuid() . "." . $file->getExtension();
+                                    }),
                             ])
                             ->columns(2),
                     ])

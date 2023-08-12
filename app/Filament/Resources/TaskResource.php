@@ -22,6 +22,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Support\Str;
+use Livewire\TemporaryUploadedFile;
 
 class TaskResource extends Resource
 {
@@ -62,9 +63,11 @@ class TaskResource extends Resource
                                 ->imageCropAspectRatio("4:3")
                                 ->imageResizeTargetWidth("640")
                                 ->imageResizeTargetHeight("480")
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn($file) => Str::uuid()
-                                ),
+                                ->getUploadedFileNameForStorageUsing(function (
+                                    TemporaryUploadedFile $file
+                                ): string {
+                                    return Str::uuid() . "." . $file->getExtension();
+                                }),
                         ]),
                         Section::make("Crontab")
                             ->description(__("task.cron_desc"))
