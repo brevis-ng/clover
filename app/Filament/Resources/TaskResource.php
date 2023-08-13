@@ -59,10 +59,6 @@ class TaskResource extends Resource
                                 ->image()
                                 ->disk("tasks")
                                 ->maxSize(1024)
-                                ->imageResizeMode("cover")
-                                ->imageCropAspectRatio("4:3")
-                                ->imageResizeTargetWidth("640")
-                                ->imageResizeTargetHeight("480")
                                 ->getUploadedFileNameForStorageUsing(function (
                                     TemporaryUploadedFile $file
                                 ): string {

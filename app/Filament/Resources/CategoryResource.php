@@ -46,10 +46,6 @@ class CategoryResource extends Resource
                                     ->image()
                                     ->disk("categories")
                                     ->maxSize(1024)
-                                    ->imageResizeMode("cover")
-                                    ->imageCropAspectRatio("4:3")
-                                    ->imageResizeTargetWidth("640")
-                                    ->imageResizeTargetHeight("480")
                                     ->columnSpanFull()
                                     ->getUploadedFileNameForStorageUsing(function (
                                         TemporaryUploadedFile $file
