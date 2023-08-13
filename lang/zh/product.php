@@ -21,6 +21,7 @@ return [
         "pack" => "包装",
         "set" => "套",
         "kg" => "Kg",
+        "none" => "没有",
     ],
     "description" => "描述",
     "image" => "图片",

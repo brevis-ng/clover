@@ -52,7 +52,8 @@ class ProductResource extends Resource
                                     ->maxLength(30),
                                 Select::make("unit")
                                     ->label(__("product.unit"))
-                                    ->options(Units::all()),
+                                    ->options(Units::all())
+                                    ->default(Units::NONE),
                                 MarkdownEditor::make("description")
                                     ->label(__("product.description"))
                                     ->columnSpanFull(),

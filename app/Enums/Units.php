@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum Units: string
 {
-    case NONE = "";
+    case NONE = "none";
     case PIECE = "piece";
     case PAIR = "pair";
     case BOX = "box";
@@ -17,18 +17,14 @@ enum Units: string
         $res = [];
         foreach (self::cases() as $case) {
             $res[$case->value] = __("product.units." . $case->value);
-            if ($case == self::NONE) {
-                $res[$case->value] = "None";
-            };
         }
         return $res;
     }
 
     public function getTrans(): string
     {
-        if ($this == self::NONE) {
-            return "";
-        }
-        return "/" . __("product.units.{$this->value}");
+        return $this->name == static::NONE
+            ? ""
+            : "/" . __("product.units.{$this->value}");
     }
 }

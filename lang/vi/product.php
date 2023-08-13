@@ -21,6 +21,7 @@ return [
         "pack" => "Gói",
         "set" => "Set",
         "kg" => "Kg",
+        "none" => "Không có",
     ],
     "description" => "Mô tả",
     "image" => "Hình ảnh",

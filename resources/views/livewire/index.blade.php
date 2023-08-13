@@ -88,7 +88,7 @@
                 <p class="text-sm line-clamp-1 text-[#00092C] dark:text-[#DDDDDD]">{!! $product->description !!}</p>
                 <div class="inline-flex gap-x-2 justify-center items-baseline">
                     <p class="tracking-wide text-xs line-through text-gray-700 dark:text-gray-200 font-oswald">{{ money($product->old_price, convert: true) }}</p>
-                    <p class="font-semibold tracking-wide text-base text-[#E45826] font-oswald">{{ money($product->price, convert: true) }}{{ $product->unit->getTrans() }}</p>
+                    <p class="font-semibold tracking-wide text-base text-[#E45826] font-oswald">{{ money($product->price, convert: true) }}{{ $product->unit?->getTrans() }}</p>
                 </div>
             </div>
             @if ($this->getQuantity($product->id) == 0)
