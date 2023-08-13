@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->string("code", 5)->nullable();
             $table->foreignId("category_id")->nullable()->noActionOnDelete();
             $table->decimal("price")->default(0);
-            $table->decimal("old_price")->default(0);
-            $table->decimal('cost')->default(0);
+            $table->decimal("old_price")->nullable();
+            $table->decimal('cost')->nullable();
             $table->string("unit")->default("");
             $table->string("image")->nullable();
             $table->string("description")->nullable();

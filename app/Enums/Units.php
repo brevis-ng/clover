@@ -23,7 +23,7 @@ enum Units: string
 
     public function getTrans(): string
     {
-        return $this->name == static::NONE
+        return $this->name == static::NONE->name
             ? ""
             : "/" . __("product.units.{$this->value}");
     }
