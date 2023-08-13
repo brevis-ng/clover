@@ -24,7 +24,7 @@ class CreateUser extends CreateRecord
                 );
                 Telegram::setMyCommands(
                     [
-                        BotCommand::make("order", "Manage order /order orderNo"),
+                        BotCommand::make("order", "Manage order"),
                         BotCommand::make("cache", "Clear cache"),
                         BotCommand::make("help", "Help message"),
                         BotCommand::make("cancel", "Cancel"),

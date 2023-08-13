@@ -10,8 +10,11 @@ use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Nutgram\Laravel\Facades\Telegram;
 use Laravel\Sanctum\HasApiTokens;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
+use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeChat;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -22,13 +25,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        "name",
-        "telegram_id",
-        "email",
-        "role",
-        "password",
-    ];
+    protected $fillable = ["name", "telegram_id", "email", "role", "password"];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -71,5 +68,77 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function scopeAssistant($query): void
     {
         $query->where("role", Roles::ASSISTANT);
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            try {
+                if ($user->role == Roles::ADMIN && $user->telegram_id) {
+                    Telegram::deleteMyCommands(
+                        new BotCommandScopeChat($user->telegram_id)
+                    );
+                    Telegram::setMyCommands(
+                        [
+                            BotCommand::make("order", "Manage order"),
+                            BotCommand::make("cache", "Clear cache"),
+                            BotCommand::make("help", "Help message"),
+                            BotCommand::make("cancel", "Cancel"),
+                        ],
+                        new BotCommandScopeChat($user->telegram_id)
+                    );
+                }
+            } catch (\Throwable $e) {
+                Log::critical("{class} Error in line {line}: {message}", [
+                    "class" => self::class,
+                    "line" => $e->getLine(),
+                    "message" => $e->getMessage(),
+                ]);
+            }
+        });
+        static::deleted(function (User $user) {
+            try {
+                if ($user->role == Roles::ADMIN && $user->telegram_id) {
+                    Telegram::deleteMyCommands(
+                        new BotCommandScopeChat($user->telegram_id)
+                    );
+                }
+            } catch (\Throwable $e) {
+                Log::critical("{class} Error in line {line}: {message}", [
+                    "class" => self::class,
+                    "line" => $e->getLine(),
+                    "message" => $e->getMessage(),
+                ]);
+            }
+        });
+        static::updating(function (User $user) {
+            try {
+                if (
+                    $user->isDirty("telegram_id") ||
+                    $user->role == Roles::ASSISTANT
+                ) {
+                    Telegram::deleteMyCommands(
+                        new BotCommandScopeChat($user->getOriginal("telegram_id"))
+                    );
+                }
+                if ($user->role == Roles::ADMIN) {
+                    Telegram::setMyCommands(
+                        [
+                            BotCommand::make("order", "Manage order"),
+                            BotCommand::make("cache", "Clear cache"),
+                            BotCommand::make("help", "Help message"),
+                            BotCommand::make("cancel", "Cancel"),
+                        ],
+                        new BotCommandScopeChat($user->telegram_id)
+                    );
+                }
+            } catch (\Throwable $e) {
+                Log::critical("{class} Error in line {line}: {message}", [
+                    "class" => self::class,
+                    "line" => $e->getLine(),
+                    "message" => $e->getMessage(),
+                ]);
+            }
+        });
     }
 }
