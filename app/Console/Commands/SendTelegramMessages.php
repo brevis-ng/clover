@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Task;
+use App\Settings\TelegramBotSettings;
 use Cron\CronExpression;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
