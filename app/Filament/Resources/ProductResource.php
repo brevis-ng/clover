@@ -45,6 +45,7 @@ class ProductResource extends Resource
                                 TextInput::make("code")
                                     ->label(__("product.code"))
                                     ->hint(__("product.code_hint"))
+                                    ->unique(ignoreRecord: true)
                                     ->required(),
                                 TextInput::make("remarks")
                                     ->label(__("product.remarks"))
@@ -67,10 +68,6 @@ class ProductResource extends Resource
                                     ->image()
                                     ->disk("products")
                                     ->maxSize(1024)
-                                    ->imageResizeMode("cover")
-                                    ->imageCropAspectRatio("4:3")
-                                    ->imageResizeTargetWidth("640")
-                                    ->imageResizeTargetHeight("480")
                                     ->getUploadedFileNameForStorageUsing(function (
                                         TemporaryUploadedFile $file
                                     ): string {
@@ -85,15 +82,17 @@ class ProductResource extends Resource
                                     ->label(__("product.price"))
                                     ->hint(__("product.price_hint"))
                                     ->numeric()
-                                    ->required()
-                                    ->default(0),
+                                    ->minValue(0)
+                                    ->required(),
                                 TextInput::make("old_price")
                                     ->label(__("product.old_price"))
                                     ->hint(__("product.old_price_hint"))
+                                    ->minValue(0)
                                     ->numeric(),
                                 TextInput::make("cost")
                                     ->label(__("product.cost"))
                                     ->helperText(__("product.cost_hint"))
+                                    ->minValue(0)
                                     ->numeric(),
                             ])
                             ->columns(2),

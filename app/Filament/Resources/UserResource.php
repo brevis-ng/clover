@@ -57,6 +57,7 @@ class UserResource extends Resource
                             Select::make("telegram_id")
                                 ->options(Customer::all()->pluck("name", "id"))
                                 ->searchable()
+                                ->unique(ignoreRecord: true)
                                 ->required(),
                         ]),
                     ])
