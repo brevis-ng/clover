@@ -14,7 +14,9 @@ class VerifyOrder
     {
         try {
             $order_number = trim($bot->currentParameters()[0]);
-            $order = Order::where("order_number", $order_number)->first();
+            $order = Order::where("order_number", $order_number)
+                ->withSum("items", "amount")
+                ->first();
 
             if ($order) {
                 if (

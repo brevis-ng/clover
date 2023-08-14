@@ -83,7 +83,7 @@ class OrderManageConversation extends InlineMenu
         }
 
         $this->order->shipping_amount = intval($bot->message()->text);
-        $this->order->total_amount += $this->order->shipping_amount;
+        $this->order->total_amount = $this->order->items_sum_amount + $this->order->shipping_amount;
         $this->order->save();
 
         AdminUpdatedOrder::dispatch($this->order, null, __("order.shipping_amount"));
