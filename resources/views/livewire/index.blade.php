@@ -92,7 +92,7 @@
                         {{ format_currency($product->old_price) }}
                     </p>
                     @endif
-                    <p class="font-semibold tracking-wide text-base text-[#E45826] font-oswald">{{ format_currency($product->old_price) }}{{ $product->unit?->getTrans() }}</p>
+                    <p class="font-semibold tracking-wide text-base text-[#E45826] font-oswald">{{ format_currency($product->price) }}{{ $product->unit?->getTrans() }}</p>
                 </div>
             </div>
             @if ($this->getQuantity($product->id) == 0)
