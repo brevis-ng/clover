@@ -9,6 +9,9 @@ use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\Log;
 use Nutgram\Laravel\Facades\Telegram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\WebApp\WebAppInfo;
 
 class SendTelegramMessages extends Command implements Isolatable
 {
@@ -45,18 +48,27 @@ class SendTelegramMessages extends Command implements Isolatable
                     $content = $task->getContent();
                     $image = $task->getImage();
 
+                    $inline_button = InlineKeyboardMarkup::make()->addRow(
+                        InlineKeyboardButton::make(
+                            app(TelegramBotSettings::class)->webapp_inline_button,
+                            web_app: new WebAppInfo(app(TelegramBotSettings::class)->webapp_url)
+                        )
+                    );
+
                     if ($image) {
-                        $msg = Telegram::sendPhoto(
+                        Telegram::sendPhoto(
                             $image,
                             $task->chat_id,
                             caption: $content,
-                            parse_mode: ParseMode::HTML
+                            parse_mode: ParseMode::HTML,
+                            reply_markup: $inline_button
                         );
                     } else {
-                        $msg = Telegram::sendMessage(
+                        Telegram::sendMessage(
                             $content,
                             $task->chat_id,
-                            parse_mode: ParseMode::HTML
+                            parse_mode: ParseMode::HTML,
+                            reply_markup: $inline_button
                         );
                     }
 
