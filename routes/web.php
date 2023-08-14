@@ -3,6 +3,7 @@
 use App\Http\Livewire\Index;
 use App\Http\Livewire\OrderSubmit;
 use App\Http\Livewire\ShowCarts;
+use App\Http\Middleware\SetLanguage;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -18,15 +19,17 @@ use Illuminate\Support\Facades\Route;
 */
 Route::view("/", "welcome");
 
-Route::prefix("/webapp")->group(function () {
-    Route::get("/", Index::class)->name("frontend.index");
-    Route::get("/carts", ShowCarts::class)->name("frontend.carts");
-    Route::get("/order-placed", OrderSubmit::class)->name("frontend.orderplaced");
-});
+Route::prefix("/webapp")
+    ->middleware(SetLanguage::class)
+    ->group(function () {
+        Route::get("/", Index::class)->name("frontend.index");
+        Route::get("/carts", ShowCarts::class)->name("frontend.carts");
+        Route::get("/order-placed", OrderSubmit::class)->name("frontend.orderplaced");
+    });
 
 Route::get("admin/clear-cache", function () {
     Artisan::call("cache:clear");
-   \Filament\Notifications\Notification::make()
+    \Filament\Notifications\Notification::make()
         ->title("Cache was cleared successfully")
         ->success()
         ->send();

@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Helpers\CartManager;
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -59,8 +58,9 @@ class Index extends Component
 
     public function setLanguage($language)
     {
-        App::setLocale($language);
+        app()->setLocale($language);
         session()->put("locale", $language);
+
         return redirect()->route("frontend.index");
     }
 

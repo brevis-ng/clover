@@ -36,8 +36,8 @@
             </label>
             <select id="languages" x-on:change="setLang($event.target.value)"
                 class="text-xs bg-white border border-gray-300 text-gray-900 rounded-lg dark:bg-[#04293A] dark:border-slate-800 dark:placeholder-gray-300 dark:text-white">
-                <option @if(app()->getLocale() == 'vi') selected @endif value="vi">Tiếng Việt</option>
-                <option @if(app()->getLocale() == 'zh') selected @endif value="zh">中文</option>
+                <option @if(app()->isLocale('vi')) selected @endif value="vi">Tiếng Việt</option>
+                <option @if(app()->isLocale('zh')) selected @endif value="zh">中文</option>
             </select>
         </div>
     </div>
@@ -89,10 +89,10 @@
                 <div class="inline-flex gap-x-2 justify-center items-baseline">
                     @if($product->old_price && $product->old_price != 0 && $product->old_price > $product->price)
                     <p class="tracking-wide text-xs line-through text-gray-700 dark:text-gray-200 font-oswald">
-                        {{ money($product->old_price, convert: true) }}
+                        {{ format_currency($product->old_price) }}
                     </p>
                     @endif
-                    <p class="font-semibold tracking-wide text-base text-[#E45826] font-oswald">{{ money($product->price, convert: true) }}{{ $product->unit?->getTrans() }}</p>
+                    <p class="font-semibold tracking-wide text-base text-[#E45826] font-oswald">{{ format_currency($product->old_price) }}{{ $product->unit?->getTrans() }}</p>
                 </div>
             </div>
             @if ($this->getQuantity($product->id) == 0)
