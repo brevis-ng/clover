@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->boolean('is_visible')->default(true);
+            $table->unsignedSmallInteger("sort")->nullable();
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ class Category extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ["name", "image", "is_visible"];
+    protected $fillable = ["name", "image", "is_visible", "sort"];
 
     /**
      * The attributes that should be cast.

@@ -16,4 +16,6 @@ return [
     "created_at" => "创建时间",
     "updated_at" => "上一次更改",
     "timeline" => "时间线",
+    "sort" => "排行",
+    "sort_hint" => "按升序显示类别",
 ];

@@ -24,7 +24,7 @@ class Index extends Component
 
         $this->categories = Cache::rememberForever("categories", function () {
             return Category::visibility()
-                ->latest("updated_at")
+                ->orderBy("sort")
                 ->get();
         });
     }

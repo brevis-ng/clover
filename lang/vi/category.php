@@ -16,4 +16,6 @@ return [
     "created_at" => "Thời gian tạo",
     "updated_at" => "Sửa đổi lần cuối",
     "timeline" => "Lịch sử sửa đổi",
+    "sort" => "Sắp xếp",
+    "sort_hint" => "Hiển thị danh mục theo thứ tự tăng dần",
 ];

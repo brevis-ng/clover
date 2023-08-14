@@ -40,6 +40,11 @@ class CategoryResource extends Resource
                                     ->label(__("category.name"))
                                     ->maxLength(255)
                                     ->required(),
+                                TextInput::make("sort")
+                                    ->label(__("category.sort"))
+                                    ->hint(__("category.sort_hint"))
+                                    ->numeric()
+                                    ->minValue(1),
                                 FileUpload::make("image")
                                     ->label(__("category.image"))
                                     ->helperText(__("category.image_hint"))
