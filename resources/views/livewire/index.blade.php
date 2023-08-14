@@ -87,7 +87,7 @@
                 <h3 class="font-bold text-[#1B1A17] dark:text-white">{{ $product->name }}</h3>
                 <p class="text-sm line-clamp-1 text-[#00092C] dark:text-[#DDDDDD]">{!! $product->description !!}</p>
                 <div class="inline-flex gap-x-2 justify-center items-baseline">
-                    @if($product->old_price && $product->old_price != 0 && $product->old_price < $product->price)
+                    @if($product->old_price && $product->old_price != 0 && $product->old_price > $product->price)
                     <p class="tracking-wide text-xs line-through text-gray-700 dark:text-gray-200 font-oswald">
                         {{ money($product->old_price, convert: true) }}
                     </p>
