@@ -78,9 +78,9 @@
                 </div>
                 <div class="bg-gray-800/40 text-slate-200 absolute px-1 bottom-0 right-0 rounded">{{ $product?->remarks }}</div>
                 @if($product->image && Illuminate\Support\Facades\Storage::disk("products")->exists($product->image))
-                    <img class="aspect-[4/3] object-cover" src="{{ Illuminate\Support\Facades\Storage::disk('products')->url($product->image) }}" alt="{{ $product->name }}">
+                    <img class="aspect-[4/3] object-contain" src="{{ Illuminate\Support\Facades\Storage::disk('products')->url($product->image) }}" alt="{{ $product->name }}">
                 @else
-                    <img class="aspect-[4/3] object-cover" src="{{ '/storage/default.jpg' }}" alt="{{ $product->name }}">
+                    <img class="aspect-[4/3] object-contain" src="{{ '/storage/default.jpg' }}" alt="{{ $product->name }}">
                 @endif
             </div>
             <div class="text-center justify-center my-1 grow">

@@ -116,7 +116,7 @@ function generateOrderNumber(): string
  */
 function format_currency(float $num): string
 {
-    $ftm = new NumberFormatter("en_US", NumberFormatter::CURRENCY);
+    $ftm = new \NumberFormatter("en_PH", NumberFormatter::CURRENCY);
     $ftm->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
 
     return $ftm->formatCurrency($num, "PHP");

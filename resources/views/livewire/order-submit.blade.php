@@ -73,9 +73,9 @@
             @foreach ($cart as $item)
             <div class="flex justify-between items-center py-1 text-sm">
                 @if($item->product['image'] != null && Illuminate\Support\Facades\Storage::disk("products")->exists($item->product['image']))
-                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ Illuminate\Support\Facades\Storage::disk('products')->url($item->product['image']) }}" alt="{{ $item->product['name'] }}">
+                    <img class="aspect-[4/3] object-contain w-1/6 flex-none" src="{{ Illuminate\Support\Facades\Storage::disk('products')->url($item->product['image']) }}" alt="{{ $item->product['name'] }}">
                 @else
-                    <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product['name'] }}">
+                    <img class="aspect-[4/3] object-contain w-1/6 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product['name'] }}">
                 @endif
                 <h3 class="ml-2 grow">{{ $item->product['name'] }} <span class="text-[#E45826] ml-2 font-semibold">x{{ $item->quantity }}</span></h3>
                 <div class="font-oswald">{{ format_currency($item->amount) }}</div>
