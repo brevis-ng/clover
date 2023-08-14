@@ -35,7 +35,7 @@
     <link rel="manifest" href="storage/site.webmanifest">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <link href="build/assets/output.css" rel="stylesheet">
+    <link href="storage/output.css" rel="stylesheet">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
 </head>
