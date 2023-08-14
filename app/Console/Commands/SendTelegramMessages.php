@@ -58,16 +58,16 @@ class SendTelegramMessages extends Command implements Isolatable
 
                     if ($image) {
                         Telegram::sendPhoto(
-                            $image,
-                            $task->chat_id,
+                            photo: $image,
+                            chat_id: $task->chat_id,
                             caption: $content,
                             parse_mode: ParseMode::HTML,
                             reply_markup: $inline_button
                         );
                     } else {
                         Telegram::sendMessage(
-                            $content,
-                            $task->chat_id,
+                            text: $content,
+                            chat_id: $task->chat_id,
                             parse_mode: ParseMode::HTML,
                             reply_markup: $inline_button
                         );
