@@ -117,10 +117,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
                     $user->isDirty("telegram_id") ||
                     $user->role == Roles::ASSISTANT
                 ) {
-                    Telegram::deleteMyCommands(
-                        new BotCommandScopeChat($user->getOriginal("telegram_id"))
-                    );
+                    $chat_id = $user->getOriginal("telegram_id") ?? $user->telegram_id;
+
+                    Telegram::deleteMyCommands(new BotCommandScopeChat($chat_id));
                 }
+
                 if ($user->role == Roles::ADMIN) {
                     Telegram::setMyCommands(
                         [
