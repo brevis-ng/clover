@@ -90,13 +90,11 @@ class ProductResource extends Resource
                                 TextInput::make("old_price")
                                     ->label(__("product.old_price"))
                                     ->hint(__("product.old_price_hint"))
-                                    ->numeric()
-                                    ->default(0),
+                                    ->numeric(),
                                 TextInput::make("cost")
                                     ->label(__("product.cost"))
                                     ->helperText(__("product.cost_hint"))
-                                    ->numeric()
-                                    ->default(0),
+                                    ->numeric(),
                             ])
                             ->columns(2),
                     ])
