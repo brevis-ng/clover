@@ -9,11 +9,11 @@
     $max_length = 17;
     $name = Illuminate\Support\Str::of($name)->limit($max_length)->padRight($max_length, '.');
 ?>
-<code>• {{ $name . ' x' . $item->pivot->quantity . ' ' . money($item->pivot->amount, convert: true) }}</code><br>
+<code>• {{ $name . ' x' . $item->pivot->quantity . ' ' . format_currency($item->pivot->amount) }}</code><br>
 @empty
 @endforelse
-🛵 Phí ship: {{ money($order->shipping_amount, convert: true) }}<br>
-💸 Tổng tiền: {{ money($order->total_amount, convert: true) }}<br><br>
+🛵 Phí ship: {{ format_currency($order->shipping_amount) }}<br>
+💸 Tổng tiền: {{ format_currency($order->total_amount) }}<br><br>
 📌 <i>Ghi chú: {{ $order->notes }}</i><br>
 🕒 Thời gian: {{ $order->created_at->diffForHumans() }}<br>
 ♻️ Trạng thái: {{ __("order.s." . $order->status->value) }}

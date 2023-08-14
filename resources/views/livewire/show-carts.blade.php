@@ -28,7 +28,7 @@
                 <h3 class="font-bold">{{ $item->product['name'] }} - {{ $item->product['code'] }} <span class="text-[#E45826] ml-2">x{{ $item->quantity }}</span></h3>
                 <p class="text-[#00092C] dark:text-gray-300 text-xs line-clamp-1 overflow-hidden text-ellipsis">{!! $item->product['description'] !!}</p>
             </div>
-            <div class="font-oswald">{{ money($item->amount, convert: true) }}</div>
+            <div class="font-oswald">{{ format_currency($item->amount) }}</div>
         </div>
         @endforeach
     </div>

@@ -78,7 +78,7 @@
                     <img class="aspect-video object-cover w-1/6 flex-none" src="{{ '/storage/default.jpg' }}" alt="{{ $item->product['name'] }}">
                 @endif
                 <h3 class="ml-2 grow">{{ $item->product['name'] }} <span class="text-[#E45826] ml-2 font-semibold">x{{ $item->quantity }}</span></h3>
-                <div class="font-oswald">{{ money($item->amount, convert: true) }}</div>
+                <div class="font-oswald">{{ format_currency($item->amount) }}</div>
             </div>
             @endforeach
         </div>
@@ -88,7 +88,7 @@
         </div>
         <div class="flex justify-between items-center">
             <h3>{{ __('frontend.total_amount') }}</h3>
-            <p class="font-oswald text-[#E45826]">{{ money($subtotal, convert: true) }}</p>
+            <p class="font-oswald text-[#E45826]">{{ format_currency($subtotal) }}</p>
         </div>
     </div>
 </div>
