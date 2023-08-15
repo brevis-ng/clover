@@ -13,6 +13,7 @@ class TelegramBotSettings extends Settings
     public string $webapp_url;
     public ?string $start_msg_content;
     public ?string $start_msg_photo;
+    public ?string $webapp_link;
 
 
     public static function group(): string

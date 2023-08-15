@@ -8,6 +8,8 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Str;
+use Livewire\TemporaryUploadedFile;
 use Nutgram\Laravel\Facades\Telegram;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommand;
 use SergiX44\Nutgram\Telegram\Types\Command\BotCommandScopeDefault;
@@ -47,12 +49,19 @@ class ManageTelegramBot extends SettingsPage
                         ->required()
                         ->url()
                         ->startsWith("https://"),
+                    TextInput::make("webapp_link")
+                        ->label(__("settings.webapp_link"))
+                        ->hint(__("settings.webapp_link_hint"))
+                        ->placeholder("https://t.me/ramshopdemobot/ramshop")
+                        ->url()
+                        ->startsWith("https://"),
                 ])
                 ->columns(2),
             Section::make("Greating messages")
                 ->schema([
                     RichEditor::make("start_msg_content")
                         ->label(__("settings.start_msg_content"))
+                        ->hint(__("settings.start_msg_hint"))
                         ->maxLength(1024)
                         ->disableAllToolbarButtons()
                         ->enableToolbarButtons([
@@ -61,36 +70,21 @@ class ManageTelegramBot extends SettingsPage
                             "strike",
                             "underline",
                         ])
-                        ->hint(__("settings.start_msg_hint")),
+                        ->required(),
                     FileUpload::make("start_msg_photo")
                         ->label(__("settings.start_msg_photo"))
                         ->image()
-                        ->preserveFilenames()
-                        ->maxSize(1024),
+                        ->disk("tasks")
+                        ->maxSize(1024)
+                        ->getUploadedFileNameForStorageUsing(function (
+                            TemporaryUploadedFile $file
+                        ): string {
+                            return Str::uuid() . "." . $file->guessExtension();
+                        }),
                 ])
                 ->description(__("settings.start_message_description"))
                 ->columns(2),
         ];
-    }
-
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        $html_el = [
-            "<p>",
-            "</p>",
-            "<span style=\"text-decoration: underline;\">",
-            "</span>",
-        ];
-        $replacement = ["", "\n", "<u>", "</u>"];
-        $content = str_replace(
-            $html_el,
-            $replacement,
-            $data["start_msg_content"]
-        );
-
-        $data["start_msg_content"] = $content;
-
-        return $data;
     }
 
     protected function afterSave()

@@ -18,4 +18,6 @@ return [
     "start_msg_content" => "消息内容",
     "start_msg_hint" => "目前支持粗体、斜体、下划线而已",
     "start_msg_photo" => "图片",
+    "webapp_link" => "直接链接WebApp",
+    "webapp_link_hint" => "与 BotFather 聊天来创建",
 ];
