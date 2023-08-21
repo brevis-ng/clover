@@ -1491,9 +1491,7 @@
                 </a>
                 <span class="block text-sm text-center text-gray-500 dark:text-gray-400">© 2021-2023 RamShop™. All
                     Rights Reserved. Phát triển bởi <a href="https://github.com/brevisnguyen"
-                        class="text-purple-600 hover:underline dark:text-purple-500">Brevis</a> và <a
-                        href="https://github.com/ramshop"
-                        class="text-purple-600 hover:underline dark:text-purple-500">RamShop</a>.
+                        class="text-purple-600 hover:underline dark:text-purple-500">Brevis</a>.
                 </span>
                 <ul class="flex justify-center mt-5 space-x-5 items-center">
                     <li>
